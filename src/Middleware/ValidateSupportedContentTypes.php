@@ -82,7 +82,7 @@ class ValidateSupportedContentTypes
 
         if (isset($routeConfig['content_types']) && is_array($routeConfig['content_types'])) {
             if (!in_array($contentType, $routeConfig['content_types'])) {
-                throw new ContentTypeNotSupportedException();
+                throw new ContentTypeNotSupportedException($contentType);
             }
         }
     }
