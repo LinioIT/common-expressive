@@ -33,20 +33,6 @@ class ValidateSupportedContentTypesTest extends TestCase
         $middleware->__invoke($request, $response, $callable);
     }
 
-    public function testItAllowsApplicationJsonByDefault()
-    {
-        $request = (new ServerRequest())->withHeader('Content-Type', 'application/json');
-        $response = new Response();
-        $callable = Phony::spy(function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        });
-
-        $middleware = new ValidateSupportedContentTypes();
-        $middleware->__invoke($request, $response, $callable);
-
-        $callable->called();
-    }
-
     public function testItUsesRouteSpecificOverrides()
     {
         $routes = require __DIR__ . '/../assets/routes.php';

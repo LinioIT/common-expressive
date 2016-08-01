@@ -28,12 +28,9 @@ class ValidateSupportedContentTypes
      * @param array $supportedContentTypes
      * @param array $routes
      */
-    public function __construct(array $supportedContentTypes = [], array $routes = [])
+    public function __construct(array $supportedContentTypes, array $routes = [])
     {
-        if (empty($supportedContentTypes)) {
-            $this->supportedContentTypes = self::DEFAULT_CONTENT_TYPES;
-        }
-
+        $this->supportedContentTypes = $supportedContentTypes;
         $this->routes = $routes;
     }
 
