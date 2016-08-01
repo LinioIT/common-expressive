@@ -12,10 +12,12 @@ use function Linio\Common\Expressive\Support\getCurrentRouteFromRawRoutes;
 
 class ValidateSupportedContentTypes
 {
+    const DEFAULT_CONTENT_TYPES = ['application/json'];
+
     /**
      * @var array
      */
-    private $supportedContentTypes = ['application/json'];
+    private $supportedContentTypes = [];
 
     /**
      * @var array
@@ -28,8 +30,8 @@ class ValidateSupportedContentTypes
      */
     public function __construct(array $supportedContentTypes = [], array $routes = [])
     {
-        if (!empty($supportedContentTypes)) {
-            $this->supportedContentTypes = $supportedContentTypes;
+        if (empty($supportedContentTypes)) {
+            $this->supportedContentTypes = self::DEFAULT_CONTENT_TYPES;
         }
 
         $this->routes = $routes;
