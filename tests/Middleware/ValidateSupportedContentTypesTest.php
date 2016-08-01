@@ -29,7 +29,7 @@ class ValidateSupportedContentTypesTest extends TestCase
 
         $this->expectException(ContentTypeNotSupportedException::class);
 
-        $middleware = new ValidateSupportedContentTypes();
+        $middleware = new ValidateSupportedContentTypes([], []);
         $middleware->__invoke($request, $response, $callable);
     }
 
@@ -42,6 +42,39 @@ class ValidateSupportedContentTypesTest extends TestCase
         });
 
         $middleware = new ValidateSupportedContentTypes();
+        $middleware->__invoke($request, $response, $callable);
+
+        $callable->called();
+    }
+
+    public function testItUsesRouteSpecificOverrides()
+    {
+        $routes = require __DIR__ . '/../assets/routes.php';
+
+        $request = (new ServerRequest())->withHeader('Content-Type', 'supported')->withRequestTarget('/valid-content-type');
+        $response = new Response();
+        $callable = Phony::spy(function (ServerRequestInterface $request, ResponseInterface $response) {
+            return new EmptyResponse();
+        });
+
+        $middleware = new ValidateSupportedContentTypes([], $routes);
+        $middleware->__invoke($request, $response, $callable);
+
+        $callable->called();
+    }
+
+    public function testItAllowsNoContentTypesForStandardPages()
+    {
+        $routes = require __DIR__ . '/../assets/routes.php';
+
+        $request = new ServerRequest();
+        $response = new Response();
+        $callable = Phony::spy(function (ServerRequestInterface $request, ResponseInterface $response) {
+            return new EmptyResponse();
+        });
+
+        $middleware = new ValidateSupportedContentTypes([], $routes);
+        $middleware->supportType(null);
         $middleware->__invoke($request, $response, $callable);
 
         $callable->called();
