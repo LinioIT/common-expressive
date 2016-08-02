@@ -37,16 +37,17 @@ class ValidateSupportedContentTypesTest extends TestCase
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
-        $request = (new ServerRequest())->withHeader('Content-Type', 'supported')->withRequestTarget('/valid-content-type');
+        $request = (new ServerRequest([], [], '/valid-content-type'))->withHeader('Content-Type', 'supported');
         $response = new Response();
-        $callable = Phony::spy(function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        });
+        $expected = new EmptyResponse();
+        $callable = function (ServerRequestInterface $request, ResponseInterface $response) use ($expected) {
+            return $expected;
+        };
 
         $middleware = new ValidateSupportedContentTypes([], $routes);
-        $middleware->__invoke($request, $response, $callable);
+        $actual = $middleware->__invoke($request, $response, $callable);
 
-        $callable->called();
+        $this->assertSame($expected, $actual);
     }
 
     public function testItAllowsNoContentTypesForStandardPages()

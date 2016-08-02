@@ -39,7 +39,7 @@ function getCurrentRouteFromMatchedRoute(RouteResult $routeResult, array $routes
  */
 function getCurrentRouteFromRawRoutes(ServerRequestInterface $request, array $routes): array
 {
-    $routePath = $request->getRequestTarget();
+    $routePath = $request->getUri()->getPath();
 
     foreach ($routes as $route) {
         if (isset($route['path']) && $route['path'] == $routePath) {
