@@ -6,12 +6,14 @@ namespace Linio\Common\Expressive\Middleware;
 
 use Eloquent\Phony\Phpunit\Phony;
 use Linio\Common\Expressive\Exception\Http\ContentTypeNotSupportedException;
+use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\ServerRequest;
+use Zend\Expressive\Router\RouteResult;
 
 class ValidateSupportedContentTypesTest extends TestCase
 {
@@ -37,7 +39,9 @@ class ValidateSupportedContentTypesTest extends TestCase
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
-        $request = (new ServerRequest([], [], '/valid-content-type'))->withHeader('Content-Type', 'supported');
+        $request = (new ServerRequest([], [], '/valid-content-type'))
+            ->withHeader('Content-Type', 'supported')
+            ->withAttribute(RouteResult::class, RouteResult::fromRouteMatch('test_valid_content_type', 'Middleware', []));
         $response = new Response();
         $expected = new EmptyResponse();
         $callable = function (ServerRequestInterface $request, ResponseInterface $response) use ($expected) {
@@ -54,7 +58,8 @@ class ValidateSupportedContentTypesTest extends TestCase
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
-        $request = new ServerRequest();
+        $request = (new ServerRequest())
+            ->withAttribute(RouteResult::class, RouteResult::fromRouteMatch('test_no_content_type', 'Middleware', []));
         $response = new Response();
         $callable = Phony::spy(function (ServerRequestInterface $request, ResponseInterface $response) {
             return new EmptyResponse();
@@ -67,11 +72,29 @@ class ValidateSupportedContentTypesTest extends TestCase
         $callable->called();
     }
 
+    public function testItRequiresTheRouterMiddlewareToHaveBeenRun()
+    {
+        $routes = require __DIR__ . '/../assets/routes.php';
+
+        $request = new ServerRequest();
+        $response = new Response();
+        $callable = function (ServerRequestInterface $request, ResponseInterface $response) {
+            return new EmptyResponse();
+        };
+
+        $this->expectException(MiddlewareOutOfOrderException::class);
+
+        $middleware = new ValidateSupportedContentTypes([], $routes);
+        $middleware->__invoke($request, $response, $callable);
+    }
+
     public function unsupportedContentTypeRequestProvider(): array
     {
+        $routeResult = RouteResult::fromRouteMatch('test', 'Middleware', []);
+
         return [
-            [new ServerRequest()],
-            [(new ServerRequest())->withHeader('Content-Type', 'unsupported')],
+            [(new ServerRequest())->withAttribute(RouteResult::class, $routeResult)],
+            [(new ServerRequest())->withHeader('Content-Type', 'unsupported')->withAttribute(RouteResult::class, $routeResult)],
         ];
     }
 }

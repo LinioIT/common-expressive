@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Linio\Common\Expressive\Middleware;
 
 use Linio\Common\Expressive\Exception\Http\ContentTypeNotSupportedException;
+use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Expressive\Exception\Http\RouteNotFoundException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use function Linio\Common\Expressive\Support\getCurrentRouteFromRawRoutes;
+use Zend\Expressive\Container\ApplicationFactory;
+use Zend\Expressive\Router\RouteResult;
+use function Linio\Common\Expressive\Support\getCurrentRouteFromMatchedRoute;
 
 class ValidateSupportedContentTypes
 {
@@ -78,7 +81,13 @@ class ValidateSupportedContentTypes
      */
     private function matchContentTypeFromRoute($contentType, ServerRequestInterface $request)
     {
-        $routeConfig = getCurrentRouteFromRawRoutes($request, $this->routes);
+        $routeResult = $request->getAttribute(RouteResult::class);
+
+        if (!$routeResult instanceof RouteResult || !$routeResult->isSuccess()) {
+            throw new MiddlewareOutOfOrderException(ApplicationFactory::ROUTING_MIDDLEWARE, self::class);
+        }
+
+        $routeConfig = getCurrentRouteFromMatchedRoute($routeResult, $this->routes);
 
         if (isset($routeConfig['content_types']) && is_array($routeConfig['content_types'])) {
             if (!in_array($contentType, $routeConfig['content_types'])) {

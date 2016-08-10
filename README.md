@@ -123,8 +123,6 @@ return [
                 \Linio\Common\Expressive\Middleware\LogResponse::class,
                 \Linio\Common\Expressive\Middleware\AddRequestIdToResponse::class,
                 \Linio\Common\Expressive\Middleware\LogRequest::class,
-                \Linio\Common\Expressive\Middleware\ValidateSupportedContentTypes::class,
-                \Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware::class,
             ],
             'priority' => 10000,
         ],
@@ -132,6 +130,8 @@ return [
             'middleware' => [
                 \Zend\Expressive\Container\ApplicationFactory::ROUTING_MIDDLEWARE,
                 \Zend\Expressive\Helper\UrlHelperMiddleware::class,
+                \Linio\Common\Expressive\Middleware\ValidateSupportedContentTypes::class,
+                \Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware::class,
                 \Linio\Common\Expressive\Middleware\ConfigureNewrelicForRequest::class,
                 \Linio\Common\Expressive\Middleware\ValidateRequestBody::class,
                 // Add more middleware here that needs to introspect the routing
