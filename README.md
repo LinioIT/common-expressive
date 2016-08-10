@@ -104,7 +104,7 @@ return [
                 return new \Linio\Common\Expressive\Middleware\ConfigureNewrelicForRequest($config['logging']['newRelic']['appName']);
             },
             \Linio\Common\Expressive\Middleware\ValidateSupportedContentTypes::class => function (ContainerInterface $container) {
-                return new \Linio\Common\Expressive\Middleware\ValidateSupportedContentTypes();
+                return new \Linio\Common\Expressive\Middleware\ValidateSupportedContentTypes(\Linio\Common\Expressive\Middleware\ValidateSupportedContentTypes::DEFAULT_CONTENT_TYPES);
             },
         ],
     ],
