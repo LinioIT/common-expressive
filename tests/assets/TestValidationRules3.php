@@ -7,7 +7,7 @@ namespace Linio\TestAssets;
 use Linio\Common\Expressive\Validation\ValidationRules;
 use Particle\Validator\Validator;
 
-class TestValidationRules implements ValidationRules
+class TestValidationRules3 implements ValidationRules
 {
     /**
      * Builds the rules for particle/validator.
@@ -17,6 +17,6 @@ class TestValidationRules implements ValidationRules
      */
     public function buildRules(Validator $validator, array $input)
     {
-        $validator->required('key');
+        $validator->required('key3')->equals($input['key4']);
     }
 }

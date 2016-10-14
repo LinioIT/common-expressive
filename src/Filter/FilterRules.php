@@ -10,6 +10,7 @@ interface FilterRules
 {
     /**
      * @param Filter $filter
+     * @param array $input
      */
-    public function buildRules(Filter $filter);
+    public function buildRules(Filter $filter, array $input);
 }
