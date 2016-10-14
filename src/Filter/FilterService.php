@@ -45,7 +45,7 @@ class FilterService
 
         foreach ($filterRulesClasses as $filterRulesClass) {
             $filterRules = $this->filterRulesFactory->make($filterRulesClass);
-            $filterRules->buildRules($filter);
+            $filterRules->buildRules($filter, $input);
         }
 
         return $filter->filter($input);

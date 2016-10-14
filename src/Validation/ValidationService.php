@@ -47,7 +47,7 @@ class ValidationService
 
         foreach ($validationRulesClasses as $validationRulesClass) {
             $validationRules = $this->validationRulesFactory->make($validationRulesClass);
-            $validationRules->buildRules($validator);
+            $validationRules->buildRules($validator, $input);
         }
 
         $result = $validator->validate($input);

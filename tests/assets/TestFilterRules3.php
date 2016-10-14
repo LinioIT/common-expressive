@@ -7,7 +7,7 @@ namespace Linio\TestAssets;
 use Linio\Common\Expressive\Filter\FilterRules;
 use Particle\Filter\Filter;
 
-class TestFilterRules implements FilterRules
+class TestFilterRules3 implements FilterRules
 {
     /**
      * @param Filter $filter
@@ -15,6 +15,6 @@ class TestFilterRules implements FilterRules
      */
     public function buildRules(Filter $filter, array $input = [])
     {
-        $filter->value('key')->append('test');
+        $filter->value('key3')->append($input['key4']);
     }
 }

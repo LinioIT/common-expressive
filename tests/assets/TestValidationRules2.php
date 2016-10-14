@@ -13,8 +13,9 @@ class TestValidationRules2 implements ValidationRules
      * Builds the rules for particle/validator.
      *
      * @param Validator $validator
+     * @param array $input
      */
-    public function buildRules(Validator $validator)
+    public function buildRules(Validator $validator, array $input = [])
     {
         $validator->required('key2');
     }
