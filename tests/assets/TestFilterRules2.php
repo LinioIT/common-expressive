@@ -13,7 +13,7 @@ class TestFilterRules2 implements FilterRules
      * @param Filter $filter
      * @param array $input
      */
-    public function buildRules(Filter $filter, array $input = [])
+    public function buildRules(Filter $filter, array $input)
     {
         $filter->value('key')->append('test2');
     }

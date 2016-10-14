@@ -14,5 +14,5 @@ interface ValidationRules
      * @param Validator $validator
      * @param array $input
      */
-    public function buildRules(Validator $validator, array $input = []);
+    public function buildRules(Validator $validator, array $input);
 }
