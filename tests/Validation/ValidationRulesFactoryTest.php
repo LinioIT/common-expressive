@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Validation;
 
-use Eloquent\Phony\Phpunit\Phony;
-use Interop\Container\ContainerInterface;
 use Linio\Common\Expressive\Exception\Base\NotFoundException;
 use Linio\TestAssets\TestValidationRules;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 class ValidationRulesFactoryTest extends TestCase
 {
@@ -17,42 +16,39 @@ class ValidationRulesFactoryTest extends TestCase
         $class = TestValidationRules::class;
         $testValidationRules = new $class();
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(true);
-        $container->get->with($class)->returns($testValidationRules);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has($class)->willReturn(true)->shouldBeCalled();
+        $container->get($class)->willReturn($testValidationRules)->shouldBeCalled();
 
-        $factory = new ValidationRulesFactory($container->get());
+        $factory = new ValidationRulesFactory($container->reveal());
         $actual = $factory->make($class);
 
         $this->assertSame($testValidationRules, $actual);
-        $container->has->calledWith($class);
-        $container->get->calledWith($class);
     }
 
     public function testItInstantiatesTheValidationRulesWhenItIsntInTheContainer()
     {
         $class = TestValidationRules::class;
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(false);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has($class)->willReturn(false);
 
-        $factory = new ValidationRulesFactory($container->get());
+        $factory = new ValidationRulesFactory($container->reveal());
         $actual = $factory->make($class);
 
         $this->assertInstanceOf($class, $actual);
-        $container->get->never()->calledWith($class);
     }
 
     public function testItFailsIfTheValidationRulesClassDoesntExist()
     {
         $class = 'InvalidClass';
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(false);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has($class)->willReturn(false);
 
         $this->expectException(NotFoundException::class);
 
-        $factory = new ValidationRulesFactory($container->get());
+        $factory = new ValidationRulesFactory($container->reveal());
         $factory->make($class);
     }
 }

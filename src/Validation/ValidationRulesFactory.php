@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Validation;
 
-use Interop\Container\ContainerInterface;
 use Linio\Common\Expressive\Exception\Base\NotFoundException;
+use Psr\Container\ContainerInterface;
 
 class ValidationRulesFactory
 {
@@ -14,20 +14,13 @@ class ValidationRulesFactory
      */
     private $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
     /**
-     * @param string $validationClass
-     *
      * @throws NotFoundException
-     *
-     * @return ValidationRules
      */
     public function make(string $validationClass): ValidationRules
     {

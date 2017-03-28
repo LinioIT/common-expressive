@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Validation;
 
-use Eloquent\Phony\Phpunit\Phony;
-use Interop\Container\ContainerInterface;
 use Linio\Common\Expressive\Exception\Base\NotFoundException;
 use Particle\Validator\Validator;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 class ValidatorFactoryTest extends TestCase
 {
@@ -17,42 +16,39 @@ class ValidatorFactoryTest extends TestCase
         $class = Validator::class;
         $validator = new $class();
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(true);
-        $container->get->with($class)->returns($validator);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has($class)->willReturn(true)->shouldBeCalled();
+        $container->get($class)->willReturn($validator)->shouldBeCalled();
 
-        $factory = new ValidatorFactory($container->get(), $class);
+        $factory = new ValidatorFactory($container->reveal(), $class);
         $actual = $factory->make($class);
 
         $this->assertSame($validator, $actual);
-        $container->has->calledWith($class);
-        $container->get->calledWith($class);
     }
 
     public function testItInstantiatesTheValidatorWhenItIsntInTheContainer()
     {
         $class = Validator::class;
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(false);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has($class)->willReturn(false);
 
-        $factory = new ValidatorFactory($container->get(), $class);
+        $factory = new ValidatorFactory($container->reveal(), $class);
         $actual = $factory->make($class);
 
         $this->assertInstanceOf($class, $actual);
-        $container->get->never()->calledWith($class);
     }
 
     public function testItFailsIfTheValidatorDoesntExist()
     {
         $class = 'InvalidClass';
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(false);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has($class)->willReturn(false);
 
         $this->expectException(NotFoundException::class);
 
-        $factory = new ValidatorFactory($container->get(), $class);
+        $factory = new ValidatorFactory($container->reveal(), $class);
         $factory->make($class);
     }
 }

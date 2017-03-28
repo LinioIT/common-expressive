@@ -4,51 +4,31 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Middleware;
 
-use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Expressive\Exception\Http\RouteNotFoundException;
+use Interop\Http\ServerMiddleware\DelegateInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Linio\Common\Expressive\Validation\ValidationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Router\RouteResult;
-use function Linio\Common\Expressive\Support\getCurrentRouteFromMatchedRoute;
 
-class ValidateRequestBody
+class ValidateRequestBody implements MiddlewareInterface
 {
     /**
      * @var ValidationService
      */
     private $validationService;
 
-    /**
-     * An array of zend-expressive routes.
-     *
-     * @var array
-     */
-    private $routes;
-
-    /**
-     * @param ValidationService $validationService
-     * @param array $routes
-     */
-    public function __construct(ValidationService $validationService, array $routes)
+    public function __construct(ValidationService $validationService)
     {
         $this->validationService = $validationService;
-        $this->routes = $routes;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function process(ServerRequestInterface $request, DelegateInterface $delegate): ResponseInterface
     {
         $routeResult = $request->getAttribute(RouteResult::class);
 
         if (!$routeResult instanceof RouteResult || $routeResult->isFailure()) {
-            throw new MiddlewareOutOfOrderException('Routing Middleware', self::class);
+            return $delegate->process($request);
         }
 
         $validationClasses = $this->getValidationRuleClasses($routeResult);
@@ -57,25 +37,18 @@ class ValidateRequestBody
             $this->validationService->validate($request->getParsedBody(), $validationClasses);
         }
 
-        return $next($request, $response);
+        return $delegate->process($request);
     }
 
-    /**
-     * @param RouteResult $routeResult
-     *
-     * @throws RouteNotFoundException
-     *
-     * @return array
-     */
     private function getValidationRuleClasses(RouteResult $routeResult): array
     {
-        $matchedRoute = getCurrentRouteFromMatchedRoute($routeResult, $this->routes);
+        $route = $routeResult->getMatchedRoute();
 
-        if (empty($matchedRoute['validation_rules'])) {
+        if (empty($route->getOptions()['validation_rules'])) {
             return [];
         }
 
-        $rules = $matchedRoute['validation_rules'];
+        $rules = $route->getOptions()['validation_rules'];
 
         if (!is_array($rules)) {
             return [$rules];

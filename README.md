@@ -75,10 +75,10 @@ return [
     'dependencies' => [
         'invokables' => [
             \Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware::class => \Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware::class,
-            \Linio\Common\Expressive\Middleware\ConvertErrorToJsonResponse::class => \Linio\Common\Expressive\Middleware\ConvertErrorToJsonResponse::class,
+            \Linio\Common\Expressive\Error\ConvertErrorToJsonResponse::class => \Linio\Common\Expressive\Error\ConvertErrorToJsonResponse::class,
             \Linio\Common\Expressive\Middleware\AddRequestIdToRequest::class => \Linio\Common\Expressive\Middleware\AddRequestIdToRequest::class,
             \Linio\Common\Expressive\Middleware\AddRequestIdToResponse::class => \Linio\Common\Expressive\Middleware\AddRequestIdToResponse::class,
-            \Linio\Common\Expressive\Middleware\LogExceptions::class => \Linio\Common\Expressive\Middleware\LogExceptions::class,
+            \Linio\Common\Expressive\Logging\LogExceptions::class => \Linio\Common\Expressive\Logging\LogExceptions::class,
         ],
         'factories' => [
             \Zend\Expressive\Helper\ServerUrlMiddleware::class => \Zend\Expressive\Helper\ServerUrlMiddlewareFactory::class,
@@ -102,9 +102,6 @@ return [
                 $config = $container->get('config');
 
                 return new \Linio\Common\Expressive\Middleware\ConfigureNewrelicForRequest($config['logging']['newRelic']['appName']);
-            },
-            \Linio\Common\Expressive\Middleware\ValidateSupportedContentTypes::class => function (ContainerInterface $container) {
-                return new \Linio\Common\Expressive\Middleware\ValidateSupportedContentTypes(\Linio\Common\Expressive\Middleware\ValidateSupportedContentTypes::DEFAULT_CONTENT_TYPES);
             },
         ],
     ],
@@ -130,7 +127,6 @@ return [
             'middleware' => [
                 \Zend\Expressive\Container\ApplicationFactory::ROUTING_MIDDLEWARE,
                 \Zend\Expressive\Helper\UrlHelperMiddleware::class,
-                \Linio\Common\Expressive\Middleware\ValidateSupportedContentTypes::class,
                 \Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware::class,
                 \Linio\Common\Expressive\Middleware\ConfigureNewrelicForRequest::class,
                 \Linio\Common\Expressive\Middleware\ValidateRequestBody::class,
@@ -145,8 +141,8 @@ return [
         ],
         'error' => [
             'middleware' => [
-                \Linio\Common\Expressive\Middleware\LogExceptions::class,
-                \Linio\Common\Expressive\Middleware\ConvertErrorToJsonResponse::class,
+                \Linio\Common\Expressive\Logging\LogExceptions::class,
+                \Linio\Common\Expressive\Error\ConvertErrorToJsonResponse::class,
             ],
             'error' => true,
             'priority' => -10000,

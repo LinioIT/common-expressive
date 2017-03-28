@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Filter;
 
-use Interop\Container\ContainerInterface;
 use Linio\Common\Expressive\Exception\Base\NotFoundException;
+use Psr\Container\ContainerInterface;
 
 class FilterRulesFactory
 {
@@ -14,20 +14,13 @@ class FilterRulesFactory
      */
     private $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
     /**
-     * @param string $filterRulesClass
-     *
      * @throws NotFoundException
-     *
-     * @return FilterRules
      */
     public function make(string $filterRulesClass): FilterRules
     {

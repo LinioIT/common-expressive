@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Middleware;
 
+use Interop\Http\ServerMiddleware\DelegateInterface;
 use PHPUnit\Framework\TestCase;
-use Zend\Diactoros\Response;
+use Prophecy\Argument;
+use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\ServerRequest;
 
@@ -14,30 +16,33 @@ class AddRequestIdToRequestTest extends TestCase
     public function testItAddsTheRequestIdAttributeUsingANewId()
     {
         $request = new ServerRequest();
-        $response = new Response();
-        $callable = function ($request, $response) {
-            $this->assertNotNull($request->getAttribute('requestId'));
+        $delegate = new class($this) implements DelegateInterface {
+            public function __construct(TestCase $testCase)
+            {
+                $this->testCase = $testCase;
+            }
 
-            return new EmptyResponse();
+            public function process(ServerRequestInterface $request)
+            {
+                $this->testCase->assertNotNull($request->getAttribute('requestId'));
+
+                return new EmptyResponse();
+            }
         };
 
         $middleware = new AddRequestIdToRequest();
-        $middleware->__invoke($request, $response, $callable);
+        $middleware->process($request, $delegate);
     }
 
     public function testItAddsTheRequestIdAttributeUsingTheHeader()
     {
-        $requestId = 'testId';
-
-        $request = (new ServerRequest())->withHeader('X-Request-Id', $requestId);
-        $response = new Response();
-        $callable = function ($request, $response) use ($requestId) {
-            $this->assertSame($requestId, $request->getAttribute('requestId'));
-
-            return new EmptyResponse();
-        };
+        $request = (new ServerRequest())->withHeader('X-Request-Id', 'testId');
+        $delegate = $this->prophesize(DelegateInterface::class);
+        $delegate->process(Argument::type(ServerRequestInterface::class))->willReturn(new EmptyResponse());
 
         $middleware = new AddRequestIdToRequest();
-        $middleware->__invoke($request, $response, $callable);
+        $middleware->process($request, $delegate->reveal());
+
+        $delegate->process($request->withAttribute('requestId', 'testId'))->shouldHaveBeenCalled();
     }
 }

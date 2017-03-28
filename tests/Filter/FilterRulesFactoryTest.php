@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Filter;
 
-use Eloquent\Phony\Phpunit\Phony;
-use Interop\Container\ContainerInterface;
 use Linio\Common\Expressive\Exception\Base\NotFoundException;
 use Linio\TestAssets\TestFilterRules;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 class FilterRulesFactoryTest extends TestCase
 {
@@ -17,41 +16,37 @@ class FilterRulesFactoryTest extends TestCase
         $class = TestFilterRules::class;
         $testFilterRules = new $class();
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(true);
-        $container->get->with($class)->returns($testFilterRules);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has($class)->willReturn(true)->shouldBeCalled();
+        $container->get($class)->willReturn($testFilterRules)->shouldBeCalled();
 
-        $factory = new FilterRulesFactory($container->get());
+        $factory = new FilterRulesFactory($container->reveal());
         $factory->make($class);
-
-        $container->has->calledWith($class);
-        $container->get->calledWith($class);
     }
 
     public function testItInstantiatesTheFilterRulesWhenItIsntInTheContainer()
     {
         $class = TestFilterRules::class;
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(false);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has($class)->willReturn(false);
 
-        $factory = new FilterRulesFactory($container->get());
+        $factory = new FilterRulesFactory($container->reveal());
         $actual = $factory->make($class);
 
         $this->assertInstanceOf($class, $actual);
-        $container->get->never()->calledWith($class);
     }
 
     public function testItFailsIfTheFilterRulesClassDoesntExist()
     {
         $class = 'InvalidClass';
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(false);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has($class)->willReturn(false);
 
         $this->expectException(NotFoundException::class);
 
-        $factory = new FilterRulesFactory($container->get());
+        $factory = new FilterRulesFactory($container->reveal());
         $factory->make($class);
     }
 }

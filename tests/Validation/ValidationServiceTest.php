@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Validation;
 
-use Eloquent\Phony\Phpunit\Phony;
-use Interop\Container\ContainerInterface;
 use Linio\Common\Expressive\Exception\Http\InvalidRequestException;
 use Linio\TestAssets\TestValidationRules;
 use Linio\TestAssets\TestValidationRules2;
@@ -13,6 +11,7 @@ use Linio\TestAssets\TestValidationRules3;
 use Particle\Validator\ValidationResult;
 use Particle\Validator\Validator;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 class ValidationServiceTest extends TestCase
 {
@@ -20,24 +19,24 @@ class ValidationServiceTest extends TestCase
     {
         $input = ['key' => 'validValue', 'key2' => 'validValue'];
 
-        $container = Phony::mock(ContainerInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
 
-        $validatorResult = Phony::mock(ValidationResult::class);
-        $validatorResult->isValid->returns(true);
+        $validatorResult = $this->prophesize(ValidationResult::class);
+        $validatorResult->isValid()->willReturn(true);
 
-        $validator = Phony::mock(Validator::class);
-        $validator->validate->with($input)->returns($validatorResult);
+        $validator = $this->prophesize(Validator::class);
+        $validator->validate($input)->willReturn($validatorResult)->shouldBeCalled();
+        $validator->required('key')->willReturn(null);
+        $validator->required('key2')->willReturn(null);
 
-        $validatorFactory = Phony::mock(ValidatorFactory::class);
-        $validatorFactory->make->returns($validator->get());
+        $validatorFactory = $this->prophesize(ValidatorFactory::class);
+        $validatorFactory->make()->willReturn($validator->reveal());
 
-        $validationRulesFactory = new ValidationRulesFactory($container->get());
+        $validationRulesFactory = new ValidationRulesFactory($container->reveal());
         $validationRule = [TestValidationRules::class, TestValidationRules2::class];
 
-        $service = new ValidationService($validatorFactory->get(), $validationRulesFactory);
+        $service = new ValidationService($validatorFactory->reveal(), $validationRulesFactory);
         $service->validate($input, $validationRule);
-
-        $validator->validate->called();
     }
 
     public function testItValidatesAndFailsWithASingleValidationRulesClass()
@@ -50,11 +49,11 @@ class ValidationServiceTest extends TestCase
             ],
         ];
 
-        $container = Phony::mock(ContainerInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
 
-        $validatorFactory = new ValidatorFactory($container->get(), Validator::class);
+        $validatorFactory = new ValidatorFactory($container->reveal(), Validator::class);
 
-        $validationRulesFactory = new ValidationRulesFactory($container->get());
+        $validationRulesFactory = new ValidationRulesFactory($container->reveal());
         $validationRules = [TestValidationRules::class];
 
         $this->expectException(InvalidRequestException::class);
@@ -84,11 +83,11 @@ class ValidationServiceTest extends TestCase
             ],
         ];
 
-        $container = Phony::mock(ContainerInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
 
-        $validatorFactory = new ValidatorFactory($container->get(), Validator::class);
+        $validatorFactory = new ValidatorFactory($container->reveal(), Validator::class);
 
-        $validationRulesFactory = new ValidationRulesFactory($container->get());
+        $validationRulesFactory = new ValidationRulesFactory($container->reveal());
         $validationRules = [TestValidationRules::class, TestValidationRules2::class];
 
         $this->expectException(InvalidRequestException::class);
@@ -108,11 +107,11 @@ class ValidationServiceTest extends TestCase
     {
         $input = ['key3' => 'equalValue', 'key4' => 'equalValue'];
 
-        $container = Phony::mock(ContainerInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
 
-        $validatorFactory = new ValidatorFactory($container->get(), Validator::class);
+        $validatorFactory = new ValidatorFactory($container->reveal(), Validator::class);
 
-        $validationRulesFactory = new ValidationRulesFactory($container->get());
+        $validationRulesFactory = new ValidationRulesFactory($container->reveal());
         $validationRules = [TestValidationRules3::class];
 
         $service = new ValidationService($validatorFactory, $validationRulesFactory);

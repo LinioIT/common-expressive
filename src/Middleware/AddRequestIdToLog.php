@@ -4,27 +4,22 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Middleware;
 
+use Interop\Http\ServerMiddleware\DelegateInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Linio\Component\Microlog\Log;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class AddRequestIdToLog
+class AddRequestIdToLog implements MiddlewareInterface
 {
     use EnsureRequestIdExists;
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function process(ServerRequestInterface $request, DelegateInterface $delegate): ResponseInterface
     {
         $this->ensureRequestIdExists($request);
 
         Log::addGlobalContext('requestId', $request->getAttribute('requestId'));
 
-        return $next($request, $response);
+        return $delegate->process($request);
     }
 }

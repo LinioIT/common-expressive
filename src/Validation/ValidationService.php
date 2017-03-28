@@ -6,7 +6,6 @@ namespace Linio\Common\Expressive\Validation;
 
 use Linio\Common\Expressive\Exception\Base\NotFoundException;
 use Linio\Common\Expressive\Exception\Http\InvalidRequestException;
-use Particle\Validator\Validator;
 
 class ValidationService
 {
@@ -20,10 +19,6 @@ class ValidationService
      */
     private $validationRulesFactory;
 
-    /**
-     * @param ValidatorFactory $validatorFactory
-     * @param ValidationRulesFactory $validationRulesFactory
-     */
     public function __construct(ValidatorFactory $validatorFactory, ValidationRulesFactory $validationRulesFactory)
     {
         $this->validatorFactory = $validatorFactory;
@@ -31,13 +26,10 @@ class ValidationService
     }
 
     /**
-     * @param array $input
-     * @param array $validationRulesClasses
-     *
      * @throws NotFoundException
      * @throws InvalidRequestException
      */
-    public function validate(array $input, array $validationRulesClasses)
+    public function validate(array $input, array $validationRulesClasses): void
     {
         if (empty($validationRulesClasses)) {
             return;
@@ -58,13 +50,9 @@ class ValidationService
     }
 
     /**
-     * Maps the validator's errors to DomainException's error format.
-     *
-     * @param array $errors
-     *
      * @throws InvalidRequestException
      */
-    private function throwExceptionWithValidatorErrors(array $errors)
+    private function throwExceptionWithValidatorErrors(array $errors): void
     {
         $compiledErrors = [];
 

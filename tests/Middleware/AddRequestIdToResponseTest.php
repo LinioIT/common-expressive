@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Middleware;
 
+use Interop\Http\ServerMiddleware\DelegateInterface;
 use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
 use PHPUnit\Framework\TestCase;
-use Zend\Diactoros\Response;
+use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\ServerRequest;
 
@@ -17,13 +18,15 @@ class AddRequestIdToResponseTest extends TestCase
         $requestId = 'testId';
 
         $request = (new ServerRequest())->withAttribute('requestId', $requestId);
-        $response = new Response();
-        $callable = function ($request, $response) use ($requestId) {
-            return new EmptyResponse();
+        $delegate = new class() implements DelegateInterface {
+            public function process(ServerRequestInterface $request)
+            {
+                return new EmptyResponse();
+            }
         };
 
         $middleware = new AddRequestIdToResponse();
-        $actual = $middleware->__invoke($request, $response, $callable);
+        $actual = $middleware->process($request, $delegate);
 
         $this->assertSame($requestId, $actual->getHeader('X-Request-Id')[0]);
     }
@@ -31,14 +34,16 @@ class AddRequestIdToResponseTest extends TestCase
     public function testItFailsWhenThereIsNoRequestId()
     {
         $request = new ServerRequest();
-        $response = new Response();
-        $callable = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
+        $delegate = new class() implements DelegateInterface {
+            public function process(ServerRequestInterface $request)
+            {
+                return new EmptyResponse();
+            }
         };
 
         $this->expectException(MiddlewareOutOfOrderException::class);
 
         $middleware = new AddRequestIdToLog();
-        $middleware->__invoke($request, $response, $callable);
+        $middleware->process($request, $delegate);
     }
 }

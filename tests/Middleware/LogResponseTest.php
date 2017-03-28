@@ -4,27 +4,26 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Middleware;
 
-use Eloquent\Phony\Phpunit\Phony;
+use Interop\Http\ServerMiddleware\DelegateInterface;
 use Linio\Common\Expressive\Logging\LogRequestResponseService;
 use PHPUnit\Framework\TestCase;
-use Zend\Diactoros\Response;
+use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\ServerRequest;
 
 class LogResponseTest extends TestCase
 {
     public function testItCallsLogRequestResponseService()
     {
-        $logRequestResponseService = Phony::mock(LogRequestResponseService::class);
-
         $request = new ServerRequest();
-        $response = new Response();
-        $next = function ($request, $response) {
-            return $response;
-        };
+        $response = new EmptyResponse();
 
-        $middleware = new LogResponse($logRequestResponseService->get());
-        $middleware->__invoke($request, $response, $next);
+        $logRequestResponseService = $this->prophesize(LogRequestResponseService::class);
+        $logRequestResponseService->logResponse($request, $response)->shouldBeCalled();
 
-        $logRequestResponseService->logResponse->calledWith($request, $response);
+        $delegate = $this->prophesize(DelegateInterface::class);
+        $delegate->process($request)->willReturn($response);
+
+        $middleware = new LogResponse($logRequestResponseService->reveal());
+        $middleware->process($request, $delegate->reveal());
     }
 }

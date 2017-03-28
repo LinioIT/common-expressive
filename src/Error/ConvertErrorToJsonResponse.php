@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Middleware;
+namespace Linio\Common\Expressive\Error;
 
 use Linio\Common\Expressive\Exception\Base\DomainException;
 use Linio\Common\Expressive\Exception\ExceptionTokens;
@@ -15,27 +15,18 @@ class ConvertErrorToJsonResponse
 {
     const DEFAULT_STATUS_CODE = 500;
 
-    /**
-     * @param mixed $error
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
-    public function __invoke($error, ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function __invoke(Throwable $error, ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         switch ($error) {
             case $error instanceof DomainException:
                 return $this->convertDomainException($error);
             case $error instanceof Throwable:
-                return $this->convertThrowable($error);
             default:
-                return $this->convertGenericError($error);
+                return $this->convertThrowable($error);
         }
     }
 
-    private function convertGenericError($error): JsonResponse
+    private function convertThrowable(Throwable $error): JsonResponse
     {
         $body = [
             'code' => ExceptionTokens::AN_ERROR_HAS_OCCURRED,
@@ -44,11 +35,6 @@ class ConvertErrorToJsonResponse
         ];
 
         return new JsonResponse($body, self::DEFAULT_STATUS_CODE);
-    }
-
-    private function convertThrowable(Throwable $throwable): JsonResponse
-    {
-        return $this->convertGenericError($throwable->getMessage());
     }
 
     private function convertDomainException(DomainException $domainException): JsonResponse

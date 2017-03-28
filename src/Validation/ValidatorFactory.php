@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Validation;
 
-use Interop\Container\ContainerInterface;
 use Linio\Common\Expressive\Exception\Base\NotFoundException;
 use Particle\Validator\Validator;
+use Psr\Container\ContainerInterface;
 
 class ValidatorFactory
 {
@@ -20,10 +20,6 @@ class ValidatorFactory
      */
     private $validatorClass;
 
-    /**
-     * @param ContainerInterface $container
-     * @param string $validatorClass
-     */
     public function __construct(ContainerInterface $container, string $validatorClass)
     {
         $this->container = $container;
@@ -31,7 +27,7 @@ class ValidatorFactory
     }
 
     /**
-     * @return Validator
+     * @throws NotFoundException
      */
     public function make(): Validator
     {

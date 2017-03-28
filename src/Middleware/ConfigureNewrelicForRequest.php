@@ -4,50 +4,39 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Middleware;
 
+use Interop\Http\ServerMiddleware\DelegateInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Router\RouteResult;
 
-class ConfigureNewrelicForRequest
+class ConfigureNewrelicForRequest implements MiddlewareInterface
 {
     /**
      * @var string
      */
     private $appName;
 
-    /**
-     * @param string $appName
-     */
     public function __construct(string $appName)
     {
         $this->appName = $appName;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function process(ServerRequestInterface $request, DelegateInterface $delegate): ResponseInterface
     {
         if (!extension_loaded('newrelic')) {
-            return $next($request, $response);
+            return $delegate->process($request);
         }
 
         newrelic_set_appname($this->appName);
         $this->addRequestIdToNewrelic($request);
         $this->nameRouteIfRouteFound($request);
 
-        return $next($request, $response);
+        return $delegate->process($request);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     */
-    private function nameRouteIfRouteFound(ServerRequestInterface $request)
+    private function nameRouteIfRouteFound(ServerRequestInterface $request): void
     {
         /** @var RouteResult $routeResult */
         $routeResult = $request->getAttribute(RouteResult::class);
@@ -62,11 +51,9 @@ class ConfigureNewrelicForRequest
     }
 
     /**
-     * @param ServerRequestInterface $request
-     *
      * @throws MiddlewareOutOfOrderException
      */
-    private function addRequestIdToNewrelic(ServerRequestInterface $request)
+    private function addRequestIdToNewrelic(ServerRequestInterface $request): void
     {
         $requestId = $request->getAttribute('requestId', false);
 

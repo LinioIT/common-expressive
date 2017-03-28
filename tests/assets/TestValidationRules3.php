@@ -9,13 +9,7 @@ use Particle\Validator\Validator;
 
 class TestValidationRules3 implements ValidationRules
 {
-    /**
-     * Builds the rules for particle/validator.
-     *
-     * @param Validator $validator
-     * @param array $input
-     */
-    public function buildRules(Validator $validator, array $input)
+    public function buildRules(Validator $validator, array $input): void
     {
         $validator->required('key3')->equals($input['key4']);
     }

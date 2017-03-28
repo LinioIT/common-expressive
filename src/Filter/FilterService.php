@@ -18,22 +18,12 @@ class FilterService
      */
     private $filterRulesFactory;
 
-    /**
-     * @param string $filterClass
-     * @param FilterRulesFactory $filterRulesFactory
-     */
     public function __construct(string $filterClass, FilterRulesFactory $filterRulesFactory)
     {
         $this->filterClass = $filterClass;
         $this->filterRulesFactory = $filterRulesFactory;
     }
 
-    /**
-     * @param array $input
-     * @param array $filterRulesClasses
-     *
-     * @return array
-     */
     public function filter(array $input, array $filterRulesClasses): array
     {
         if (empty($filterRulesClasses)) {
