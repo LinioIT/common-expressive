@@ -6,4 +6,5 @@ namespace Linio\Common\Expressive\Exception\Base;
 
 class NonCriticalClientException extends NonCriticalDomainException
 {
+    public const DEFAULT_STATUS_CODE = 400;
 }
