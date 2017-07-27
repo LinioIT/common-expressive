@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 function newrelic_set_appname($appName)
 {
 }
