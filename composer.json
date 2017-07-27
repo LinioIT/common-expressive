@@ -31,8 +31,5 @@
         "psr-4": {
             "Linio\\TestAssets\\": "tests/assets"
         }
-    },
-    "config": {
-        "bin-dir": "bin"
     }
 }
