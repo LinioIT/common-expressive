@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Middleware;
 
-use Eloquent\Phony\Phpunit\Phony;
+use Eloquent\Phony\Phony;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -15,14 +15,14 @@ use Zend\Expressive\Router\RouteResult;
 
 class ConfigureNewrelicForRequestTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         if (!extension_loaded('newrelic')) {
             require_once __DIR__ . '/../assets/NewrelicFunctions.php';
         }
     }
 
-    public function testItDoesNothingIfNewrelicIsntInstalled()
+    public function testItDoesNothingIfNewrelicIsntInstalled(): void
     {
         $request = new ServerRequest();
         $response = new Response();
@@ -43,7 +43,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $addRequestId->never()->called();
     }
 
-    public function testItSetsTheAppName()
+    public function testItSetsTheAppName(): void
     {
         $appName = 'testApp';
         $routeName = 'testRoute';
@@ -70,7 +70,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $setAppname->calledWith($appName);
     }
 
-    public function testItAddsARequestIdParameter()
+    public function testItAddsARequestIdParameter(): void
     {
         $requestId = '1000';
 
@@ -90,7 +90,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $addRequestId->calledWith('requestId', $requestId);
     }
 
-    public function testItDoesntAddARequestIdWhenOneDoesntExist()
+    public function testItDoesntAddARequestIdWhenOneDoesntExist(): void
     {
         $request = new ServerRequest();
         $response = new Response();
@@ -107,7 +107,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $addRequestId->never()->called();
     }
 
-    public function testItNamesTheTransaction()
+    public function testItNamesTheTransaction(): void
     {
         $routeName = 'testRoute';
 

@@ -16,21 +16,11 @@ class ConfigureNewrelicForRequest
      */
     private $appName;
 
-    /**
-     * @param string $appName
-     */
     public function __construct(string $appName)
     {
         $this->appName = $appName;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
         if (!extension_loaded('newrelic')) {
@@ -44,10 +34,7 @@ class ConfigureNewrelicForRequest
         return $next($request, $response);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     */
-    private function nameRouteIfRouteFound(ServerRequestInterface $request)
+    private function nameRouteIfRouteFound(ServerRequestInterface $request): void
     {
         /** @var RouteResult $routeResult */
         $routeResult = $request->getAttribute(RouteResult::class);
@@ -62,11 +49,9 @@ class ConfigureNewrelicForRequest
     }
 
     /**
-     * @param ServerRequestInterface $request
-     *
      * @throws MiddlewareOutOfOrderException
      */
-    private function addRequestIdToNewrelic(ServerRequestInterface $request)
+    private function addRequestIdToNewrelic(ServerRequestInterface $request): void
     {
         $requestId = $request->getAttribute('requestId', false);
 

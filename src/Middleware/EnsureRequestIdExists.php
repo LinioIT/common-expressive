@@ -9,10 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 trait EnsureRequestIdExists
 {
-    /**
-     * @param ServerRequestInterface $request
-     */
-    public function ensureRequestIdExists(ServerRequestInterface $request)
+    public function ensureRequestIdExists(ServerRequestInterface $request): void
     {
         if (!$request->getAttribute('requestId', false)) {
             throw new MiddlewareOutOfOrderException(AddRequestIdToRequest::class, self::class);

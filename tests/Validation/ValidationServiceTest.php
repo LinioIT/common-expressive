@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Validation;
 
-use Eloquent\Phony\Phpunit\Phony;
-use Interop\Container\ContainerInterface;
+use Eloquent\Phony\Phony;
 use Linio\Common\Expressive\Exception\Http\InvalidRequestException;
 use Linio\TestAssets\TestValidationRules;
 use Linio\TestAssets\TestValidationRules2;
@@ -13,10 +12,11 @@ use Linio\TestAssets\TestValidationRules3;
 use Particle\Validator\ValidationResult;
 use Particle\Validator\Validator;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 class ValidationServiceTest extends TestCase
 {
-    public function testItValidatesAndPasses()
+    public function testItValidatesAndPasses(): void
     {
         $input = ['key' => 'validValue', 'key2' => 'validValue'];
 
@@ -40,7 +40,7 @@ class ValidationServiceTest extends TestCase
         $validator->validate->called();
     }
 
-    public function testItValidatesAndFailsWithASingleValidationRulesClass()
+    public function testItValidatesAndFailsWithASingleValidationRulesClass(): void
     {
         $input = ['invalidKey' => 'validValue'];
         $expectedErrors = [
@@ -70,7 +70,7 @@ class ValidationServiceTest extends TestCase
         }
     }
 
-    public function testItValidatesAndFailsUsingAMultipleValidationRulesClass()
+    public function testItValidatesAndFailsUsingAMultipleValidationRulesClass(): void
     {
         $input = ['invalidKey' => 'validValue'];
         $expectedErrors = [
@@ -104,7 +104,7 @@ class ValidationServiceTest extends TestCase
         }
     }
 
-    public function testItValidatesUsingInputValuesInTheRules()
+    public function testItValidatesUsingInputValuesInTheRules(): void
     {
         $input = ['key3' => 'equalValue', 'key4' => 'equalValue'];
 

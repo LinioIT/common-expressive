@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Middleware;
 
-use Eloquent\Phony\Phpunit\Phony;
+use Eloquent\Phony\Phony;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Expressive\Exception\Http\RouteNotFoundException;
 use Linio\Common\Expressive\Validation\ValidationService;
@@ -15,11 +16,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\ServerRequest;
+use Zend\Expressive\Router\Route;
 use Zend\Expressive\Router\RouteResult;
 
 class ValidateRequestBodyTest extends TestCase
 {
-    public function testItSkipsValidationIfTheRouterHasntRun()
+    public function testItSkipsValidationIfTheRouterHasntRun(): void
     {
         $validationService = Phony::mock(ValidationService::class);
 
@@ -35,7 +37,7 @@ class ValidateRequestBodyTest extends TestCase
         $middleware->__invoke($request, $response, $next);
     }
 
-    public function testItSkipsValidationIfARouteIsNotFound()
+    public function testItSkipsValidationIfARouteIsNotFound(): void
     {
         $validationService = Phony::mock(ValidationService::class);
 
@@ -53,13 +55,14 @@ class ValidateRequestBodyTest extends TestCase
         $middleware->__invoke($request, $response, $next);
     }
 
-    public function testItFailsValidationIfTheRouteIsNotFoundInRoutes()
+    public function testItFailsValidationIfTheRouteIsNotFoundInRoutes(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
         $validationService = Phony::mock(ValidationService::class);
 
-        $routeResult = RouteResult::fromRouteMatch('invalid', 'TestMiddleware', []);
+        $middleware = $this->prophesize(MiddlewareInterface::class);
+        $routeResult = RouteResult::fromRoute(new Route('invalid', $middleware->reveal()), []);
         $request = (new ServerRequest())->withAttribute(RouteResult::class, $routeResult);
 
         $response = new Response();
@@ -73,13 +76,14 @@ class ValidateRequestBodyTest extends TestCase
         $middleware->__invoke($request, $response, $next);
     }
 
-    public function testItCallsTheValidatorService()
+    public function testItCallsTheValidatorService(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
         $validationService = Phony::mock(ValidationService::class);
 
-        $routeResult = RouteResult::fromRouteMatch('test', 'TestMiddleware', []);
+        $middleware = $this->prophesize(MiddlewareInterface::class);
+        $routeResult = RouteResult::fromRoute(new Route('test', $middleware->reveal()), []);
         $request = (new ServerRequest())->withAttribute(RouteResult::class, $routeResult)->withParsedBody([]);
 
         $response = new Response();

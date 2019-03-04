@@ -12,7 +12,7 @@ class EnsureRequestIdExistsTest extends TestCase
 {
     use EnsureRequestIdExists;
 
-    public function testItDoesNothingWhenARequestIdExists()
+    public function testItDoesNothingWhenARequestIdExists(): void
     {
         $request = (new ServerRequest())->withAttribute('requestId', 'someId');
 
@@ -21,7 +21,7 @@ class EnsureRequestIdExistsTest extends TestCase
         $this->assertNull($actual);
     }
 
-    public function testItFailsWhenARequestIdDoesntExist()
+    public function testItFailsWhenARequestIdDoesntExist(): void
     {
         $request = new ServerRequest();
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Logging;
 
-use Eloquent\Phony\Phpunit\Phony;
+use Eloquent\Phony\Phony;
 use Linio\Common\Expressive\Filter\FilterService;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -16,7 +16,7 @@ use Zend\Diactoros\Stream;
 
 class LogRequestResponseServiceTest extends TestCase
 {
-    public function testItLogsTheRequestWithoutFilters()
+    public function testItLogsTheRequestWithoutFilters(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
         $body = [
@@ -57,7 +57,7 @@ class LogRequestResponseServiceTest extends TestCase
         $logger->info->calledWith('A request has been created.', ['body' => $body]);
     }
 
-    public function testItLogsTheResponseWithoutFilters()
+    public function testItLogsTheResponseWithoutFilters(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
         $body = [

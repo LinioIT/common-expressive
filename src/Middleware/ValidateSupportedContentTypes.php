@@ -7,11 +7,11 @@ namespace Linio\Common\Expressive\Middleware;
 use Linio\Common\Expressive\Exception\Http\ContentTypeNotSupportedException;
 use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Expressive\Exception\Http\RouteNotFoundException;
+use function Linio\Common\Expressive\Support\getCurrentRouteFromMatchedRoute;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Container\ApplicationFactory;
 use Zend\Expressive\Router\RouteResult;
-use function Linio\Common\Expressive\Support\getCurrentRouteFromMatchedRoute;
 
 class ValidateSupportedContentTypes
 {
@@ -27,10 +27,6 @@ class ValidateSupportedContentTypes
      */
     private $routes;
 
-    /**
-     * @param array $supportedContentTypes
-     * @param array $routes
-     */
     public function __construct(array $supportedContentTypes, array $routes = [])
     {
         $this->supportedContentTypes = $supportedContentTypes;
@@ -39,8 +35,6 @@ class ValidateSupportedContentTypes
 
     /**
      * @param string|null $contentType Null allows non-api requests
-     *
-     * @return self
      */
     public function supportType(string $contentType = null): self
     {
@@ -49,13 +43,6 @@ class ValidateSupportedContentTypes
         return $this;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
         $contentType = $request->getHeader('Content-Type')[0] ?? null;
@@ -77,9 +64,8 @@ class ValidateSupportedContentTypes
 
     /**
      * @param string|null $contentType
-     * @param ServerRequestInterface $request
      */
-    private function matchContentTypeFromRoute($contentType, ServerRequestInterface $request)
+    private function matchContentTypeFromRoute($contentType, ServerRequestInterface $request): void
     {
         $routeResult = $request->getAttribute(RouteResult::class);
 

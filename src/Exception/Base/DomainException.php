@@ -23,9 +23,7 @@ class DomainException extends SplDomainException
     private $errors;
 
     /**
-     * @param string $token
      * @param int $statusCode
-     * @param string $message
      * @param array $errors An array of arrays containing either or both keys "field" and "message"
      * @param Exception $previous
      */
@@ -43,17 +41,11 @@ class DomainException extends SplDomainException
         parent::__construct($message, $statusCode, $previous);
     }
 
-    /**
-     * @return string
-     */
     public function getToken(): string
     {
         return $this->token;
     }
 
-    /**
-     * @return array
-     */
     public function getErrors(): array
     {
         return $this->errors;

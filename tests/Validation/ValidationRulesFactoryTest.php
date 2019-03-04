@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Validation;
 
-use Eloquent\Phony\Phpunit\Phony;
-use Interop\Container\ContainerInterface;
+use Eloquent\Phony\Phony;
 use Linio\Common\Expressive\Exception\Base\NotFoundException;
 use Linio\TestAssets\TestValidationRules;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 class ValidationRulesFactoryTest extends TestCase
 {
-    public function testItGetsTheValidationRulesFromTheContainer()
+    public function testItGetsTheValidationRulesFromTheContainer(): void
     {
         $class = TestValidationRules::class;
         $testValidationRules = new $class();
@@ -29,7 +29,7 @@ class ValidationRulesFactoryTest extends TestCase
         $container->get->calledWith($class);
     }
 
-    public function testItInstantiatesTheValidationRulesWhenItIsntInTheContainer()
+    public function testItInstantiatesTheValidationRulesWhenItIsntInTheContainer(): void
     {
         $class = TestValidationRules::class;
 
@@ -43,7 +43,7 @@ class ValidationRulesFactoryTest extends TestCase
         $container->get->never()->calledWith($class);
     }
 
-    public function testItFailsIfTheValidationRulesClassDoesntExist()
+    public function testItFailsIfTheValidationRulesClassDoesntExist(): void
     {
         $class = 'InvalidClass';
 

@@ -14,7 +14,7 @@ use Zend\Diactoros\ServerRequest;
 
 class AddRequestIdToLogTest extends TestCase
 {
-    public function testItFailsAddingAGlobalContextWithoutARequestId()
+    public function testItFailsAddingAGlobalContextWithoutARequestId(): void
     {
         $request = new ServerRequest();
         $response = new Response();

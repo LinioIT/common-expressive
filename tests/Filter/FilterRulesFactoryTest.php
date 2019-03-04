@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Filter;
 
-use Eloquent\Phony\Phpunit\Phony;
-use Interop\Container\ContainerInterface;
+use Eloquent\Phony\Phony;
 use Linio\Common\Expressive\Exception\Base\NotFoundException;
 use Linio\TestAssets\TestFilterRules;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 class FilterRulesFactoryTest extends TestCase
 {
-    public function testItGetsTheFilterRulesFromTheContainer()
+    public function testItGetsTheFilterRulesFromTheContainer(): void
     {
         $class = TestFilterRules::class;
         $testFilterRules = new $class();
@@ -28,7 +28,7 @@ class FilterRulesFactoryTest extends TestCase
         $container->get->calledWith($class);
     }
 
-    public function testItInstantiatesTheFilterRulesWhenItIsntInTheContainer()
+    public function testItInstantiatesTheFilterRulesWhenItIsntInTheContainer(): void
     {
         $class = TestFilterRules::class;
 
@@ -42,7 +42,7 @@ class FilterRulesFactoryTest extends TestCase
         $container->get->never()->calledWith($class);
     }
 
-    public function testItFailsIfTheFilterRulesClassDoesntExist()
+    public function testItFailsIfTheFilterRulesClassDoesntExist(): void
     {
         $class = 'InvalidClass';
 

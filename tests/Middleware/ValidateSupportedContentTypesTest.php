@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Middleware;
 
-use Eloquent\Phony\Phpunit\Phony;
+use Eloquent\Phony\Phony;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Linio\Common\Expressive\Exception\Http\ContentTypeNotSupportedException;
 use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
 use PHPUnit\Framework\TestCase;
@@ -13,16 +14,15 @@ use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\ServerRequest;
+use Zend\Expressive\Router\Route;
 use Zend\Expressive\Router\RouteResult;
 
 class ValidateSupportedContentTypesTest extends TestCase
 {
     /**
      * @dataProvider unsupportedContentTypeRequestProvider
-     *
-     * @param ServerRequestInterface $request
      */
-    public function testItOnlyAllowsSupportedContentTypes(ServerRequestInterface $request)
+    public function testItOnlyAllowsSupportedContentTypes(ServerRequestInterface $request): void
     {
         $response = new Response();
         $callable = function (ServerRequestInterface $request, ResponseInterface $response) {
@@ -35,13 +35,14 @@ class ValidateSupportedContentTypesTest extends TestCase
         $middleware->__invoke($request, $response, $callable);
     }
 
-    public function testItUsesRouteSpecificOverrides()
+    public function testItUsesRouteSpecificOverrides(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
+        $middleware = $this->prophesize(MiddlewareInterface::class);
         $request = (new ServerRequest([], [], '/valid-content-type'))
             ->withHeader('Content-Type', 'supported')
-            ->withAttribute(RouteResult::class, RouteResult::fromRouteMatch('test_valid_content_type', 'Middleware', []));
+            ->withAttribute(RouteResult::class, RouteResult::fromRoute(new Route('test_valid_content_type', $middleware->reveal()), []));
         $response = new Response();
         $expected = new EmptyResponse();
         $callable = function (ServerRequestInterface $request, ResponseInterface $response) use ($expected) {
@@ -54,12 +55,13 @@ class ValidateSupportedContentTypesTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    public function testItAllowsNoContentTypesForStandardPages()
+    public function testItAllowsNoContentTypesForStandardPages(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
+        $middleware = $this->prophesize(MiddlewareInterface::class);
         $request = (new ServerRequest())
-            ->withAttribute(RouteResult::class, RouteResult::fromRouteMatch('test_no_content_type', 'Middleware', []));
+            ->withAttribute(RouteResult::class, RouteResult::fromRoute(new Route('test_no_content_type', $middleware->reveal()), []));
         $response = new Response();
         $callable = Phony::spy(function (ServerRequestInterface $request, ResponseInterface $response) {
             return new EmptyResponse();
@@ -72,7 +74,7 @@ class ValidateSupportedContentTypesTest extends TestCase
         $callable->called();
     }
 
-    public function testItRequiresTheRouterMiddlewareToHaveBeenRun()
+    public function testItRequiresTheRouterMiddlewareToHaveBeenRun(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
@@ -90,7 +92,8 @@ class ValidateSupportedContentTypesTest extends TestCase
 
     public function unsupportedContentTypeRequestProvider(): array
     {
-        $routeResult = RouteResult::fromRouteMatch('test', 'Middleware', []);
+        $middleware = $this->prophesize(MiddlewareInterface::class);
+        $routeResult = RouteResult::fromRoute(new Route('test', $middleware->reveal()), []);
 
         return [
             [(new ServerRequest())->withAttribute(RouteResult::class, $routeResult)],

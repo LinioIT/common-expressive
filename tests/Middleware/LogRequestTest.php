@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Middleware;
 
-use Eloquent\Phony\Phpunit\Phony;
+use Eloquent\Phony\Phony;
 use Linio\Common\Expressive\Logging\LogRequestResponseService;
 use PHPUnit\Framework\TestCase;
 use Zend\Diactoros\Response;
@@ -13,7 +13,7 @@ use Zend\Diactoros\ServerRequest;
 
 class LogRequestTest extends TestCase
 {
-    public function testItCallsLogRequestResponseService()
+    public function testItCallsLogRequestResponseService(): void
     {
         $logRequestResponseService = Phony::mock(LogRequestResponseService::class);
 

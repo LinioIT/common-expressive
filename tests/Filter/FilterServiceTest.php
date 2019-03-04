@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Filter;
 
-use Eloquent\Phony\Phpunit\Phony;
-use Interop\Container\ContainerInterface;
+use Eloquent\Phony\Phony;
 use Linio\TestAssets\TestFilterRules;
 use Linio\TestAssets\TestFilterRules2;
 use Linio\TestAssets\TestFilterRules3;
 use Particle\Filter\Filter;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 class FilterServiceTest extends TestCase
 {
-    public function testItFiltersTheInput()
+    public function testItFiltersTheInput(): void
     {
         $input = ['key' => null];
 
@@ -30,7 +30,7 @@ class FilterServiceTest extends TestCase
         $this->assertSame('testtest2', $filteredInput['key']);
     }
 
-    public function testItFiltersTheInputValuesInTheRules()
+    public function testItFiltersTheInputValuesInTheRules(): void
     {
         $input = ['key3' => 'part1', 'key4' => 'part2'];
 

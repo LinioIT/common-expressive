@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Logging;
 
-use Eloquent\Phony\Phpunit\Phony;
-use Interop\Container\ContainerInterface;
+use Eloquent\Phony\Phony;
 use InvalidArgumentException;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 class LogFactoryTest extends TestCase
 {
-    public function testItMakesALogger()
+    public function testItMakesALogger(): void
     {
         $container = Phony::mock(ContainerInterface::class);
 
@@ -25,7 +25,7 @@ class LogFactoryTest extends TestCase
         $this->assertInstanceOf(LoggerInterface::class, $logger);
     }
 
-    public function testItMakesALoggerViaConfiguration()
+    public function testItMakesALoggerViaConfiguration(): void
     {
         $config = [
             'logging' => [
@@ -54,7 +54,7 @@ class LogFactoryTest extends TestCase
         $this->assertSame($logger->getHandlers()[0], $handler);
     }
 
-    public function testItFailsIfAnInvalidHandlerIsGiven()
+    public function testItFailsIfAnInvalidHandlerIsGiven(): void
     {
         $config = [
             'logging' => [

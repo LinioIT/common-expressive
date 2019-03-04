@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Linio\Common\Expressive\Logging;
 
-use Interop\Container\ContainerInterface;
 use InvalidArgumentException;
 use Linio\Component\Microlog\Log;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 class LogFactory
@@ -23,9 +23,6 @@ class LogFactory
      */
     private $loggingConfig;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -35,7 +32,7 @@ class LogFactory
     /**
      * Adds the loggers and parsers to the static log service.
      */
-    public function configureStaticLogService()
+    public function configureStaticLogService(): void
     {
         foreach ($this->loggingConfig['channels'] as $channel => $config) {
             Log::setLoggerForChannel($this->makeLogger($channel), $channel);
@@ -46,11 +43,6 @@ class LogFactory
         }
     }
 
-    /**
-     * @param string $channel
-     *
-     * @return LoggerInterface
-     */
     public function makeLogger(string $channel): LoggerInterface
     {
         $logger = new Logger($channel);

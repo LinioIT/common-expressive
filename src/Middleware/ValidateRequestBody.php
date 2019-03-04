@@ -6,11 +6,11 @@ namespace Linio\Common\Expressive\Middleware;
 
 use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Expressive\Exception\Http\RouteNotFoundException;
+use function Linio\Common\Expressive\Support\getCurrentRouteFromMatchedRoute;
 use Linio\Common\Expressive\Validation\ValidationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Router\RouteResult;
-use function Linio\Common\Expressive\Support\getCurrentRouteFromMatchedRoute;
 
 class ValidateRequestBody
 {
@@ -26,23 +26,12 @@ class ValidateRequestBody
      */
     private $routes;
 
-    /**
-     * @param ValidationService $validationService
-     * @param array $routes
-     */
     public function __construct(ValidationService $validationService, array $routes)
     {
         $this->validationService = $validationService;
         $this->routes = $routes;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
         $routeResult = $request->getAttribute(RouteResult::class);
@@ -61,11 +50,7 @@ class ValidateRequestBody
     }
 
     /**
-     * @param RouteResult $routeResult
-     *
      * @throws RouteNotFoundException
-     *
-     * @return array
      */
     private function getValidationRuleClasses(RouteResult $routeResult): array
     {

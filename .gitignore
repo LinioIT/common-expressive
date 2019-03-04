@@ -1,3 +1,5 @@
 /vendor
-/.php_cs.cache
+/bin
+.php_cs.cache
+/.idea
 /composer.lock

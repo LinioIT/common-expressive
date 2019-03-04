@@ -6,12 +6,12 @@ namespace Linio\Common\Expressive\Logging;
 
 use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Expressive\Filter\FilterService;
+use function Linio\Common\Expressive\Support\getCurrentRouteFromRawRoutes;
 use Linio\Component\Util\Json;
 use LogicException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
-use function Linio\Common\Expressive\Support\getCurrentRouteFromRawRoutes;
 
 class LogRequestResponseService
 {
@@ -40,13 +40,6 @@ class LogRequestResponseService
      */
     private $getResponseLogBody;
 
-    /**
-     * @param FilterService $filterService
-     * @param LoggerInterface $logger
-     * @param array $routes
-     * @param callable $getRequestLogBody
-     * @param callable $getResponseLogBody
-     */
     public function __construct(
         FilterService $filterService,
         LoggerInterface $logger,
@@ -61,32 +54,20 @@ class LogRequestResponseService
         $this->getResponseLogBody = $getResponseLogBody;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     */
-    public function logRequest(ServerRequestInterface $request)
+    public function logRequest(ServerRequestInterface $request): void
     {
         $requestData = $this->mapRequestToLogContext($request);
 
         $this->logger->info('A request has been created.', $requestData);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     */
-    public function logResponse(ServerRequestInterface $request, ResponseInterface $response)
+    public function logResponse(ServerRequestInterface $request, ResponseInterface $response): void
     {
         $responseData = $this->mapResponseToLogContext($request, $response);
 
         $this->logger->info('A response has been created.', $responseData);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return array
-     */
     private function mapRequestToLogContext(ServerRequestInterface $request): array
     {
         $filters = $this->getFilterRuleClasses($request);
@@ -106,12 +87,6 @@ class LogRequestResponseService
         return $getRequestLogBody($request, $body);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     *
-     * @return array
-     */
     private function mapResponseToLogContext(ServerRequestInterface $request, ResponseInterface $response): array
     {
         $filters = $this->getFilterRuleClasses($request);
@@ -132,11 +107,7 @@ class LogRequestResponseService
     }
 
     /**
-     * @param ServerRequestInterface $request
-     *
      * @throws MiddlewareOutOfOrderException
-     *
-     * @return array
      */
     private function getFilterRuleClasses(ServerRequestInterface $request): array
     {
