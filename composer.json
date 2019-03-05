@@ -13,6 +13,7 @@
         "particle/validator": "^2.1",
         "monolog/monolog": "^1.20",
         "zendframework/zend-expressive": "^2.0",
+        "zendframework/zend-expressive-router": "^2.4",
         "http-interop/http-middleware": "^0.4.1"
     },
     "require-dev": {
