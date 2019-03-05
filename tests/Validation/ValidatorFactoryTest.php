@@ -12,7 +12,7 @@ use Psr\Container\ContainerInterface;
 
 class ValidatorFactoryTest extends TestCase
 {
-    public function testItGetsTheValidatorFromTheContainer()
+    public function testItGetsTheValidatorFromTheContainer(): void
     {
         $class = Validator::class;
         $validator = new $class();
@@ -29,7 +29,7 @@ class ValidatorFactoryTest extends TestCase
         $container->get->calledWith($class);
     }
 
-    public function testItInstantiatesTheValidatorWhenItIsntInTheContainer()
+    public function testItInstantiatesTheValidatorWhenItIsntInTheContainer(): void
     {
         $class = Validator::class;
 
@@ -43,7 +43,7 @@ class ValidatorFactoryTest extends TestCase
         $container->get->never()->calledWith($class);
     }
 
-    public function testItFailsIfTheValidatorDoesntExist()
+    public function testItFailsIfTheValidatorDoesntExist(): void
     {
         $class = 'InvalidClass';
 

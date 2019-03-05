@@ -12,7 +12,7 @@ class TestValidationRules implements ValidationRules
     /**
      * Builds the rules for particle/validator.
      */
-    public function buildRules(Validator $validator, array $input)
+    public function buildRules(Validator $validator, array $input): void
     {
         $validator->required('key');
     }

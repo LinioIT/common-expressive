@@ -13,7 +13,7 @@ use Zend\Diactoros\ServerRequest;
 
 class LogRequestTest extends TestCase
 {
-    public function testItCallsLogRequestResponseService()
+    public function testItCallsLogRequestResponseService(): void
     {
         $logRequestResponseService = Phony::mock(LogRequestResponseService::class);
 

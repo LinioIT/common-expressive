@@ -21,7 +21,7 @@ use Zend\Expressive\Router\RouteResult;
 
 class ValidateRequestBodyTest extends TestCase
 {
-    public function testItSkipsValidationIfTheRouterHasntRun()
+    public function testItSkipsValidationIfTheRouterHasntRun(): void
     {
         $validationService = Phony::mock(ValidationService::class);
 
@@ -37,7 +37,7 @@ class ValidateRequestBodyTest extends TestCase
         $middleware->__invoke($request, $response, $next);
     }
 
-    public function testItSkipsValidationIfARouteIsNotFound()
+    public function testItSkipsValidationIfARouteIsNotFound(): void
     {
         $validationService = Phony::mock(ValidationService::class);
 
@@ -55,7 +55,7 @@ class ValidateRequestBodyTest extends TestCase
         $middleware->__invoke($request, $response, $next);
     }
 
-    public function testItFailsValidationIfTheRouteIsNotFoundInRoutes()
+    public function testItFailsValidationIfTheRouteIsNotFoundInRoutes(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
@@ -76,7 +76,7 @@ class ValidateRequestBodyTest extends TestCase
         $middleware->__invoke($request, $response, $next);
     }
 
-    public function testItCallsTheValidatorService()
+    public function testItCallsTheValidatorService(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 

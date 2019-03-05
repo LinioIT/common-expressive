@@ -16,7 +16,7 @@ use Psr\Container\ContainerInterface;
 
 class ValidationServiceTest extends TestCase
 {
-    public function testItValidatesAndPasses()
+    public function testItValidatesAndPasses(): void
     {
         $input = ['key' => 'validValue', 'key2' => 'validValue'];
 
@@ -40,7 +40,7 @@ class ValidationServiceTest extends TestCase
         $validator->validate->called();
     }
 
-    public function testItValidatesAndFailsWithASingleValidationRulesClass()
+    public function testItValidatesAndFailsWithASingleValidationRulesClass(): void
     {
         $input = ['invalidKey' => 'validValue'];
         $expectedErrors = [
@@ -70,7 +70,7 @@ class ValidationServiceTest extends TestCase
         }
     }
 
-    public function testItValidatesAndFailsUsingAMultipleValidationRulesClass()
+    public function testItValidatesAndFailsUsingAMultipleValidationRulesClass(): void
     {
         $input = ['invalidKey' => 'validValue'];
         $expectedErrors = [
@@ -104,7 +104,7 @@ class ValidationServiceTest extends TestCase
         }
     }
 
-    public function testItValidatesUsingInputValuesInTheRules()
+    public function testItValidatesUsingInputValuesInTheRules(): void
     {
         $input = ['key3' => 'equalValue', 'key4' => 'equalValue'];
 

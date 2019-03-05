@@ -22,7 +22,7 @@ class ValidateSupportedContentTypesTest extends TestCase
     /**
      * @dataProvider unsupportedContentTypeRequestProvider
      */
-    public function testItOnlyAllowsSupportedContentTypes(ServerRequestInterface $request)
+    public function testItOnlyAllowsSupportedContentTypes(ServerRequestInterface $request): void
     {
         $response = new Response();
         $callable = function (ServerRequestInterface $request, ResponseInterface $response) {
@@ -35,7 +35,7 @@ class ValidateSupportedContentTypesTest extends TestCase
         $middleware->__invoke($request, $response, $callable);
     }
 
-    public function testItUsesRouteSpecificOverrides()
+    public function testItUsesRouteSpecificOverrides(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
@@ -55,7 +55,7 @@ class ValidateSupportedContentTypesTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    public function testItAllowsNoContentTypesForStandardPages()
+    public function testItAllowsNoContentTypesForStandardPages(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
@@ -74,7 +74,7 @@ class ValidateSupportedContentTypesTest extends TestCase
         $callable->called();
     }
 
-    public function testItRequiresTheRouterMiddlewareToHaveBeenRun()
+    public function testItRequiresTheRouterMiddlewareToHaveBeenRun(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 

@@ -34,7 +34,7 @@ class ConfigureNewrelicForRequest
         return $next($request, $response);
     }
 
-    private function nameRouteIfRouteFound(ServerRequestInterface $request)
+    private function nameRouteIfRouteFound(ServerRequestInterface $request): void
     {
         /** @var RouteResult $routeResult */
         $routeResult = $request->getAttribute(RouteResult::class);
@@ -51,7 +51,7 @@ class ConfigureNewrelicForRequest
     /**
      * @throws MiddlewareOutOfOrderException
      */
-    private function addRequestIdToNewrelic(ServerRequestInterface $request)
+    private function addRequestIdToNewrelic(ServerRequestInterface $request): void
     {
         $requestId = $request->getAttribute('requestId', false);
 

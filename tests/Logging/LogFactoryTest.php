@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
 
 class LogFactoryTest extends TestCase
 {
-    public function testItMakesALogger()
+    public function testItMakesALogger(): void
     {
         $container = Phony::mock(ContainerInterface::class);
 
@@ -25,7 +25,7 @@ class LogFactoryTest extends TestCase
         $this->assertInstanceOf(LoggerInterface::class, $logger);
     }
 
-    public function testItMakesALoggerViaConfiguration()
+    public function testItMakesALoggerViaConfiguration(): void
     {
         $config = [
             'logging' => [
@@ -54,7 +54,7 @@ class LogFactoryTest extends TestCase
         $this->assertSame($logger->getHandlers()[0], $handler);
     }
 
-    public function testItFailsIfAnInvalidHandlerIsGiven()
+    public function testItFailsIfAnInvalidHandlerIsGiven(): void
     {
         $config = [
             'logging' => [
