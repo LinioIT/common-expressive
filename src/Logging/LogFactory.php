@@ -32,7 +32,7 @@ class LogFactory
     /**
      * Adds the loggers and parsers to the static log service.
      */
-    public function configureStaticLogService(): void
+    public function configureStaticLogService()
     {
         foreach ($this->loggingConfig['channels'] as $channel => $config) {
             Log::setLoggerForChannel($this->makeLogger($channel), $channel);

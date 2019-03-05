@@ -54,14 +54,14 @@ class LogRequestResponseService
         $this->getResponseLogBody = $getResponseLogBody;
     }
 
-    public function logRequest(ServerRequestInterface $request): void
+    public function logRequest(ServerRequestInterface $request)
     {
         $requestData = $this->mapRequestToLogContext($request);
 
         $this->logger->info('A request has been created.', $requestData);
     }
 
-    public function logResponse(ServerRequestInterface $request, ResponseInterface $response): void
+    public function logResponse(ServerRequestInterface $request, ResponseInterface $response)
     {
         $responseData = $this->mapResponseToLogContext($request, $response);
 

@@ -16,7 +16,7 @@ use Zend\Diactoros\Stream;
 
 class LogRequestResponseServiceTest extends TestCase
 {
-    public function testItLogsTheRequestWithoutFilters(): void
+    public function testItLogsTheRequestWithoutFilters()
     {
         $routes = require __DIR__ . '/../assets/routes.php';
         $body = [
@@ -57,7 +57,7 @@ class LogRequestResponseServiceTest extends TestCase
         $logger->info->calledWith('A request has been created.', ['body' => $body]);
     }
 
-    public function testItLogsTheResponseWithoutFilters(): void
+    public function testItLogsTheResponseWithoutFilters()
     {
         $routes = require __DIR__ . '/../assets/routes.php';
         $body = [

@@ -15,14 +15,14 @@ use Zend\Expressive\Router\RouteResult;
 
 class ConfigureNewrelicForRequestTest extends TestCase
 {
-    public function setUp(): void
+    public function setUp()
     {
         if (!extension_loaded('newrelic')) {
             require_once __DIR__ . '/../assets/NewrelicFunctions.php';
         }
     }
 
-    public function testItDoesNothingIfNewrelicIsntInstalled(): void
+    public function testItDoesNothingIfNewrelicIsntInstalled()
     {
         $request = new ServerRequest();
         $response = new Response();
@@ -43,7 +43,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $addRequestId->never()->called();
     }
 
-    public function testItSetsTheAppName(): void
+    public function testItSetsTheAppName()
     {
         $appName = 'testApp';
         $routeName = 'testRoute';
@@ -70,7 +70,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $setAppname->calledWith($appName);
     }
 
-    public function testItAddsARequestIdParameter(): void
+    public function testItAddsARequestIdParameter()
     {
         $requestId = '1000';
 
@@ -90,7 +90,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $addRequestId->calledWith('requestId', $requestId);
     }
 
-    public function testItDoesntAddARequestIdWhenOneDoesntExist(): void
+    public function testItDoesntAddARequestIdWhenOneDoesntExist()
     {
         $request = new ServerRequest();
         $response = new Response();
@@ -107,7 +107,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $addRequestId->never()->called();
     }
 
-    public function testItNamesTheTransaction(): void
+    public function testItNamesTheTransaction()
     {
         $routeName = 'testRoute';
 

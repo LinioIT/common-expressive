@@ -12,7 +12,7 @@ use Zend\Diactoros\ServerRequest;
 
 class AddRequestIdToResponseTest extends TestCase
 {
-    public function testItAddsTheRequestIdToTheResponse(): void
+    public function testItAddsTheRequestIdToTheResponse()
     {
         $requestId = 'testId';
 
@@ -28,7 +28,7 @@ class AddRequestIdToResponseTest extends TestCase
         $this->assertSame($requestId, $actual->getHeader('X-Request-Id')[0]);
     }
 
-    public function testItFailsWhenThereIsNoRequestId(): void
+    public function testItFailsWhenThereIsNoRequestId()
     {
         $request = new ServerRequest();
         $response = new Response();

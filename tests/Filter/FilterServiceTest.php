@@ -14,7 +14,7 @@ use Psr\Container\ContainerInterface;
 
 class FilterServiceTest extends TestCase
 {
-    public function testItFiltersTheInput(): void
+    public function testItFiltersTheInput()
     {
         $input = ['key' => null];
 
@@ -30,7 +30,7 @@ class FilterServiceTest extends TestCase
         $this->assertSame('testtest2', $filteredInput['key']);
     }
 
-    public function testItFiltersTheInputValuesInTheRules(): void
+    public function testItFiltersTheInputValuesInTheRules()
     {
         $input = ['key3' => 'part1', 'key4' => 'part2'];
 

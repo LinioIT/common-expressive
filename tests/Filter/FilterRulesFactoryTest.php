@@ -12,7 +12,7 @@ use Psr\Container\ContainerInterface;
 
 class FilterRulesFactoryTest extends TestCase
 {
-    public function testItGetsTheFilterRulesFromTheContainer(): void
+    public function testItGetsTheFilterRulesFromTheContainer()
     {
         $class = TestFilterRules::class;
         $testFilterRules = new $class();
@@ -28,7 +28,7 @@ class FilterRulesFactoryTest extends TestCase
         $container->get->calledWith($class);
     }
 
-    public function testItInstantiatesTheFilterRulesWhenItIsntInTheContainer(): void
+    public function testItInstantiatesTheFilterRulesWhenItIsntInTheContainer()
     {
         $class = TestFilterRules::class;
 
@@ -42,7 +42,7 @@ class FilterRulesFactoryTest extends TestCase
         $container->get->never()->calledWith($class);
     }
 
-    public function testItFailsIfTheFilterRulesClassDoesntExist(): void
+    public function testItFailsIfTheFilterRulesClassDoesntExist()
     {
         $class = 'InvalidClass';
 

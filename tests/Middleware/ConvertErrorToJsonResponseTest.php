@@ -16,7 +16,7 @@ use Zend\Diactoros\ServerRequest;
 
 class ConvertErrorToJsonResponseTest extends TestCase
 {
-    public function testItConvertsAGenericErrorToAResponse(): void
+    public function testItConvertsAGenericErrorToAResponse()
     {
         $error = 'some error';
 
@@ -40,7 +40,7 @@ class ConvertErrorToJsonResponseTest extends TestCase
         $this->assertSame($expected, $actualBody);
     }
 
-    public function testItConvertsThrowablesToAResponse(): void
+    public function testItConvertsThrowablesToAResponse()
     {
         $error = new Exception('Some Message');
 
@@ -64,7 +64,7 @@ class ConvertErrorToJsonResponseTest extends TestCase
         $this->assertSame($expected, $actualBody);
     }
 
-    public function testItConvertsDomainExceptionsToAResponse(): void
+    public function testItConvertsDomainExceptionsToAResponse()
     {
         $error = new DomainException('TEST_TOKEN', 599, 'Test Message', [['field' => 'test', 'message' => 'issue']]);
 

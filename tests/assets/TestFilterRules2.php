@@ -9,7 +9,7 @@ use Particle\Filter\Filter;
 
 class TestFilterRules2 implements FilterRules
 {
-    public function buildRules(Filter $filter, array $input): void
+    public function buildRules(Filter $filter, array $input)
     {
         $filter->value('key')->append('test2');
     }

@@ -30,7 +30,7 @@ class ValidationService
      * @throws NotFoundException
      * @throws InvalidRequestException
      */
-    public function validate(array $input, array $validationRulesClasses): void
+    public function validate(array $input, array $validationRulesClasses)
     {
         if (empty($validationRulesClasses)) {
             return;
@@ -56,7 +56,7 @@ class ValidationService
      *
      * @throws InvalidRequestException
      */
-    private function throwExceptionWithValidatorErrors(array $errors): void
+    private function throwExceptionWithValidatorErrors(array $errors)
     {
         $compiledErrors = [];
 

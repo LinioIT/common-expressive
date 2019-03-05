@@ -9,7 +9,7 @@ use Zend\Diactoros\ServerRequest;
 
 class FunctionsTest extends TestCase
 {
-    public function testItGetsTheRouteConfigFromRawRoutes(): void
+    public function testItGetsTheRouteConfigFromRawRoutes()
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
@@ -20,7 +20,7 @@ class FunctionsTest extends TestCase
         $this->assertSame($routes[0], $actual);
     }
 
-    public function testItGetsTheRouteConfigFromRawRoutesWithAQueryString(): void
+    public function testItGetsTheRouteConfigFromRawRoutesWithAQueryString()
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 

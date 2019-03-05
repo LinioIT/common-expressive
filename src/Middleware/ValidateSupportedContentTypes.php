@@ -65,7 +65,7 @@ class ValidateSupportedContentTypes
     /**
      * @param string|null $contentType
      */
-    private function matchContentTypeFromRoute($contentType, ServerRequestInterface $request): void
+    private function matchContentTypeFromRoute($contentType, ServerRequestInterface $request)
     {
         $routeResult = $request->getAttribute(RouteResult::class);
 
