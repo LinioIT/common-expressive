@@ -6,12 +6,12 @@ namespace Linio\Common\Expressive\Logging;
 
 use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Expressive\Filter\FilterService;
+use function Linio\Common\Expressive\Support\getCurrentRouteFromRawRoutes;
 use Linio\Component\Util\Json;
 use LogicException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
-use function Linio\Common\Expressive\Support\getCurrentRouteFromRawRoutes;
 
 class LogRequestResponseService
 {

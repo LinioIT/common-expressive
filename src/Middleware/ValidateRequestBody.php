@@ -6,11 +6,11 @@ namespace Linio\Common\Expressive\Middleware;
 
 use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Expressive\Exception\Http\RouteNotFoundException;
+use function Linio\Common\Expressive\Support\getCurrentRouteFromMatchedRoute;
 use Linio\Common\Expressive\Validation\ValidationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Router\RouteResult;
-use function Linio\Common\Expressive\Support\getCurrentRouteFromMatchedRoute;
 
 class ValidateRequestBody
 {
