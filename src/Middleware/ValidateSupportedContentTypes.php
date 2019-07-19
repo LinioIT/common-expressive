@@ -7,11 +7,11 @@ namespace Linio\Common\Expressive\Middleware;
 use Linio\Common\Expressive\Exception\Http\ContentTypeNotSupportedException;
 use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Expressive\Exception\Http\RouteNotFoundException;
+use function Linio\Common\Expressive\Support\getCurrentRouteFromMatchedRoute;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Container\ApplicationFactory;
 use Zend\Expressive\Router\RouteResult;
-use function Linio\Common\Expressive\Support\getCurrentRouteFromMatchedRoute;
 
 class ValidateSupportedContentTypes
 {

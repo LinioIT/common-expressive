@@ -25,40 +25,59 @@ class ConvertErrorToJsonResponse
      */
     public function __invoke($error, ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
+        return new JsonResponse(self::buildErrorBody($error), self::getStatusCode($error));
+    }
+
+    public static function buildErrorBody($error): array
+    {
         switch ($error) {
             case $error instanceof DomainException:
-                return $this->convertDomainException($error);
+                return self::buildDomainExceptionBody($error);
             case $error instanceof Throwable:
-                return $this->convertThrowable($error);
+                return self::buildThrowableBody($error);
             default:
-                return $this->convertGenericError($error);
+                return self::buildGenericErrorBody($error);
         }
     }
 
-    private function convertGenericError($error): JsonResponse
+    public static function getStatusCode($error): int
     {
-        $body = [
-            'code' => ExceptionTokens::AN_ERROR_HAS_OCCURRED,
-            'message' => 'A unexpected error has occurred. Please check the logs for more information.',
-            'errors' => [],
-        ];
-
-        return new JsonResponse($body, self::DEFAULT_STATUS_CODE);
+        switch ($error) {
+            case $error instanceof DomainException:
+                return (int) $error->getCode();
+            default:
+                return self::DEFAULT_STATUS_CODE;
+        }
     }
 
-    private function convertThrowable(Throwable $throwable): JsonResponse
+    private static function buildGenericErrorBody($error): array
     {
-        return $this->convertGenericError($throwable->getMessage());
+        return self::buildBody();
     }
 
-    private function convertDomainException(DomainException $domainException): JsonResponse
+    private static function buildThrowableBody(Throwable $throwable): array
     {
-        $body = [
-            'code' => $domainException->getToken(),
-            'message' => $domainException->getMessage(),
-            'errors' => $domainException->getErrors(),
-        ];
+        return self::buildGenericErrorBody($throwable->getMessage());
+    }
 
-        return new JsonResponse($body, $domainException->getCode());
+    private static function buildDomainExceptionBody(DomainException $domainException): array
+    {
+        return self::buildBody(
+            $domainException->getToken(),
+            $domainException->getMessage(),
+            $domainException->getErrors()
+        );
+    }
+
+    private static function buildBody(
+        string $code = ExceptionTokens::AN_ERROR_HAS_OCCURRED,
+        string $message = 'A unexpected error has occurred. Please check the logs for more information.',
+        array $errors = []
+    ): array {
+        return [
+            'code' => $code,
+            'message' => $message,
+            'errors' => $errors,
+        ];
     }
 }
