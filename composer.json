@@ -16,22 +16,24 @@
         "zendframework/zend-expressive-router": "^1.1"
     },
     "require-dev": {
+        "ext-json": "*",
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy-phpunit": "^2.0",
-        "friendsofphp/php-cs-fixer": "^3.0"
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "eloquent/phony-phpunit": "^7.1"
     },
     "autoload": {
         "files": [
             "src/Support/functions.php"
         ],
         "psr-4": {
-            "Linio\\Common\\Expressive\\": "src/",
-            "Linio\\Common\\Expressive\\Tests\\": "tests/"
+            "Linio\\Common\\Expressive\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Linio\\TestAssets\\": "tests/assets"
+            "Linio\\TestAssets\\": "tests/assets",
+            "Linio\\Common\\Expressive\\Tests\\": "tests/"
         }
     }
 }
