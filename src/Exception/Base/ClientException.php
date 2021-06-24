@@ -6,5 +6,5 @@ namespace Linio\Common\Expressive\Exception\Base;
 
 class ClientException extends DomainException
 {
-    const DEFAULT_STATUS_CODE = 400;
+    public const DEFAULT_STATUS_CODE = 400;
 }

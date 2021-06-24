@@ -2,26 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Filter;
+namespace Linio\Common\Expressive\Tests\Filter;
 
-use Eloquent\Phony\Phpunit\Phony;
 use Interop\Container\ContainerInterface;
+use Linio\Common\Expressive\Filter\FilterRulesFactory;
+use Linio\Common\Expressive\Filter\FilterService;
 use Linio\TestAssets\TestFilterRules;
 use Linio\TestAssets\TestFilterRules2;
 use Linio\TestAssets\TestFilterRules3;
 use Particle\Filter\Filter;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class FilterServiceTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testItFiltersTheInput()
     {
         $input = ['key' => null];
 
-        $container = Phony::mock(ContainerInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
 
         $filterClass = Filter::class;
-        $filterFactory = new FilterRulesFactory($container->get());
+        $filterFactory = new FilterRulesFactory($container->reveal());
         $filterRules = [TestFilterRules::class, TestFilterRules2::class];
 
         $service = new FilterService($filterClass, $filterFactory);
@@ -34,10 +38,10 @@ class FilterServiceTest extends TestCase
     {
         $input = ['key3' => 'part1', 'key4' => 'part2'];
 
-        $container = Phony::mock(ContainerInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
 
         $filterClass = Filter::class;
-        $filterFactory = new FilterRulesFactory($container->get());
+        $filterFactory = new FilterRulesFactory($container->reveal());
         $filterRules = [TestFilterRules3::class];
 
         $service = new FilterService($filterClass, $filterFactory);

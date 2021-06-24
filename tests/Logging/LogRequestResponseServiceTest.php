@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Logging;
+namespace Linio\Common\Expressive\Tests\Logging;
 
-use Eloquent\Phony\Phpunit\Phony;
 use Linio\Common\Expressive\Filter\FilterService;
+use Linio\Common\Expressive\Logging\LogRequestResponseService;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -16,6 +17,8 @@ use Zend\Diactoros\Stream;
 
 class LogRequestResponseServiceTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testItLogsTheRequestWithoutFilters()
     {
         $routes = require __DIR__ . '/../assets/routes.php';
@@ -27,16 +30,21 @@ class LogRequestResponseServiceTest extends TestCase
         fwrite($stream, json_encode($body));
         rewind($stream);
 
-        $logger = Phony::mock(LoggerInterface::class);
+        $logger = $this->prophesize(LoggerInterface::class);
+        $logger
+            ->info('A request has been created.', ['body' => $body])
+            ->shouldBeCalled();
 
-        $filterService = Phony::mock(FilterService::class);
-        $filterService->filter->with($body, [])->returns($body);
+        $filterService = $this->prophesize(FilterService::class);
+        $filterService
+            ->filter($body, [])
+            ->willReturn($body);
 
-        $getRequestLogBody = Phony::spy(function (ServerRequestInterface $request, $body): array {
+        $getRequestLogBody = function (ServerRequestInterface $request, $body): array {
             return [
                 'body' => $body,
             ];
-        });
+        };
 
         $getResponseLogBody = function (ServerRequestInterface $request, ResponseInterface $response, $body): array {
             return [];
@@ -45,16 +53,14 @@ class LogRequestResponseServiceTest extends TestCase
         $request = new ServerRequest([], [], '/', 'POST', new Stream($stream));
 
         $logRequestResponseService = new LogRequestResponseService(
-            $filterService->get(),
-            $logger->get(),
+            $filterService->reveal(),
+            $logger->reveal(),
             $routes,
             $getRequestLogBody,
             $getResponseLogBody
         );
 
         $logRequestResponseService->logRequest($request);
-
-        $logger->info->calledWith('A request has been created.', ['body' => $body]);
     }
 
     public function testItLogsTheResponseWithoutFilters()
@@ -68,16 +74,21 @@ class LogRequestResponseServiceTest extends TestCase
         fwrite($stream, json_encode($body));
         rewind($stream);
 
-        $logger = Phony::mock(LoggerInterface::class);
+        $logger = $this->prophesize(LoggerInterface::class);
+        $logger
+            ->info('A response has been created.', ['body' => $body])
+            ->shouldBeCalled();
 
-        $filterService = Phony::mock(FilterService::class);
-        $filterService->filter->with($body, [])->returns($body);
+        $filterService = $this->prophesize(FilterService::class);
+        $filterService
+            ->filter($body, [])
+            ->willReturn($body);
 
-        $getRequestLogBody = Phony::spy(function (ServerRequestInterface $request, $body): array {
+        $getRequestLogBody = function (ServerRequestInterface $request, $body): array {
             return [
                 'body' => $body,
             ];
-        });
+        };
 
         $getResponseLogBody = function (ServerRequestInterface $request, ResponseInterface $response, $body): array {
             return [
@@ -89,15 +100,13 @@ class LogRequestResponseServiceTest extends TestCase
         $response = new JsonResponse($body);
 
         $logRequestResponseService = new LogRequestResponseService(
-            $filterService->get(),
-            $logger->get(),
+            $filterService->reveal(),
+            $logger->reveal(),
             $routes,
             $getRequestLogBody,
             $getResponseLogBody
         );
 
         $logRequestResponseService->logResponse($request, $response);
-
-        $logger->info->calledWith('A response has been created.', ['body' => $body]);
     }
 }

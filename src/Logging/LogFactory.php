@@ -13,19 +13,9 @@ use Psr\Log\LoggerInterface;
 
 class LogFactory
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
+    private array $loggingConfig;
 
-    /**
-     * @var array
-     */
-    private $loggingConfig;
-
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -46,11 +36,6 @@ class LogFactory
         }
     }
 
-    /**
-     * @param string $channel
-     *
-     * @return LoggerInterface
-     */
     public function makeLogger(string $channel): LoggerInterface
     {
         $logger = new Logger($channel);
@@ -63,9 +48,7 @@ class LogFactory
             $handler = $this->container->get($handlerService);
 
             if (!$handler instanceof HandlerInterface) {
-                throw new InvalidArgumentException(
-                    sprintf('Handler [%s] must implement %s', get_class($handler), HandlerInterface::class)
-                );
+                throw new InvalidArgumentException(sprintf('Handler [%s] must implement %s', get_class($handler), HandlerInterface::class));
             }
 
             $logger->pushHandler($handler);

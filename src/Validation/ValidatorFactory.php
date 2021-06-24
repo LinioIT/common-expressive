@@ -10,29 +10,16 @@ use Particle\Validator\Validator;
 
 class ValidatorFactory
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
-    /**
-     * @var string
-     */
-    private $validatorClass;
+    private string $validatorClass;
 
-    /**
-     * @param ContainerInterface $container
-     * @param string $validatorClass
-     */
     public function __construct(ContainerInterface $container, string $validatorClass)
     {
         $this->container = $container;
         $this->validatorClass = $validatorClass;
     }
 
-    /**
-     * @return Validator
-     */
     public function make(): Validator
     {
         if ($this->container->has($this->validatorClass)) {

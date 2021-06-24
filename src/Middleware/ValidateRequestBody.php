@@ -14,35 +14,19 @@ use Zend\Expressive\Router\RouteResult;
 
 class ValidateRequestBody
 {
-    /**
-     * @var ValidationService
-     */
-    private $validationService;
+    private ValidationService $validationService;
 
     /**
      * An array of zend-expressive routes.
-     *
-     * @var array
      */
-    private $routes;
+    private array $routes;
 
-    /**
-     * @param ValidationService $validationService
-     * @param array $routes
-     */
     public function __construct(ValidationService $validationService, array $routes)
     {
         $this->validationService = $validationService;
         $this->routes = $routes;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
         $routeResult = $request->getAttribute(RouteResult::class);
@@ -61,11 +45,7 @@ class ValidateRequestBody
     }
 
     /**
-     * @param RouteResult $routeResult
-     *
      * @throws RouteNotFoundException
-     *
-     * @return array
      */
     private function getValidationRuleClasses(RouteResult $routeResult): array
     {

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Middleware;
+namespace Linio\Common\Expressive\Tests\Middleware;
 
+use Linio\Common\Expressive\Middleware\AddRequestIdToRequest;
 use PHPUnit\Framework\TestCase;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\EmptyResponse;

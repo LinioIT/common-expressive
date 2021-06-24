@@ -9,25 +9,15 @@ use Linio\Common\Expressive\Exception\Base\NotFoundException;
 
 class ValidationRulesFactory
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
     /**
-     * @param string $validationClass
-     *
      * @throws NotFoundException
-     *
-     * @return ValidationRules
      */
     public function make(string $validationClass): ValidationRules
     {

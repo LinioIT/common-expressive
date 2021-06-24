@@ -2,23 +2,44 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Logging;
+namespace Linio\Common\Expressive\Tests\Logging;
 
-use Eloquent\Phony\Phpunit\Phony;
 use Interop\Container\ContainerInterface;
 use InvalidArgumentException;
+use Linio\Common\Expressive\Logging\LogFactory;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 
 class LogFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testItMakesALogger()
     {
-        $container = Phony::mock(ContainerInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container
+            ->get('config')
+            ->willReturn(
+                [
+                    'logging' => [
+                        'channels' => [
+                            'default' => [
+                                'handlers' => [
+                                    NullHandler::class,
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+        $container
+            ->get(NullHandler::class)
+            ->willReturn(new NullHandler());
 
-        $factory = new LogFactory($container->get());
+        $factory = new LogFactory($container->reveal());
 
         $logger = $factory->makeLogger('default');
 
@@ -41,11 +62,15 @@ class LogFactoryTest extends TestCase
 
         $handler = new NullHandler();
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->get->with('config')->returns($config);
-        $container->get->with(NullHandler::class)->returns($handler);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container
+            ->get('config')
+            ->willReturn($config);
+        $container
+            ->get(NullHandler::class)
+            ->willReturn($handler);
 
-        $factory = new LogFactory($container->get());
+        $factory = new LogFactory($container->reveal());
 
         /** @var Logger $logger */
         $logger = $factory->makeLogger('default');
@@ -68,13 +93,17 @@ class LogFactoryTest extends TestCase
             ],
         ];
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->get->with('config')->returns($config);
-        $container->get->with(InvalidArgumentException::class)->returns(new InvalidArgumentException());
+        $container = $this->prophesize(ContainerInterface::class);
+        $container
+            ->get('config')
+            ->willReturn($config);
+        $container
+            ->get(InvalidArgumentException::class)
+            ->willThrow(new InvalidArgumentException());
 
         $this->expectException(InvalidArgumentException::class);
 
-        $factory = new LogFactory($container->get());
+        $factory = new LogFactory($container->reveal());
         $factory->makeLogger('default');
     }
 }

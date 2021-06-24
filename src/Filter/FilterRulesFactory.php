@@ -9,25 +9,15 @@ use Linio\Common\Expressive\Exception\Base\NotFoundException;
 
 class FilterRulesFactory
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
     /**
-     * @param string $filterRulesClass
-     *
      * @throws NotFoundException
-     *
-     * @return FilterRules
      */
     public function make(string $filterRulesClass): FilterRules
     {

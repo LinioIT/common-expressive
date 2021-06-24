@@ -15,22 +15,11 @@ use Zend\Expressive\Router\RouteResult;
 
 class ValidateSupportedContentTypes
 {
-    const DEFAULT_CONTENT_TYPES = ['application/json'];
+    public const DEFAULT_CONTENT_TYPES = ['application/json'];
 
-    /**
-     * @var array
-     */
-    private $supportedContentTypes = [];
+    private array $supportedContentTypes = [];
+    private array $routes;
 
-    /**
-     * @var array
-     */
-    private $routes;
-
-    /**
-     * @param array $supportedContentTypes
-     * @param array $routes
-     */
     public function __construct(array $supportedContentTypes, array $routes = [])
     {
         $this->supportedContentTypes = $supportedContentTypes;
@@ -38,24 +27,15 @@ class ValidateSupportedContentTypes
     }
 
     /**
-     * @param string|null $contentType Null allows non-api requests
-     *
-     * @return self
+     * @param ?string $contentType Null allows non-api requests
      */
-    public function supportType(string $contentType = null): self
+    public function supportType(?string $contentType = null): self
     {
         $this->supportedContentTypes[] = $contentType;
 
         return $this;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
         $contentType = $request->getHeader('Content-Type')[0] ?? null;
@@ -75,11 +55,7 @@ class ValidateSupportedContentTypes
         throw new ContentTypeNotSupportedException($contentType);
     }
 
-    /**
-     * @param string|null $contentType
-     * @param ServerRequestInterface $request
-     */
-    private function matchContentTypeFromRoute($contentType, ServerRequestInterface $request)
+    private function matchContentTypeFromRoute(?string $contentType, ServerRequestInterface $request)
     {
         $routeResult = $request->getAttribute(RouteResult::class);
 
