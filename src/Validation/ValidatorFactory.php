@@ -10,15 +10,9 @@ use Particle\Validator\Validator;
 
 class ValidatorFactory
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
-    /**
-     * @var string
-     */
-    private $validatorClass;
+    private string $validatorClass;
 
     public function __construct(ContainerInterface $container, string $validatorClass)
     {

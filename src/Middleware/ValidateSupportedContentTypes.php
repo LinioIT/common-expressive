@@ -17,15 +17,8 @@ class ValidateSupportedContentTypes
 {
     public const DEFAULT_CONTENT_TYPES = ['application/json'];
 
-    /**
-     * @var array
-     */
-    private $supportedContentTypes = [];
-
-    /**
-     * @var array
-     */
-    private $routes;
+    private array $supportedContentTypes = [];
+    private array $routes;
 
     public function __construct(array $supportedContentTypes, array $routes = [])
     {
@@ -34,9 +27,9 @@ class ValidateSupportedContentTypes
     }
 
     /**
-     * @param string|null $contentType Null allows non-api requests
+     * @param ?string $contentType Null allows non-api requests
      */
-    public function supportType(string $contentType = null): self
+    public function supportType(?string $contentType = null): self
     {
         $this->supportedContentTypes[] = $contentType;
 
@@ -62,10 +55,7 @@ class ValidateSupportedContentTypes
         throw new ContentTypeNotSupportedException($contentType);
     }
 
-    /**
-     * @param string|null $contentType
-     */
-    private function matchContentTypeFromRoute($contentType, ServerRequestInterface $request)
+    private function matchContentTypeFromRoute(?string $contentType, ServerRequestInterface $request)
     {
         $routeResult = $request->getAttribute(RouteResult::class);
 

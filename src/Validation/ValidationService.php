@@ -10,15 +10,8 @@ use Particle\Validator\Validator;
 
 class ValidationService
 {
-    /**
-     * @var ValidatorFactory
-     */
-    private $validatorFactory;
-
-    /**
-     * @var ValidationRulesFactory
-     */
-    private $validationRulesFactory;
+    private ValidatorFactory $validatorFactory;
+    private ValidationRulesFactory $validationRulesFactory;
 
     public function __construct(ValidatorFactory $validatorFactory, ValidationRulesFactory $validationRulesFactory)
     {

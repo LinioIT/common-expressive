@@ -10,10 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class LogResponse
 {
-    /**
-     * @var LogRequestResponseService
-     */
-    private $loggingService;
+    private LogRequestResponseService $loggingService;
 
     public function __construct(LogRequestResponseService $loggingService)
     {

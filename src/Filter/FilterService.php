@@ -8,15 +8,8 @@ use Particle\Filter\Filter;
 
 class FilterService
 {
-    /**
-     * @var string
-     */
-    private $filterClass;
-
-    /**
-     * @var FilterRulesFactory
-     */
-    private $filterRulesFactory;
+    private string $filterClass;
+    private FilterRulesFactory $filterRulesFactory;
 
     public function __construct(string $filterClass, FilterRulesFactory $filterRulesFactory)
     {

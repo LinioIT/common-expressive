@@ -9,10 +9,7 @@ use Linio\Common\Expressive\Exception\Base\NotFoundException;
 
 class ValidationRulesFactory
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {

@@ -13,15 +13,8 @@ use Psr\Log\LoggerInterface;
 
 class LogFactory
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var array
-     */
-    private $loggingConfig;
+    private ContainerInterface $container;
+    private array $loggingConfig;
 
     public function __construct(ContainerInterface $container)
     {

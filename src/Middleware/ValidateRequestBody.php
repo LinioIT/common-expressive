@@ -14,17 +14,12 @@ use Zend\Expressive\Router\RouteResult;
 
 class ValidateRequestBody
 {
-    /**
-     * @var ValidationService
-     */
-    private $validationService;
+    private ValidationService $validationService;
 
     /**
      * An array of zend-expressive routes.
-     *
-     * @var array
      */
-    private $routes;
+    private array $routes;
 
     public function __construct(ValidationService $validationService, array $routes)
     {

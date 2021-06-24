@@ -15,20 +15,9 @@ use Psr\Log\LoggerInterface;
 
 class LogRequestResponseService
 {
-    /**
-     * @var FilterService
-     */
-    private $filterService;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var array
-     */
-    private $routes;
+    private FilterService $filterService;
+    private LoggerInterface $logger;
+    private array $routes;
 
     /**
      * @var callable

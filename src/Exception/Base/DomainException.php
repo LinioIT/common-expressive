@@ -23,9 +23,7 @@ class DomainException extends SplDomainException
     private $errors;
 
     /**
-     * @param int $statusCode
      * @param array $errors An array of arrays containing either or both keys "field" and "message"
-     * @param Exception $previous
      */
     public function __construct(
         string $token,

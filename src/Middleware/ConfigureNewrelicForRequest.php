@@ -11,10 +11,7 @@ use Zend\Expressive\Router\RouteResult;
 
 class ConfigureNewrelicForRequest
 {
-    /**
-     * @var string
-     */
-    private $appName;
+    private string $appName;
 
     public function __construct(string $appName)
     {
