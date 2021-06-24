@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Support;
+namespace Linio\Common\Expressive\Tests\Support;
 
+use function Linio\Common\Expressive\Support\getCurrentRouteFromRawRoutes;
 use PHPUnit\Framework\TestCase;
 use Zend\Diactoros\ServerRequest;
 

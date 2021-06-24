@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Middleware;
+namespace Linio\Common\Expressive\Tests\Middleware;
 
 use Eloquent\Phony\Phpunit\Phony;
 use Linio\Common\Expressive\Exception\Http\ContentTypeNotSupportedException;
 use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Expressive\Middleware\ValidateSupportedContentTypes;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

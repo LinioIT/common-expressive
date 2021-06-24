@@ -2,57 +2,71 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Validation;
+namespace Linio\Common\Expressive\Tests\Validation;
 
-use Eloquent\Phony\Phpunit\Phony;
 use Interop\Container\ContainerInterface;
 use Linio\Common\Expressive\Exception\Base\NotFoundException;
+use Linio\Common\Expressive\Validation\ValidationRulesFactory;
 use Linio\TestAssets\TestValidationRules;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class ValidationRulesFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testItGetsTheValidationRulesFromTheContainer()
     {
         $class = TestValidationRules::class;
         $testValidationRules = new $class();
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(true);
-        $container->get->with($class)->returns($testValidationRules);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container
+            ->has($class)
+            ->shouldBeCalled()
+            ->willReturn(true);
+        $container
+            ->get($class)
+            ->shouldBeCalled()
+            ->willReturn($testValidationRules);
 
-        $factory = new ValidationRulesFactory($container->get());
+        $factory = new ValidationRulesFactory($container->reveal());
         $actual = $factory->make($class);
 
         $this->assertSame($testValidationRules, $actual);
-        $container->has->calledWith($class);
-        $container->get->calledWith($class);
     }
 
     public function testItInstantiatesTheValidationRulesWhenItIsntInTheContainer()
     {
         $class = TestValidationRules::class;
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(false);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container
+            ->has($class)
+            ->shouldBeCalled()
+            ->willReturn(false);
+        $container
+            ->get($class)
+            ->shouldNotBeCalled();
 
-        $factory = new ValidationRulesFactory($container->get());
+        $factory = new ValidationRulesFactory($container->reveal());
         $actual = $factory->make($class);
 
         $this->assertInstanceOf($class, $actual);
-        $container->get->never()->calledWith($class);
     }
 
     public function testItFailsIfTheValidationRulesClassDoesntExist()
     {
         $class = 'InvalidClass';
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(false);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container
+            ->has($class)
+            ->willReturn(false);
 
         $this->expectException(NotFoundException::class);
 
-        $factory = new ValidationRulesFactory($container->get());
+        $factory = new ValidationRulesFactory($container->reveal());
         $factory->make($class);
     }
 }

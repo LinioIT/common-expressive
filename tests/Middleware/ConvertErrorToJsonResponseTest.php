@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Middleware;
+namespace Linio\Common\Expressive\Tests\Middleware;
 
 use Exception;
 use Linio\Common\Expressive\Exception\Base\DomainException;
 use Linio\Common\Expressive\Exception\ExceptionTokens;
+use Linio\Common\Expressive\Middleware\ConvertErrorToJsonResponse;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
