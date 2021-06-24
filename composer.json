@@ -16,9 +16,9 @@
         "zendframework/zend-expressive-router": "^1.1"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.4",
         "phpunit/phpunit": "^9.5",
-        "phpspec/prophecy-phpunit": "^2.0"
+        "phpspec/prophecy-phpunit": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.0"
     },
     "autoload": {
         "files": [
