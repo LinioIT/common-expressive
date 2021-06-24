@@ -13,15 +13,10 @@ use Zend\Diactoros\Response\JsonResponse;
 
 class ConvertErrorToJsonResponse
 {
-    const DEFAULT_STATUS_CODE = 500;
+    public const DEFAULT_STATUS_CODE = 500;
 
     /**
      * @param mixed $error
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
      */
     public function __invoke($error, ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {

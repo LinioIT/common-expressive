@@ -18,7 +18,7 @@ class AddRequestIdToResponseTest extends TestCase
 
         $request = (new ServerRequest())->withAttribute('requestId', $requestId);
         $response = new Response();
-        $callable = function ($request, $response) use ($requestId) {
+        $callable = function ($request, $response) {
             return new EmptyResponse();
         };
 

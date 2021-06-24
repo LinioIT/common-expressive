@@ -14,20 +14,13 @@ class FilterRulesFactory
      */
     private $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
     /**
-     * @param string $filterRulesClass
-     *
      * @throws NotFoundException
-     *
-     * @return FilterRules
      */
     public function make(string $filterRulesClass): FilterRules
     {

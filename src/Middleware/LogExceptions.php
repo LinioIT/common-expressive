@@ -11,15 +11,10 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class LogExceptions
 {
-    const EXCEPTIONS_CHANNEL = 'exceptions';
+    public const EXCEPTIONS_CHANNEL = 'exceptions';
 
     /**
      * @param mixed $error
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
      */
     public function __invoke($error, ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {

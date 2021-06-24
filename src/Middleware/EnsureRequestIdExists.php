@@ -9,9 +9,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 trait EnsureRequestIdExists
 {
-    /**
-     * @param ServerRequestInterface $request
-     */
     public function ensureRequestIdExists(ServerRequestInterface $request)
     {
         if (!$request->getAttribute('requestId', false)) {

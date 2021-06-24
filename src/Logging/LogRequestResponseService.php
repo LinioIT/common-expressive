@@ -40,13 +40,6 @@ class LogRequestResponseService
      */
     private $getResponseLogBody;
 
-    /**
-     * @param FilterService $filterService
-     * @param LoggerInterface $logger
-     * @param array $routes
-     * @param callable $getRequestLogBody
-     * @param callable $getResponseLogBody
-     */
     public function __construct(
         FilterService $filterService,
         LoggerInterface $logger,
@@ -61,9 +54,6 @@ class LogRequestResponseService
         $this->getResponseLogBody = $getResponseLogBody;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     */
     public function logRequest(ServerRequestInterface $request)
     {
         $requestData = $this->mapRequestToLogContext($request);
@@ -71,10 +61,6 @@ class LogRequestResponseService
         $this->logger->info('A request has been created.', $requestData);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     */
     public function logResponse(ServerRequestInterface $request, ResponseInterface $response)
     {
         $responseData = $this->mapResponseToLogContext($request, $response);
@@ -82,11 +68,6 @@ class LogRequestResponseService
         $this->logger->info('A response has been created.', $responseData);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return array
-     */
     private function mapRequestToLogContext(ServerRequestInterface $request): array
     {
         $filters = $this->getFilterRuleClasses($request);
@@ -106,12 +87,6 @@ class LogRequestResponseService
         return $getRequestLogBody($request, $body);
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     *
-     * @return array
-     */
     private function mapResponseToLogContext(ServerRequestInterface $request, ResponseInterface $response): array
     {
         $filters = $this->getFilterRuleClasses($request);
@@ -132,11 +107,7 @@ class LogRequestResponseService
     }
 
     /**
-     * @param ServerRequestInterface $request
-     *
      * @throws MiddlewareOutOfOrderException
-     *
-     * @return array
      */
     private function getFilterRuleClasses(ServerRequestInterface $request): array
     {

@@ -19,8 +19,6 @@ class ValidateSupportedContentTypesTest extends TestCase
 {
     /**
      * @dataProvider unsupportedContentTypeRequestProvider
-     *
-     * @param ServerRequestInterface $request
      */
     public function testItOnlyAllowsSupportedContentTypes(ServerRequestInterface $request)
     {

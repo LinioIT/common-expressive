@@ -15,21 +15,11 @@ class LogResponse
      */
     private $loggingService;
 
-    /**
-     * @param LogRequestResponseService $loggingService
-     */
     public function __construct(LogRequestResponseService $loggingService)
     {
         $this->loggingService = $loggingService;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
-     *
-     * @return ResponseInterface
-     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
         $response = $next($request, $response);

@@ -14,20 +14,13 @@ class ValidationRulesFactory
      */
     private $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
     /**
-     * @param string $validationClass
-     *
      * @throws NotFoundException
-     *
-     * @return ValidationRules
      */
     public function make(string $validationClass): ValidationRules
     {
