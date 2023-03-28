@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Validation;
+namespace Linio\Common\Mezzio\Validation;
 
 use Particle\Validator\Validator;
 

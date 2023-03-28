@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Filter;
+namespace Linio\Common\Mezzio\Filter;
 
 use Particle\Filter\Filter;
 

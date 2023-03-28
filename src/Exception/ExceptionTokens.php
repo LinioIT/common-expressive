@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Exception;
+namespace Linio\Common\Mezzio\Exception;
 
 class ExceptionTokens
 {

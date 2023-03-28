@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Middleware;
+namespace Linio\Common\Mezzio\Middleware;
 
-use Linio\Common\Expressive\Exception\Http\ContentTypeNotSupportedException;
-use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Expressive\Exception\Http\RouteNotFoundException;
-use function Linio\Common\Expressive\Support\getCurrentRouteFromMatchedRoute;
+use Linio\Common\Mezzio\Exception\Http\ContentTypeNotSupportedException;
+use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Mezzio\Exception\Http\RouteNotFoundException;
+use function Linio\Common\Mezzio\Support\getCurrentRouteFromMatchedRoute;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Expressive\Container\ApplicationFactory;
-use Zend\Expressive\Router\RouteResult;
+use Mezzio\Container\ApplicationFactory;
+use Mezzio\Router\RouteResult;
 
 class ValidateSupportedContentTypes
 {

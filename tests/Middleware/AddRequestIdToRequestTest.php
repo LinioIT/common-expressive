@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Tests\Middleware;
+namespace Linio\Common\Mezzio\Tests\Middleware;
 
-use Linio\Common\Expressive\Middleware\AddRequestIdToRequest;
+use Linio\Common\Mezzio\Middleware\AddRequestIdToRequest;
 use PHPUnit\Framework\TestCase;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Response\EmptyResponse;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\ServerRequest;
 
 class AddRequestIdToRequestTest extends TestCase
 {

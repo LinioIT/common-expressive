@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Tests\Logging;
+namespace Linio\Common\Mezzio\Tests\Logging;
 
-use Linio\Common\Expressive\Filter\FilterService;
-use Linio\Common\Expressive\Logging\LogRequestResponseService;
+use Linio\Common\Mezzio\Filter\FilterService;
+use Linio\Common\Mezzio\Logging\LogRequestResponseService;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
-use Zend\Diactoros\Response\JsonResponse;
-use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\Stream;
+use Laminas\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\Stream;
 
 class LogRequestResponseServiceTest extends TestCase
 {

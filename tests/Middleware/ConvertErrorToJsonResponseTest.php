@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Tests\Middleware;
+namespace Linio\Common\Mezzio\Tests\Middleware;
 
 use Exception;
-use Linio\Common\Expressive\Exception\Base\DomainException;
-use Linio\Common\Expressive\Exception\ExceptionTokens;
-use Linio\Common\Expressive\Middleware\ConvertErrorToJsonResponse;
+use Linio\Common\Mezzio\Exception\Base\DomainException;
+use Linio\Common\Mezzio\Exception\ExceptionTokens;
+use Linio\Common\Mezzio\Middleware\ConvertErrorToJsonResponse;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Response\EmptyResponse;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\ServerRequest;
 
 class ConvertErrorToJsonResponseTest extends TestCase
 {

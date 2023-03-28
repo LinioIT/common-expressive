@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Support;
+namespace Linio\Common\Mezzio\Support;
 
-use Linio\Common\Expressive\Exception\Http\RouteNotFoundException;
+use Linio\Common\Mezzio\Exception\Http\RouteNotFoundException;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Expressive\Router\RouteResult;
+use Mezzio\Router\RouteResult;
 
 /**
  * @throws RouteNotFoundException

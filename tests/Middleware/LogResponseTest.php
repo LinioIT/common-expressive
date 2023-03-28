@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Tests\Middleware;
+namespace Linio\Common\Mezzio\Tests\Middleware;
 
-use Linio\Common\Expressive\Logging\LogRequestResponseService;
-use Linio\Common\Expressive\Middleware\LogResponse;
+use Linio\Common\Mezzio\Logging\LogRequestResponseService;
+use Linio\Common\Mezzio\Middleware\LogResponse;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\ServerRequest;
 
 class LogResponseTest extends TestCase
 {

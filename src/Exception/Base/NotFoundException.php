@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Exception\Base;
+namespace Linio\Common\Mezzio\Exception\Base;
 
-use Linio\Common\Expressive\Exception\ExceptionTokens;
+use Linio\Common\Mezzio\Exception\ExceptionTokens;
 
 class NotFoundException extends ClientException
 {
