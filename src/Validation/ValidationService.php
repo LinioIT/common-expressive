@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Validation;
+namespace Linio\Common\Mezzio\Validation;
 
-use Linio\Common\Expressive\Exception\Base\NotFoundException;
-use Linio\Common\Expressive\Exception\Http\InvalidRequestException;
+use Linio\Common\Mezzio\Exception\Base\NotFoundException;
+use Linio\Common\Mezzio\Exception\Http\InvalidRequestException;
 use Particle\Validator\Validator;
 
 class ValidationService

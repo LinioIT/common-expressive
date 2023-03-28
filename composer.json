@@ -12,8 +12,8 @@
         "particle/filter": "^1.4",
         "particle/validator": "^2.1",
         "monolog/monolog": "^1.20",
-        "zendframework/zend-expressive": "^1.0",
-        "zendframework/zend-expressive-router": "^1.1"
+        "mezzio/mezzio": "3.7.0",
+        "mezzio/mezzio-router": "^3.8"
     },
     "require-dev": {
         "ext-json": "*",
@@ -34,6 +34,11 @@
         "psr-4": {
             "Linio\\TestAssets\\": "tests/assets",
             "Linio\\Common\\Expressive\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "laminas/laminas-dependency-plugin": true
         }
     }
 }

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Middleware;
+namespace Linio\Common\Mezzio\Middleware;
 
-use Linio\Common\Expressive\Exception\Base\DomainException;
-use Linio\Common\Expressive\Exception\ExceptionTokens;
+use Linio\Common\Mezzio\Exception\Base\DomainException;
+use Linio\Common\Mezzio\Exception\ExceptionTokens;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
-use Zend\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 
 class ConvertErrorToJsonResponse
 {

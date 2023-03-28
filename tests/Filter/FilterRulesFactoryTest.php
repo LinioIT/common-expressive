@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Tests\Filter;
+namespace Linio\Common\Mezzio\Tests\Filter;
 
 use Interop\Container\ContainerInterface;
-use Linio\Common\Expressive\Exception\Base\NotFoundException;
-use Linio\Common\Expressive\Filter\FilterRulesFactory;
+use Linio\Common\Mezzio\Exception\Base\NotFoundException;
+use Linio\Common\Mezzio\Filter\FilterRulesFactory;
 use Linio\TestAssets\TestFilterRules;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -21,6 +21,7 @@ class FilterRulesFactoryTest extends TestCase
         $testFilterRules = new $class();
 
         $container = $this->prophesize(ContainerInterface::class);
+
         $container
             ->has($class)
             ->shouldBeCalled()

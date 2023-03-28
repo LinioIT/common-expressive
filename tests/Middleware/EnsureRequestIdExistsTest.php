@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Tests\Middleware;
+namespace Linio\Common\Mezzio\Tests\Middleware;
 
-use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Expressive\Middleware\EnsureRequestIdExists;
+use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Mezzio\Middleware\EnsureRequestIdExists;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\ServerRequest;
 
 class EnsureRequestIdExistsTest extends TestCase
 {

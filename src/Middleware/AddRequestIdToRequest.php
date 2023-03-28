@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Middleware;
+namespace Linio\Common\Mezzio\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

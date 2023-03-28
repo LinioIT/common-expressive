@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Logging;
+namespace Linio\Common\Mezzio\Logging;
 
-use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Expressive\Filter\FilterService;
-use function Linio\Common\Expressive\Support\getCurrentRouteFromRawRoutes;
+use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Mezzio\Filter\FilterService;
+use function Linio\Common\Mezzio\Support\getCurrentRouteFromRawRoutes;
 use Linio\Component\Util\Json;
 use LogicException;
 use Psr\Http\Message\ResponseInterface;

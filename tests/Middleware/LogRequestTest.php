@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Tests\Middleware;
+namespace Linio\Common\Mezzio\Tests\Middleware;
 
-use Linio\Common\Expressive\Logging\LogRequestResponseService;
-use Linio\Common\Expressive\Middleware\LogRequest;
+use Linio\Common\Mezzio\Logging\LogRequestResponseService;
+use Linio\Common\Mezzio\Middleware\LogRequest;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Response\EmptyResponse;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\ServerRequest;
 
 class LogRequestTest extends TestCase
 {

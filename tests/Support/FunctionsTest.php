@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Tests\Support;
+namespace Linio\Common\Mezzio\Tests\Support;
 
-use function Linio\Common\Expressive\Support\getCurrentRouteFromRawRoutes;
+use function Linio\Common\Mezzio\Support\getCurrentRouteFromRawRoutes;
 use PHPUnit\Framework\TestCase;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\ServerRequest;
 
 class FunctionsTest extends TestCase
 {

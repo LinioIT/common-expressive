@@ -15,7 +15,7 @@
   </coverage>
 
   <testsuites>
-    <testsuite name="Linio\\Common\\Expressive\\">
+    <testsuite name="Linio\\Common\\Mezzio\\">
       <directory>./tests</directory>
     </testsuite>
   </testsuites>

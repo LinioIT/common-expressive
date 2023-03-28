@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Middleware;
+namespace Linio\Common\Mezzio\Middleware;
 
-use Linio\Common\Expressive\Exception\Base\NonCriticalDomainException;
+use Linio\Common\Mezzio\Exception\Base\NonCriticalDomainException;
 use Linio\Component\Microlog\Log;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

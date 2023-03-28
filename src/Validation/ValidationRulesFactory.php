@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Validation;
+namespace Linio\Common\Mezzio\Validation;
 
 use Interop\Container\ContainerInterface;
-use Linio\Common\Expressive\Exception\Base\NotFoundException;
+use Linio\Common\Mezzio\Exception\Base\NotFoundException;
 
 class ValidationRulesFactory
 {

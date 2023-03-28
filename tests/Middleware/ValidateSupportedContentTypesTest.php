@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Tests\Middleware;
+namespace Linio\Common\Mezzio\Tests\Middleware;
 
 use Eloquent\Phony\Phpunit\Phony;
-use Linio\Common\Expressive\Exception\Http\ContentTypeNotSupportedException;
-use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Expressive\Middleware\ValidateSupportedContentTypes;
+use Linio\Common\Mezzio\Exception\Http\ContentTypeNotSupportedException;
+use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Mezzio\Middleware\ValidateSupportedContentTypes;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Response\EmptyResponse;
-use Zend\Diactoros\ServerRequest;
-use Zend\Expressive\Router\RouteResult;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\ServerRequest;
+use Mezzio\Router\RouteResult;
 
 class ValidateSupportedContentTypesTest extends TestCase
 {

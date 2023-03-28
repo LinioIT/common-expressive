@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Tests\Middleware;
+namespace Linio\Common\Mezzio\Tests\Middleware;
 
 use Eloquent\Phony\Phpunit\Phony;
-use Linio\Common\Expressive\Middleware\ConfigureNewrelicForRequest;
+use Linio\Common\Mezzio\Middleware\ConfigureNewrelicForRequest;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Response\EmptyResponse;
-use Zend\Diactoros\ServerRequest;
-use Zend\Expressive\Router\RouteResult;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\ServerRequest;
+use Mezzio\Router\RouteResult;
 
 class ConfigureNewrelicForRequestTest extends TestCase
 {
@@ -30,7 +30,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
 
     public function testItDoesNothingIfNewrelicIsntInstalled()
     {
-        $namespace = 'Linio\Common\Expressive\Middleware';
+        $namespace = 'Linio\Common\Mezzio\Middleware';
 
         $request = new ServerRequest();
         $response = new Response();
@@ -53,7 +53,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
 
     public function testItSetsTheAppName()
     {
-        $namespace = 'Linio\Common\Expressive\Middleware';
+        $namespace = 'Linio\Common\Mezzio\Middleware';
 
         $appName = 'testApp';
         $routeName = 'testRoute';
@@ -87,7 +87,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
 
     public function testItAddsARequestIdParameter()
     {
-        $namespace = 'Linio\Common\Expressive\Middleware';
+        $namespace = 'Linio\Common\Mezzio\Middleware';
 
         $requestId = '1000';
 
@@ -107,7 +107,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
 
     public function testItDoesntAddARequestIdWhenOneDoesntExist()
     {
-        $namespace = 'Linio\Common\Expressive\Middleware';
+        $namespace = 'Linio\Common\Mezzio\Middleware';
 
         $request = new ServerRequest();
         $response = new Response();
@@ -126,7 +126,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
 
     public function testItNamesTheTransaction()
     {
-        $namespace = 'Linio\Common\Expressive\Middleware';
+        $namespace = 'Linio\Common\Mezzio\Middleware';
 
         $routeName = 'testRoute';
 

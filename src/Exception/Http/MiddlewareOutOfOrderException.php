@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Exception\Http;
+namespace Linio\Common\Mezzio\Exception\Http;
 
-use Linio\Common\Expressive\Exception\Base\DomainException;
-use Linio\Common\Expressive\Exception\ExceptionTokens;
+use Linio\Common\Mezzio\Exception\Base\DomainException;
+use Linio\Common\Mezzio\Exception\ExceptionTokens;
 
 class MiddlewareOutOfOrderException extends DomainException
 {

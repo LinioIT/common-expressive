@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Validation;
+namespace Linio\Common\Mezzio\Validation;
 
 use Eloquent\Phony\Phpunit\Phony;
 use Interop\Container\ContainerInterface;
-use Linio\Common\Expressive\Exception\Base\NotFoundException;
+use Linio\Common\Mezzio\Exception\Base\NotFoundException;
 use Particle\Validator\Validator;
 use PHPUnit\Framework\TestCase;
 

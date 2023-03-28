@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Middleware;
+namespace Linio\Common\Mezzio\Middleware;
 
-use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Expressive\Router\RouteResult;
+use Mezzio\Router\RouteResult;
 
 class ConfigureNewrelicForRequest
 {

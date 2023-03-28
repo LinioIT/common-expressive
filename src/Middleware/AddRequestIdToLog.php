@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Middleware;
+namespace Linio\Common\Mezzio\Middleware;
 
 use Linio\Component\Microlog\Log;
 use Psr\Http\Message\ResponseInterface;

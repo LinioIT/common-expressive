@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Tests\Middleware;
+namespace Linio\Common\Mezzio\Tests\Middleware;
 
-use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Expressive\Exception\Http\RouteNotFoundException;
-use Linio\Common\Expressive\Middleware\ValidateRequestBody;
-use Linio\Common\Expressive\Validation\ValidationService;
+use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Mezzio\Exception\Http\RouteNotFoundException;
+use Linio\Common\Mezzio\Middleware\ValidateRequestBody;
+use Linio\Common\Mezzio\Validation\ValidationService;
 use Linio\TestAssets\TestValidationRules;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Response\EmptyResponse;
-use Zend\Diactoros\ServerRequest;
-use Zend\Expressive\Router\RouteResult;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\ServerRequest;
+use Mezzio\Router\RouteResult;
 
 class ValidateRequestBodyTest extends TestCase
 {

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Expressive\Tests\Middleware;
+namespace Linio\Common\Mezzio\Tests\Middleware;
 
-use Linio\Common\Expressive\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Expressive\Middleware\AddRequestIdToLog;
-use Linio\Common\Expressive\Middleware\AddRequestIdToResponse;
+use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Mezzio\Middleware\AddRequestIdToLog;
+use Linio\Common\Mezzio\Middleware\AddRequestIdToResponse;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Response\EmptyResponse;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\ServerRequest;
 
 class AddRequestIdToResponseTest extends TestCase
 {
