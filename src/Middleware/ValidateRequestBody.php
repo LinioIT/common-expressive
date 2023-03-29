@@ -17,7 +17,7 @@ class ValidateRequestBody
     private ValidationService $validationService;
 
     /**
-     * An array of zend-expressive routes.
+     * An array of laminas routes.
      */
     private array $routes;
 
