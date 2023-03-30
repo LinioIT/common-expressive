@@ -1,18 +1,17 @@
 {
-    "name": "linio/common-expressive",
+    "name": "linio/common-laminas",
     "description": "Common library for Linio projects using Zend Expressive",
     "keywords": ["linio", "common", "zend-expressive", "expressive"],
     "type": "library",
     "license": "BSD-3-Clause",
     "require": {
         "php": "^7.4",
-        "linio/microlog": "^1.0",
-        "linio/util": "^3.0",
-        "particle/filter": "^1.4",
-        "particle/validator": "^2.1",
-        "monolog/monolog": "^1.20",
-        "mezzio/mezzio": "^3.6",
-        "mezzio/mezzio-router": "^3.8",
+        "linio/microlog": "^3.0",
+        "linio/util": "^4.0",
+        "particle/filter": "^1.5",
+        "particle/validator": "^2.3",
+        "monolog/monolog": "^2.9",
+        "mezzio/mezzio": "^3.11",
         "nyholm/psr7": "^1.5"
     },
     "require-dev": {
@@ -27,15 +26,16 @@
             "src/Support/functions.php"
         ],
         "psr-4": {
-            "Linio\\Common\\Expressive\\": "src/"
+            "Linio\\Common\\Mezzio\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Linio\\TestAssets\\": "tests/assets",
-            "Linio\\Common\\Expressive\\Tests\\": "tests/"
+            "Linio\\Common\\Mezzio\\Tests\\": "tests/"
         }
     },
+    "prefer-stable": false,
     "config": {
         "allow-plugins": {
             "laminas/laminas-dependency-plugin": true
