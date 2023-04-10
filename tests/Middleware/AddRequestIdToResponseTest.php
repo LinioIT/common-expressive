@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Middleware;
+namespace Linio\Common\Laminas\Tests\Middleware;
 
-use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Mezzio\Middleware\AddRequestIdToLog;
-use Linio\Common\Mezzio\Middleware\AddRequestIdToResponse;
+use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Laminas\Middleware\AddRequestIdToLog;
+use Linio\Common\Laminas\Middleware\AddRequestIdToResponse;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

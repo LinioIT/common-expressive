@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Middleware;
+namespace Linio\Common\Laminas\Middleware;
 
-use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
 use Psr\Http\Message\ServerRequestInterface;
 
 trait EnsureRequestIdExists

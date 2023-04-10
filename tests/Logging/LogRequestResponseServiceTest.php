@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Logging;
+namespace Linio\Common\Laminas\Tests\Logging;
 
-use Linio\Common\Mezzio\Filter\FilterService;
-use Linio\Common\Mezzio\Logging\LogRequestResponseService;
+use Linio\Common\Laminas\Filter\FilterService;
+use Linio\Common\Laminas\Logging\LogRequestResponseService;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;

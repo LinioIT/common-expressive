@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Support;
+namespace Linio\Common\Laminas\Tests\Support;
 
-use function Linio\Common\Mezzio\Support\getCurrentRouteFromRawRoutes;
+use function Linio\Common\Laminas\Support\getCurrentRouteFromRawRoutes;
 use PHPUnit\Framework\TestCase;
 use Laminas\Diactoros\ServerRequest;
 

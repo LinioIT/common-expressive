@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Middleware;
+namespace Linio\Common\Laminas\Tests\Middleware;
 
-use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Mezzio\Middleware\EnsureRequestIdExists;
+use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Laminas\Middleware\EnsureRequestIdExists;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Laminas\Diactoros\ServerRequest;

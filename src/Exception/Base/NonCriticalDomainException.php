@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Exception\Base;
+namespace Linio\Common\Laminas\Exception\Base;
 
 class NonCriticalDomainException extends DomainException
 {

@@ -31,28 +31,28 @@ return [
             \Particle\Validator\Validator::class => function (ContainerInterface $container) {
                 return new \Particle\Validator\Validator();
             },
-            \Linio\Common\Mezzio\Validation\ValidatorFactory::class => function (ContainerInterface $container) {
-                return new \Linio\Common\Mezzio\Validation\ValidatorFactory(
+            \Linio\Common\Laminas\Validation\ValidatorFactory::class => function (ContainerInterface $container) {
+                return new \Linio\Common\Laminas\Validation\ValidatorFactory(
                     $container,
                     \Particle\Validator\Validator::class
                 );
             },
-            \Linio\Common\Mezzio\Validation\ValidationRulesFactory::class => function (ContainerInterface $container) {
-                return new \Linio\Common\Mezzio\Validation\ValidationRulesFactory($container);
+            \Linio\Common\Laminas\Validation\ValidationRulesFactory::class => function (ContainerInterface $container) {
+                return new \Linio\Common\Laminas\Validation\ValidationRulesFactory($container);
             },
-            \Linio\Common\Mezzio\Validation\ValidationService::class => function (ContainerInterface $container) {
-                return new \Linio\Common\Mezzio\Validation\ValidationService(
-                    $container->get(\Linio\Common\Mezzio\Validation\ValidatorFactory::class),
-                    $container->get(\Linio\Common\Mezzio\Validation\ValidationRulesFactory::class)
+            \Linio\Common\Laminas\Validation\ValidationService::class => function (ContainerInterface $container) {
+                return new \Linio\Common\Laminas\Validation\ValidationService(
+                    $container->get(\Linio\Common\Laminas\Validation\ValidatorFactory::class),
+                    $container->get(\Linio\Common\Laminas\Validation\ValidationRulesFactory::class)
                 );
             },
-            \Linio\Common\Mezzio\Filter\FilterRulesFactory::class => function (ContainerInterface $container) {
-                return new \Linio\Common\Mezzio\Filter\FilterRulesFactory($container);
+            \Linio\Common\Laminas\Filter\FilterRulesFactory::class => function (ContainerInterface $container) {
+                return new \Linio\Common\Laminas\Filter\FilterRulesFactory($container);
             },
-            \Linio\Common\Mezzio\Filter\FilterService::class => function (ContainerInterface $container) {
-                return new \Linio\Common\Mezzio\Filter\FilterService(
+            \Linio\Common\Laminas\Filter\FilterService::class => function (ContainerInterface $container) {
+                return new \Linio\Common\Laminas\Filter\FilterService(
                     \Particle\Filter\Filter::class,
-                    $container->get(\Linio\Common\Mezzio\Filter\FilterRulesFactory::class)
+                    $container->get(\Linio\Common\Laminas\Filter\FilterRulesFactory::class)
                 );
             },
         ],
@@ -75,36 +75,36 @@ return [
     'dependencies' => [
         'invokables' => [
             \Mezzio\Helper\BodyParams\BodyParamsMiddleware::class => \Mezzio\Helper\BodyParams\BodyParamsMiddleware::class,
-            \Linio\Common\Mezzio\Middleware\ConvertErrorToJsonResponse::class => \Linio\Common\Mezzio\Middleware\ConvertErrorToJsonResponse::class,
-            \Linio\Common\Mezzio\Middleware\AddRequestIdToRequest::class => \Linio\Common\Mezzio\Middleware\AddRequestIdToRequest::class,
-            \Linio\Common\Mezzio\Middleware\AddRequestIdToResponse::class => \Linio\Common\Mezzio\Middleware\AddRequestIdToResponse::class,
-            \Linio\Common\Mezzio\Middleware\LogExceptions::class => \Linio\Common\Mezzio\Middleware\LogExceptions::class,
+            \Linio\Common\Laminas\Middleware\ConvertErrorToJsonResponse::class => \Linio\Common\Laminas\Middleware\ConvertErrorToJsonResponse::class,
+            \Linio\Common\Laminas\Middleware\AddRequestIdToRequest::class => \Linio\Common\Laminas\Middleware\AddRequestIdToRequest::class,
+            \Linio\Common\Laminas\Middleware\AddRequestIdToResponse::class => \Linio\Common\Laminas\Middleware\AddRequestIdToResponse::class,
+            \Linio\Common\Laminas\Middleware\LogExceptions::class => \Linio\Common\Laminas\Middleware\LogExceptions::class,
         ],
         'factories' => [
             \Mezzio\Helper\ServerUrlMiddleware::class => \Mezzio\Helper\ServerUrlMiddlewareFactory::class,
             \Mezzio\Helper\UrlHelperMiddleware::class => \Mezzio\Helper\UrlHelperMiddlewareFactory::class,
-            \Linio\Common\Mezzio\Middleware\ValidateRequestBody::class => function (ContainerInterface $container) {
-                return new \Linio\Common\Mezzio\Middleware\ValidateRequestBody(
-                    $container->get(\Linio\Common\Mezzio\Validation\ValidationService::class), $container->get('config')['routes']
+            \Linio\Common\Laminas\Middleware\ValidateRequestBody::class => function (ContainerInterface $container) {
+                return new \Linio\Common\Laminas\Middleware\ValidateRequestBody(
+                    $container->get(\Linio\Common\Laminas\Validation\ValidationService::class), $container->get('config')['routes']
                 );
             },
-            \Linio\Common\Mezzio\Middleware\LogRequest::class => function (ContainerInterface $container) {
-                return new \Linio\Common\Mezzio\Middleware\LogRequest(
-                    $container->get(\Linio\Common\Mezzio\Logging\LogRequestResponseService::class)
+            \Linio\Common\Laminas\Middleware\LogRequest::class => function (ContainerInterface $container) {
+                return new \Linio\Common\Laminas\Middleware\LogRequest(
+                    $container->get(\Linio\Common\Laminas\Logging\LogRequestResponseService::class)
                 );
             },
-            \Linio\Common\Mezzio\Middleware\LogResponse::class => function (ContainerInterface $container) {
-                return new \Linio\Common\Mezzio\Middleware\LogResponse(
-                    $container->get(\Linio\Common\Mezzio\Logging\LogRequestResponseService::class)
+            \Linio\Common\Laminas\Middleware\LogResponse::class => function (ContainerInterface $container) {
+                return new \Linio\Common\Laminas\Middleware\LogResponse(
+                    $container->get(\Linio\Common\Laminas\Logging\LogRequestResponseService::class)
                 );
             },
-            \Linio\Common\Mezzio\Middleware\ConfigureNewrelicForRequest::class => function (ContainerInterface $container) {
+            \Linio\Common\Laminas\Middleware\ConfigureNewrelicForRequest::class => function (ContainerInterface $container) {
                 $config = $container->get('config');
 
-                return new \Linio\Common\Mezzio\Middleware\ConfigureNewrelicForRequest($config['logging']['newRelic']['appName']);
+                return new \Linio\Common\Laminas\Middleware\ConfigureNewrelicForRequest($config['logging']['newRelic']['appName']);
             },
-            \Linio\Common\Mezzio\Middleware\ValidateSupportedContentTypes::class => function (ContainerInterface $container) {
-                return new \Linio\Common\Mezzio\Middleware\ValidateSupportedContentTypes(\Linio\Common\Mezzio\Middleware\ValidateSupportedContentTypes::DEFAULT_CONTENT_TYPES);
+            \Linio\Common\Laminas\Middleware\ValidateSupportedContentTypes::class => function (ContainerInterface $container) {
+                return new \Linio\Common\Laminas\Middleware\ValidateSupportedContentTypes(\Linio\Common\Laminas\Middleware\ValidateSupportedContentTypes::DEFAULT_CONTENT_TYPES);
             },
         ],
     ],
@@ -118,11 +118,11 @@ return [
                 // - pre-conditions
                 // - modifications to outgoing responses
                 \Mezzio\Helper\ServerUrlMiddleware::class,
-                \Linio\Common\Mezzio\Middleware\AddRequestIdToRequest::class,
-                \Linio\Common\Mezzio\Middleware\AddRequestIdToLog::class,
-                \Linio\Common\Mezzio\Middleware\LogResponse::class,
-                \Linio\Common\Mezzio\Middleware\AddRequestIdToResponse::class,
-                \Linio\Common\Mezzio\Middleware\LogRequest::class,
+                \Linio\Common\Laminas\Middleware\AddRequestIdToRequest::class,
+                \Linio\Common\Laminas\Middleware\AddRequestIdToLog::class,
+                \Linio\Common\Laminas\Middleware\LogResponse::class,
+                \Linio\Common\Laminas\Middleware\AddRequestIdToResponse::class,
+                \Linio\Common\Laminas\Middleware\LogRequest::class,
             ],
             'priority' => 10000,
         ],
@@ -130,10 +130,10 @@ return [
             'middleware' => [
                 \Mezzio\Container\ApplicationFactory::ROUTING_MIDDLEWARE,
                 \Mezzio\Helper\UrlHelperMiddleware::class,
-                \Linio\Common\Mezzio\Middleware\ValidateSupportedContentTypes::class,
+                \Linio\Common\Laminas\Middleware\ValidateSupportedContentTypes::class,
                 \Mezzio\Helper\BodyParams\BodyParamsMiddleware::class,
-                \Linio\Common\Mezzio\Middleware\ConfigureNewrelicForRequest::class,
-                \Linio\Common\Mezzio\Middleware\ValidateRequestBody::class,
+                \Linio\Common\Laminas\Middleware\ConfigureNewrelicForRequest::class,
+                \Linio\Common\Laminas\Middleware\ValidateRequestBody::class,
                 // Add more middleware here that needs to introspect the routing
                 // results; this might include:
                 // - route-based authentication
@@ -145,8 +145,8 @@ return [
         ],
         'error' => [
             'middleware' => [
-                \Linio\Common\Mezzio\Middleware\LogExceptions::class,
-                \Linio\Common\Mezzio\Middleware\ConvertErrorToJsonResponse::class,
+                \Linio\Common\Laminas\Middleware\LogExceptions::class,
+                \Linio\Common\Laminas\Middleware\ConvertErrorToJsonResponse::class,
             ],
             'error' => true,
             'priority' => -10000,
@@ -166,8 +166,8 @@ use Interop\Container\ContainerInterface;
 return [
     'dependencies' => [
         'factories' => [
-            \Linio\Common\Mezzio\Logging\LogFactory::class => function (ContainerInterface $container) {
-                return new \Linio\Common\Mezzio\Logging\LogFactory($container);
+            \Linio\Common\Laminas\Logging\LogFactory::class => function (ContainerInterface $container) {
+                return new \Linio\Common\Laminas\Logging\LogFactory($container);
             },
             'logging.handler.default' => function (ContainerInterface $container) {
                 $config = $container->get('config');
@@ -194,14 +194,14 @@ return [
 
                 return new \Monolog\Handler\NewRelicHandler(\Monolog\Logger::CRITICAL, true, $config['logging']['newRelic']['appName']);
             },
-            \Linio\Common\Mezzio\Logging\LogRequestResponseService::class => function (ContainerInterface $container) {
-                /** @var \Linio\Common\Mezzio\Logging\LogFactory $loggingFactory */
-                $loggingFactory = $container->get(\Linio\Common\Mezzio\Logging\LogFactory::class);
+            \Linio\Common\Laminas\Logging\LogRequestResponseService::class => function (ContainerInterface $container) {
+                /** @var \Linio\Common\Laminas\Logging\LogFactory $loggingFactory */
+                $loggingFactory = $container->get(\Linio\Common\Laminas\Logging\LogFactory::class);
 
                 $config = $container->get('config');
 
-                return new \Linio\Common\Mezzio\Logging\LogRequestResponseService(
-                    $container->get(\Linio\Common\Mezzio\Filter\FilterService::class),
+                return new \Linio\Common\Laminas\Logging\LogRequestResponseService(
+                    $container->get(\Linio\Common\Laminas\Filter\FilterService::class),
                     $loggingFactory->makeLogger('request-response'),
                     $config['routes'],
                     $config['logging']['requestResponse']['requestFormatter'],

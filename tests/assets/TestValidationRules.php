@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Linio\TestAssets;
 
-use Linio\Common\Mezzio\Validation\ValidationRules;
+use Linio\Common\Laminas\Validation\ValidationRules;
 use Particle\Validator\Validator;
 
 class TestValidationRules implements ValidationRules

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Filter;
+namespace Linio\Common\Laminas\Filter;
 
 use Interop\Container\ContainerInterface;
-use Linio\Common\Mezzio\Exception\Base\NotFoundException;
+use Linio\Common\Laminas\Exception\Base\NotFoundException;
 
 class FilterRulesFactory
 {

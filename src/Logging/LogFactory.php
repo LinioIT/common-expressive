@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Logging;
+namespace Linio\Common\Laminas\Logging;
 
 use Interop\Container\ContainerInterface;
 use InvalidArgumentException;

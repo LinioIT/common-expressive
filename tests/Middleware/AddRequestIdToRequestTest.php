@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Middleware;
+namespace Linio\Common\Laminas\Tests\Middleware;
 
-use Linio\Common\Mezzio\Middleware\AddRequestIdToRequest;
+use Linio\Common\Laminas\Middleware\AddRequestIdToRequest;
 use PHPUnit\Framework\TestCase;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\Response\EmptyResponse;
