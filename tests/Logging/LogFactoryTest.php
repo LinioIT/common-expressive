@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Logging;
+namespace Linio\Common\Laminas\Tests\Logging;
 
 use Interop\Container\ContainerInterface;
 use InvalidArgumentException;
-use Linio\Common\Mezzio\Logging\LogFactory;
+use Linio\Common\Laminas\Logging\LogFactory;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;

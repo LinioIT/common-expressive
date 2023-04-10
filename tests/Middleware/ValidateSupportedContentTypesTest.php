@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Middleware;
+namespace Linio\Common\Laminas\Tests\Middleware;
 
 use Eloquent\Phony\Phpunit\Phony;
-use Linio\Common\Mezzio\Exception\Http\ContentTypeNotSupportedException;
-use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Mezzio\Middleware\ValidateSupportedContentTypes;
+use Linio\Common\Laminas\Exception\Http\ContentTypeNotSupportedException;
+use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Laminas\Middleware\ValidateSupportedContentTypes;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

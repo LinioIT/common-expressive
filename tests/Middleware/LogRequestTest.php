@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Middleware;
+namespace Linio\Common\Laminas\Tests\Middleware;
 
-use Linio\Common\Mezzio\Logging\LogRequestResponseService;
-use Linio\Common\Mezzio\Middleware\LogRequest;
+use Linio\Common\Laminas\Logging\LogRequestResponseService;
+use Linio\Common\Laminas\Middleware\LogRequest;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Laminas\Diactoros\Response;

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Middleware;
+namespace Linio\Common\Laminas\Tests\Middleware;
 
-use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Mezzio\Exception\Http\RouteNotFoundException;
-use Linio\Common\Mezzio\Middleware\ValidateRequestBody;
-use Linio\Common\Mezzio\Validation\ValidationService;
+use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Laminas\Exception\Http\RouteNotFoundException;
+use Linio\Common\Laminas\Middleware\ValidateRequestBody;
+use Linio\Common\Laminas\Validation\ValidationService;
 use Linio\TestAssets\TestValidationRules;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;

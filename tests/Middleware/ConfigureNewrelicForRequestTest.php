@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Middleware;
+namespace Linio\Common\Laminas\Tests\Middleware;
 
 use Eloquent\Phony\Phpunit\Phony;
-use Linio\Common\Mezzio\Middleware\ConfigureNewrelicForRequest;
+use Linio\Common\Laminas\Middleware\ConfigureNewrelicForRequest;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
@@ -30,7 +30,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
 
     public function testItDoesNothingIfNewrelicIsntInstalled()
     {
-        $namespace = 'Linio\Common\Mezzio\Middleware';
+        $namespace = 'Linio\Common\Laminas\Middleware';
 
         $request = new ServerRequest();
         $response = new Response();
@@ -53,7 +53,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
 
     public function testItSetsTheAppName()
     {
-        $namespace = 'Linio\Common\Mezzio\Middleware';
+        $namespace = 'Linio\Common\Laminas\Middleware';
 
         $appName = 'testApp';
         $routeName = 'testRoute';
@@ -87,7 +87,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
 
     public function testItAddsARequestIdParameter()
     {
-        $namespace = 'Linio\Common\Mezzio\Middleware';
+        $namespace = 'Linio\Common\Laminas\Middleware';
 
         $requestId = '1000';
 
@@ -107,7 +107,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
 
     public function testItDoesntAddARequestIdWhenOneDoesntExist()
     {
-        $namespace = 'Linio\Common\Mezzio\Middleware';
+        $namespace = 'Linio\Common\Laminas\Middleware';
 
         $request = new ServerRequest();
         $response = new Response();
@@ -126,7 +126,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
 
     public function testItNamesTheTransaction()
     {
-        $namespace = 'Linio\Common\Mezzio\Middleware';
+        $namespace = 'Linio\Common\Laminas\Middleware';
 
         $routeName = 'testRoute';
 

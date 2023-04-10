@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Middleware;
+namespace Linio\Common\Laminas\Middleware;
 
-use Linio\Common\Mezzio\Exception\Base\DomainException;
-use Linio\Common\Mezzio\Exception\ExceptionTokens;
+use Linio\Common\Laminas\Exception\Base\DomainException;
+use Linio\Common\Laminas\Exception\ExceptionTokens;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;

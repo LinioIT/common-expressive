@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Middleware;
+namespace Linio\Common\Laminas\Tests\Middleware;
 
 use Exception;
-use Linio\Common\Mezzio\Exception\Base\DomainException;
-use Linio\Common\Mezzio\Exception\ExceptionTokens;
-use Linio\Common\Mezzio\Middleware\ConvertErrorToJsonResponse;
+use Linio\Common\Laminas\Exception\Base\DomainException;
+use Linio\Common\Laminas\Exception\ExceptionTokens;
+use Linio\Common\Laminas\Middleware\ConvertErrorToJsonResponse;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
