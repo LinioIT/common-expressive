@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Linio\TestAssets;
 
-use Linio\Common\Mezzio\Filter\FilterRules;
+use Linio\Common\Laminas\Filter\FilterRules;
 use Particle\Filter\Filter;
 
 class TestFilterRules2 implements FilterRules

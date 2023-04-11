@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Validation;
+namespace Linio\Common\Laminas\Tests\Validation;
 
 use Interop\Container\ContainerInterface;
-use Linio\Common\Mezzio\Exception\Base\NotFoundException;
-use Linio\Common\Mezzio\Validation\ValidationRulesFactory;
+use Linio\Common\Laminas\Exception\Base\NotFoundException;
+use Linio\Common\Laminas\Validation\ValidationRulesFactory;
 use Linio\TestAssets\TestValidationRules;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;

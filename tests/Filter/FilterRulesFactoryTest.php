@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Filter;
+namespace Linio\Common\Laminas\Tests\Filter;
 
 use Interop\Container\ContainerInterface;
-use Linio\Common\Mezzio\Exception\Base\NotFoundException;
-use Linio\Common\Mezzio\Filter\FilterRulesFactory;
+use Linio\Common\Laminas\Exception\Base\NotFoundException;
+use Linio\Common\Laminas\Filter\FilterRulesFactory;
 use Linio\TestAssets\TestFilterRules;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;

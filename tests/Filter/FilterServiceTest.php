@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Filter;
+namespace Linio\Common\Laminas\Tests\Filter;
 
 use Interop\Container\ContainerInterface;
-use Linio\Common\Mezzio\Filter\FilterRulesFactory;
-use Linio\Common\Mezzio\Filter\FilterService;
+use Linio\Common\Laminas\Filter\FilterRulesFactory;
+use Linio\Common\Laminas\Filter\FilterService;
 use Linio\TestAssets\TestFilterRules;
 use Linio\TestAssets\TestFilterRules2;
 use Linio\TestAssets\TestFilterRules3;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Validation;
+namespace Linio\Common\Laminas\Validation;
 
 use Interop\Container\ContainerInterface;
-use Linio\Common\Mezzio\Exception\Base\NotFoundException;
+use Linio\Common\Laminas\Exception\Base\NotFoundException;
 use Particle\Validator\Validator;
 
 class ValidatorFactory

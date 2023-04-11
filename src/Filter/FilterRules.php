@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Filter;
+namespace Linio\Common\Laminas\Filter;
 
 use Particle\Filter\Filter;
 

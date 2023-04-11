@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Validation;
+namespace Linio\Common\Laminas\Tests\Validation;
 
 use Interop\Container\ContainerInterface;
-use Linio\Common\Mezzio\Exception\Http\InvalidRequestException;
-use Linio\Common\Mezzio\Validation\ValidationRulesFactory;
-use Linio\Common\Mezzio\Validation\ValidationService;
-use Linio\Common\Mezzio\Validation\ValidatorFactory;
+use Linio\Common\Laminas\Exception\Http\InvalidRequestException;
+use Linio\Common\Laminas\Validation\ValidationRulesFactory;
+use Linio\Common\Laminas\Validation\ValidationService;
+use Linio\Common\Laminas\Validation\ValidatorFactory;
 use Linio\TestAssets\TestValidationRules;
 use Linio\TestAssets\TestValidationRules2;
 use Linio\TestAssets\TestValidationRules3;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Exception\Base;
+namespace Linio\Common\Laminas\Exception\Base;
 
 use DomainException as SplDomainException;
 use Exception;
-use Linio\Common\Mezzio\Exception\ExceptionTokens;
+use Linio\Common\Laminas\Exception\ExceptionTokens;
 
 class DomainException extends SplDomainException
 {
