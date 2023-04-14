@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Linio\Common\Laminas\Tests\Middleware;
 
-use Linio\Common\Laminas\Middleware\AddRequestIdToRequest;
-use PHPUnit\Framework\TestCase;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\ServerRequest;
+use Linio\Common\Laminas\Middleware\AddRequestIdToRequest;
+use PHPUnit\Framework\TestCase;
 
 class AddRequestIdToRequestTest extends TestCase
 {
-    public function testItAddsTheRequestIdAttributeUsingANewId()
+    public function testItAddsTheRequestIdAttributeUsingANewId(): void
     {
         $request = new ServerRequest();
         $response = new Response();
@@ -26,7 +26,7 @@ class AddRequestIdToRequestTest extends TestCase
         $middleware->__invoke($request, $response, $callable);
     }
 
-    public function testItAddsTheRequestIdAttributeUsingTheHeader()
+    public function testItAddsTheRequestIdAttributeUsingTheHeader(): void
     {
         $requestId = 'testId';
 

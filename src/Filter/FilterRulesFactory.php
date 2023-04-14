@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Linio\Common\Laminas\Filter;
 
-use Interop\Container\ContainerInterface;
 use Linio\Common\Laminas\Exception\Base\NotFoundException;
+use Psr\Container\ContainerInterface;
 
 class FilterRulesFactory
 {
@@ -19,7 +19,7 @@ class FilterRulesFactory
     /**
      * @throws NotFoundException
      */
-    public function make(string $filterRulesClass): FilterRules
+    public function make(string $filterRulesClass): mixed
     {
         if ($this->container->has($filterRulesClass)) {
             return $this->container->get($filterRulesClass);

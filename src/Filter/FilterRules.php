@@ -8,5 +8,5 @@ use Particle\Filter\Filter;
 
 interface FilterRules
 {
-    public function buildRules(Filter $filter, array $input);
+    public function buildRules(Filter $filter, array $input): void;
 }

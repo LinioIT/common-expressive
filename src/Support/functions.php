@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Linio\Common\Laminas\Support;
 
 use Linio\Common\Laminas\Exception\Http\RouteNotFoundException;
-use Psr\Http\Message\ServerRequestInterface;
 use Mezzio\Router\RouteResult;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @throws RouteNotFoundException

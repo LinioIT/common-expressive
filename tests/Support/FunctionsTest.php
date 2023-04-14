@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Linio\Common\Laminas\Tests\Support;
 
-use function Linio\Common\Laminas\Support\getCurrentRouteFromRawRoutes;
-use PHPUnit\Framework\TestCase;
 use Laminas\Diactoros\ServerRequest;
+
+use function Linio\Common\Laminas\Support\getCurrentRouteFromRawRoutes;
+
+use PHPUnit\Framework\TestCase;
 
 class FunctionsTest extends TestCase
 {
-    public function testItGetsTheRouteConfigFromRawRoutes()
+    public function testItGetsTheRouteConfigFromRawRoutes(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 
@@ -21,7 +23,7 @@ class FunctionsTest extends TestCase
         $this->assertSame($routes[0], $actual);
     }
 
-    public function testItGetsTheRouteConfigFromRawRoutesWithAQueryString()
+    public function testItGetsTheRouteConfigFromRawRoutesWithAQueryString(): void
     {
         $routes = require __DIR__ . '/../assets/routes.php';
 

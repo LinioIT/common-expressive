@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Linio\Common\Laminas\Tests\Middleware;
 
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\ServerRequest;
 use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Laminas\Middleware\AddRequestIdToLog;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Laminas\Diactoros\Response;
-use Laminas\Diactoros\Response\EmptyResponse;
-use Laminas\Diactoros\ServerRequest;
 
 class AddRequestIdToLogTest extends TestCase
 {
-    public function testItFailsAddingAGlobalContextWithoutARequestId()
+    public function testItFailsAddingAGlobalContextWithoutARequestId(): void
     {
         $request = new ServerRequest();
         $response = new Response();

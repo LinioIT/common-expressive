@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Linio\Common\Laminas\Tests\Middleware;
 
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\ServerRequest;
 use Linio\Common\Laminas\Logging\LogRequestResponseService;
 use Linio\Common\Laminas\Middleware\LogRequest;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Laminas\Diactoros\Response;
-use Laminas\Diactoros\Response\EmptyResponse;
-use Laminas\Diactoros\ServerRequest;
 
 class LogRequestTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testItCallsLogRequestResponseService()
+    public function testItCallsLogRequestResponseService(): void
     {
         $request = new ServerRequest();
 

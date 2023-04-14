@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Linio\Common\Laminas\Middleware;
 
+use Laminas\Diactoros\Response\JsonResponse;
 use Linio\Common\Laminas\Exception\Base\DomainException;
 use Linio\Common\Laminas\Exception\ExceptionTokens;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Throwable;
-use Laminas\Diactoros\Response\JsonResponse;
 
 class ConvertErrorToJsonResponse
 {
@@ -23,19 +22,19 @@ class ConvertErrorToJsonResponse
         return new JsonResponse(self::buildErrorBody($error), self::getStatusCode($error));
     }
 
-    public static function buildErrorBody($error): array
+    public static function buildErrorBody(mixed $error): array
     {
         switch ($error) {
             case $error instanceof DomainException:
                 return self::buildDomainExceptionBody($error);
-            case $error instanceof Throwable:
+            case $error instanceof \Throwable:
                 return self::buildThrowableBody($error);
             default:
                 return self::buildGenericErrorBody($error);
         }
     }
 
-    public static function getStatusCode($error): int
+    public static function getStatusCode(mixed $error): int
     {
         switch ($error) {
             case $error instanceof DomainException:
@@ -50,7 +49,7 @@ class ConvertErrorToJsonResponse
         return self::buildBody();
     }
 
-    private static function buildThrowableBody(Throwable $throwable): array
+    private static function buildThrowableBody(\Throwable $throwable): array
     {
         return self::buildGenericErrorBody($throwable->getMessage());
     }
