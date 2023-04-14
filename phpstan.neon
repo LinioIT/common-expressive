@@ -1,0 +1,27 @@
+parameters:
+    level: max
+    checkMissingIterableValueType: false
+    paths:
+        - src
+        - tests
+    ignoreErrors:
+        - '#Parameter \#\d+ \$([^\s]+) of class ([^\s]+) constructor expects ([^,]+), object given#'
+        - '#Parameter \#\d+ \$([^\s]+) of method ([^\s]+) expects ([^,]+), object given#'
+        - '#Call to an undefined method Prophecy\\Prophecy\\ObjectProphecy::[a-zA-Z0-9_]+\(\)#'
+        - '#Cannot call method [a-zA-Z0-9\\_]+\(\) on mixed.#'
+        - '#Parameter \#\d+ \$([^\s]+) of function ([^\s]+) expects ([^\s]+), resource\|false given.#'
+        - '#Parameter \#\d+ \$([^\s]+) of function ([^\s]+) expects ([^\s]+), string\|false given.#'
+        - '#Method Linio\\Common\\Laminas\\Validation\\ValidatorFactory::make\(\) should return Particle\\Validator\\Validator but returns ([^\s]+).#'
+        - '#Parameter \#1 \$stream of class Laminas\\Diactoros\\Stream constructor expects object\|resource\|string, resource\|false given.#'
+        - '#Parameter \#1 \$parser of static method Linio\\Component\\Microlog\\Log::addParser\(\) expects Linio\\Component\\Microlog\\Parser\\Parser, object given.#'
+        - '#Parameter \#1 \$object of function get_class expects object, mixed given.#'
+        - '#Parameter \#2 \$value of static method Linio\\Component\\Microlog\\Log::addGlobalContext\(\) expects string, mixed given.#'
+        - '#Parameter \#2 \$value of method Psr\\Http\\Message\\MessageInterface::withHeader\(\) expects array<string>\|string, mixed given.#'
+        - '#Parameter \#1 \$domainException of static method Linio\\Common\\Laminas\\Middleware\\ConvertErrorToJsonResponse::buildDomainExceptionBody\(\) expects Linio\\Common\\Laminas\\Exception\\Base\\DomainException, mixed given.#'
+        - '#Parameter \#1 \$throwable of static method Linio\\Common\\Laminas\\Middleware\\ConvertErrorToJsonResponse::buildThrowableBody\(\) expects Throwable, mixed given.#'
+        - '#Method Linio\\Common\\Laminas\\Middleware\\ConvertErrorToJsonResponse::buildGenericErrorBody\(\) has parameter \$error with no type specified.#'
+        - '#Parameter \#1 \$input of method Linio\\Common\\Laminas\\Validation\\ValidationService::validate\(\) expects array, array\|object\|null given.#'
+        - '#Method Linio\\Common\\Laminas\\Validation\\ValidationRulesFactory::make\(\) should return Linio\\Common\\Laminas\\Validation\\ValidationRules but returns mixed.#'
+        - '#Method Linio\\Common\\Laminas\\Validation\\ValidationRulesFactory::make\(\) should return Linio\\Common\\Laminas\\Validation\\ValidationRules but returns object.#'
+        - '#Result of method Linio\\Common\\Laminas\\Validation\\ValidationService::validate\(\) \(void\) is used.#'
+        - "#Cannot access offset 'logging' on mixed.#"

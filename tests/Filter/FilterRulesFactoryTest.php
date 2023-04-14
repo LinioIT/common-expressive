@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Linio\Common\Laminas\Tests\Filter;
 
-use Interop\Container\ContainerInterface;
 use Linio\Common\Laminas\Exception\Base\NotFoundException;
 use Linio\Common\Laminas\Filter\FilterRulesFactory;
 use Linio\TestAssets\TestFilterRules;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 
 class FilterRulesFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testItGetsTheFilterRulesFromTheContainer()
+    public function testItGetsTheFilterRulesFromTheContainer(): void
     {
         $class = TestFilterRules::class;
         $testFilterRules = new $class();
@@ -35,7 +35,7 @@ class FilterRulesFactoryTest extends TestCase
         $factory->make($class);
     }
 
-    public function testItInstantiatesTheFilterRulesWhenItIsntInTheContainer()
+    public function testItInstantiatesTheFilterRulesWhenItIsNotInTheContainer(): void
     {
         $class = TestFilterRules::class;
 
@@ -54,7 +54,7 @@ class FilterRulesFactoryTest extends TestCase
         $this->assertInstanceOf($class, $actual);
     }
 
-    public function testItFailsIfTheFilterRulesClassDoesntExist()
+    public function testItFailsIfTheFilterRulesClassDoesntExist(): void
     {
         $class = 'InvalidClass';
 

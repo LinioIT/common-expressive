@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Linio\Common\Laminas\Exception\Base;
 
 use DomainException as SplDomainException;
-use Exception;
 use Linio\Common\Laminas\Exception\ExceptionTokens;
 
 class DomainException extends SplDomainException
@@ -30,7 +29,7 @@ class DomainException extends SplDomainException
         int $statusCode = null,
         string $message = ExceptionTokens::AN_ERROR_HAS_OCCURRED,
         array $errors = [],
-        Exception $previous = null
+        \Exception $previous = null
     ) {
         $this->token = $token;
         $this->errors = $errors;

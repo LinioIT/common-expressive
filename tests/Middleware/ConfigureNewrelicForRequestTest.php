@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Linio\Common\Laminas\Tests\Middleware;
 
 use Eloquent\Phony\Phpunit\Phony;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\ServerRequest;
 use Linio\Common\Laminas\Middleware\ConfigureNewrelicForRequest;
+use Mezzio\Router\RouteResult;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Laminas\Diactoros\Response;
-use Laminas\Diactoros\Response\EmptyResponse;
-use Laminas\Diactoros\ServerRequest;
-use Mezzio\Router\RouteResult;
 
 class ConfigureNewrelicForRequestTest extends TestCase
 {
@@ -28,7 +28,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         parent::setUp();
     }
 
-    public function testItDoesNothingIfNewrelicIsntInstalled()
+    public function testItDoesNothingIfNewrelicIsNotInstalled(): void
     {
         $namespace = 'Linio\Common\Laminas\Middleware';
 
@@ -51,7 +51,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $addRequestId->never()->called();
     }
 
-    public function testItSetsTheAppName()
+    public function testItSetsTheAppName(): void
     {
         $namespace = 'Linio\Common\Laminas\Middleware';
 
@@ -85,7 +85,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $setAppName->calledWith($appName);
     }
 
-    public function testItAddsARequestIdParameter()
+    public function testItAddsARequestIdParameter(): void
     {
         $namespace = 'Linio\Common\Laminas\Middleware';
 
@@ -105,7 +105,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $addRequestId->calledWith('requestId', $requestId);
     }
 
-    public function testItDoesntAddARequestIdWhenOneDoesntExist()
+    public function testItDoesntAddARequestIdWhenOneDoesntExist(): void
     {
         $namespace = 'Linio\Common\Laminas\Middleware';
 
@@ -124,7 +124,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $addRequestId->never()->called();
     }
 
-    public function testItNamesTheTransaction()
+    public function testItNamesTheTransaction(): void
     {
         $namespace = 'Linio\Common\Laminas\Middleware';
 

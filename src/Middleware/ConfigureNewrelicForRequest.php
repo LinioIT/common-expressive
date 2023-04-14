@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Linio\Common\Laminas\Middleware;
 
 use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
+use Mezzio\Router\RouteResult;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Mezzio\Router\RouteResult;
 
 class ConfigureNewrelicForRequest
 {
@@ -31,7 +31,7 @@ class ConfigureNewrelicForRequest
         return $next($request, $response);
     }
 
-    private function nameRouteIfRouteFound(ServerRequestInterface $request)
+    private function nameRouteIfRouteFound(ServerRequestInterface $request): void
     {
         /** @var RouteResult $routeResult */
         $routeResult = $request->getAttribute(RouteResult::class);
@@ -48,7 +48,7 @@ class ConfigureNewrelicForRequest
     /**
      * @throws MiddlewareOutOfOrderException
      */
-    private function addRequestIdToNewrelic(ServerRequestInterface $request)
+    private function addRequestIdToNewrelic(ServerRequestInterface $request): void
     {
         $requestId = $request->getAttribute('requestId', false);
 

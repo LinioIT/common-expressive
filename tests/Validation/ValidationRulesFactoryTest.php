@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Linio\Common\Laminas\Tests\Validation;
 
-use Interop\Container\ContainerInterface;
 use Linio\Common\Laminas\Exception\Base\NotFoundException;
 use Linio\Common\Laminas\Validation\ValidationRulesFactory;
 use Linio\TestAssets\TestValidationRules;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 
 class ValidationRulesFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testItGetsTheValidationRulesFromTheContainer()
+    public function testItGetsTheValidationRulesFromTheContainer(): void
     {
         $class = TestValidationRules::class;
         $testValidationRules = new $class();
@@ -36,7 +36,7 @@ class ValidationRulesFactoryTest extends TestCase
         $this->assertSame($testValidationRules, $actual);
     }
 
-    public function testItInstantiatesTheValidationRulesWhenItIsntInTheContainer()
+    public function testItInstantiatesTheValidationRulesWhenItIsntInTheContainer(): void
     {
         $class = TestValidationRules::class;
 
@@ -55,7 +55,7 @@ class ValidationRulesFactoryTest extends TestCase
         $this->assertInstanceOf($class, $actual);
     }
 
-    public function testItFailsIfTheValidationRulesClassDoesntExist()
+    public function testItFailsIfTheValidationRulesClassDoesntExist(): void
     {
         $class = 'InvalidClass';
 

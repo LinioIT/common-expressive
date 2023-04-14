@@ -6,9 +6,10 @@ namespace Linio\Common\Laminas\Logging;
 
 use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Laminas\Filter\FilterService;
+
 use function Linio\Common\Laminas\Support\getCurrentRouteFromRawRoutes;
+
 use Linio\Component\Util\Json;
-use LogicException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -43,14 +44,14 @@ class LogRequestResponseService
         $this->getResponseLogBody = $getResponseLogBody;
     }
 
-    public function logRequest(ServerRequestInterface $request)
+    public function logRequest(ServerRequestInterface $request): void
     {
         $requestData = $this->mapRequestToLogContext($request);
 
         $this->logger->info('A request has been created.', $requestData);
     }
 
-    public function logResponse(ServerRequestInterface $request, ResponseInterface $response)
+    public function logResponse(ServerRequestInterface $request, ResponseInterface $response): void
     {
         $responseData = $this->mapResponseToLogContext($request, $response);
 
@@ -67,7 +68,7 @@ class LogRequestResponseService
             if (is_array($body)) {
                 $body = $this->filterService->filter($body, $filters);
             }
-        } catch (LogicException $exception) {
+        } catch (\LogicException $exception) {
             $body = (string) $request->getBody();
         }
 
@@ -86,7 +87,7 @@ class LogRequestResponseService
             if (is_array($body)) {
                 $body = $this->filterService->filter($body, $filters);
             }
-        } catch (LogicException $exception) {
+        } catch (\LogicException $exception) {
             $body = (string) $response->getBody();
         }
 

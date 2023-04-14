@@ -14,13 +14,15 @@
         "particle/validator": "^2.1",
         "monolog/monolog": "^1.20",
         "mezzio/mezzio": "3.14",
-        "mezzio/mezzio-router": "^3.8"
+        "mezzio/mezzio-router": "^3.15",
+        "laminas/laminas-diactoros": "^2.25"
     },
     "require-dev": {
         "ext-json": "*",
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy-phpunit": "^2.0",
-        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpstan/phpstan": "^1.10",
+        "friendsofphp/php-cs-fixer": "^3.16",
         "eloquent/phony-phpunit": "^7.1"
     },
     "autoload": {

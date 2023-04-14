@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Linio\Common\Laminas\Tests\Middleware;
 
+use Laminas\Diactoros\ServerRequest;
 use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Laminas\Middleware\EnsureRequestIdExists;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Laminas\Diactoros\ServerRequest;
 
 class EnsureRequestIdExistsTest extends TestCase
 {
     use EnsureRequestIdExists;
     use ProphecyTrait;
 
-    public function testItDoesNothingWhenARequestIdExists()
+    public function testItDoesNothingWhenARequestIdExists(): void
     {
         $request = $this->prophesize(ServerRequest::class);
         $request
@@ -26,7 +26,7 @@ class EnsureRequestIdExistsTest extends TestCase
         $this->ensureRequestIdExists($request->reveal());
     }
 
-    public function testItFailsWhenARequestIdDoesntExist()
+    public function testItFailsWhenARequestIdDoesntExist(): void
     {
         $request = new ServerRequest();
 

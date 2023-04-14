@@ -7,11 +7,12 @@ namespace Linio\Common\Laminas\Middleware;
 use Linio\Common\Laminas\Exception\Http\ContentTypeNotSupportedException;
 use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Laminas\Exception\Http\RouteNotFoundException;
+
 use function Linio\Common\Laminas\Support\getCurrentRouteFromMatchedRoute;
+
+use Mezzio\Router\RouteResult;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Mezzio\Container\ApplicationFactory;
-use Mezzio\Router\RouteResult;
 
 class ValidateSupportedContentTypes
 {
@@ -55,12 +56,12 @@ class ValidateSupportedContentTypes
         throw new ContentTypeNotSupportedException($contentType);
     }
 
-    private function matchContentTypeFromRoute(?string $contentType, ServerRequestInterface $request)
+    private function matchContentTypeFromRoute(?string $contentType, ServerRequestInterface $request): void
     {
         $routeResult = $request->getAttribute(RouteResult::class);
 
         if (!$routeResult instanceof RouteResult || !$routeResult->isSuccess()) {
-            throw new MiddlewareOutOfOrderException(ApplicationFactory::ROUTING_MIDDLEWARE, self::class);
+            throw new MiddlewareOutOfOrderException('routing', self::class);
         }
 
         $routeConfig = getCurrentRouteFromMatchedRoute($routeResult, $this->routes);

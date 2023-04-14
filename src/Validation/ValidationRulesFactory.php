@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Linio\Common\Laminas\Validation;
 
-use Interop\Container\ContainerInterface;
 use Linio\Common\Laminas\Exception\Base\NotFoundException;
+use Psr\Container\ContainerInterface;
 
 class ValidationRulesFactory
 {

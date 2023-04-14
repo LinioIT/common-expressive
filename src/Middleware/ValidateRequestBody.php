@@ -6,18 +6,20 @@ namespace Linio\Common\Laminas\Middleware;
 
 use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Laminas\Exception\Http\RouteNotFoundException;
+
 use function Linio\Common\Laminas\Support\getCurrentRouteFromMatchedRoute;
+
 use Linio\Common\Laminas\Validation\ValidationService;
+use Mezzio\Router\RouteResult;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Mezzio\Router\RouteResult;
 
 class ValidateRequestBody
 {
     private ValidationService $validationService;
 
     /**
-     * An array of laminas routes.
+     * An array of Laminas routes.
      */
     private array $routes;
 
