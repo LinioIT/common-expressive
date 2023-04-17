@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Linio\Common\Laminas\Tests\Middleware;
 
 use Laminas\Diactoros\Response;
-use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\ServerRequest;
 use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
 use Linio\Common\Laminas\Exception\Http\RouteNotFoundException;
@@ -17,8 +16,7 @@ use Mezzio\Router\Route;
 use Mezzio\Router\RouteResult;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class ValidateRequestBodyTest extends TestCase
 {
@@ -30,14 +28,13 @@ class ValidateRequestBodyTest extends TestCase
 
         $request = new ServerRequest();
         $response = new Response();
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         $this->expectException(MiddlewareOutOfOrderException::class);
 
         $middleware = new ValidateRequestBody($validationService->reveal(), []);
-        $middleware->__invoke($request, $response, $next);
+        $middleware->process($request, $handler->reveal());
     }
 
     public function testItSkipsValidationIfARouteIsNotFound(): void
@@ -48,14 +45,13 @@ class ValidateRequestBodyTest extends TestCase
         $request = (new ServerRequest())->withAttribute(RouteResult::class, $routeResult);
 
         $response = new Response();
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         $this->expectException(MiddlewareOutOfOrderException::class);
 
         $middleware = new ValidateRequestBody($validationService->reveal(), []);
-        $middleware->__invoke($request, $response, $next);
+        $middleware->process($request, $handler->reveal());
     }
 
     public function testItFailsValidationIfTheRouteIsNotFoundInRoutes(): void
@@ -68,14 +64,13 @@ class ValidateRequestBodyTest extends TestCase
         $request = (new ServerRequest())->withAttribute(RouteResult::class, $routeResult);
 
         $response = new Response();
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         $this->expectException(RouteNotFoundException::class);
 
         $middleware = new ValidateRequestBody($validationService->reveal(), []);
-        $middleware->__invoke($request, $response, $next);
+        $middleware->process($request, $handler->reveal());
     }
 
     public function testItCallsTheValidatorService(): void
@@ -92,11 +87,10 @@ class ValidateRequestBodyTest extends TestCase
         $request = (new ServerRequest())->withAttribute(RouteResult::class, $routeResult)->withParsedBody([]);
 
         $response = new Response();
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         $middleware = new ValidateRequestBody($validationService->reveal(), $routes);
-        $middleware->__invoke($request, $response, $next);
+        $middleware->process($request, $handler->reveal());
     }
 }

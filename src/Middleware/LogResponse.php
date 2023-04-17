@@ -7,8 +7,10 @@ namespace Linio\Common\Laminas\Middleware;
 use Linio\Common\Laminas\Logging\LogRequestResponseService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class LogResponse
+class LogResponse implements MiddlewareInterface
 {
     private LogRequestResponseService $loggingService;
 
@@ -17,9 +19,9 @@ class LogResponse
         $this->loggingService = $loggingService;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $response = $next($request, $response);
+        $response = $handler->handle($request);
 
         $this->loggingService->logResponse($request, $response);
 

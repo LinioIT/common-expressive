@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace Linio\Common\Laminas\Tests\Middleware;
 
 use Laminas\Diactoros\Response;
-use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\ServerRequest;
 use Linio\Common\Laminas\Exception\Base\DomainException;
 use Linio\Common\Laminas\Exception\ExceptionTokens;
 use Linio\Common\Laminas\Middleware\ConvertErrorToJsonResponse;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class ConvertErrorToJsonResponseTest extends TestCase
 {
@@ -28,12 +25,9 @@ class ConvertErrorToJsonResponseTest extends TestCase
 
         $request = new ServerRequest();
         $response = new Response();
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
 
         $middleware = new ConvertErrorToJsonResponse();
-        $actual = $middleware->__invoke($error, $request, $response, $next);
+        $actual = $middleware->__invoke($error, $request, $response);
 
         $actualBody = json_decode((string) $actual->getBody(), true);
 
@@ -52,12 +46,9 @@ class ConvertErrorToJsonResponseTest extends TestCase
 
         $request = new ServerRequest();
         $response = new Response();
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
 
         $middleware = new ConvertErrorToJsonResponse();
-        $actual = $middleware->__invoke($error, $request, $response, $next);
+        $actual = $middleware->__invoke($error, $request, $response);
 
         $actualBody = json_decode((string) $actual->getBody(), true);
 
@@ -81,12 +72,9 @@ class ConvertErrorToJsonResponseTest extends TestCase
 
         $request = new ServerRequest();
         $response = new Response();
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
 
         $middleware = new ConvertErrorToJsonResponse();
-        $actual = $middleware->__invoke($error, $request, $response, $next);
+        $actual = $middleware->__invoke($error, $request, $response);
 
         $actualBody = json_decode((string) $actual->getBody(), true);
 

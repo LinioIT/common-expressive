@@ -8,8 +8,10 @@ use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
 use Mezzio\Router\RouteResult;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class ConfigureNewrelicForRequest
+class ConfigureNewrelicForRequest implements MiddlewareInterface
 {
     private string $appName;
 
@@ -18,17 +20,17 @@ class ConfigureNewrelicForRequest
         $this->appName = $appName;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (!extension_loaded('newrelic')) {
-            return $next($request, $response);
+            return $handler->handle($request);
         }
 
         newrelic_set_appname($this->appName);
         $this->addRequestIdToNewrelic($request);
         $this->nameRouteIfRouteFound($request);
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 
     private function nameRouteIfRouteFound(ServerRequestInterface $request): void

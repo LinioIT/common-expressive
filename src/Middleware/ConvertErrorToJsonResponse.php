@@ -17,7 +17,7 @@ class ConvertErrorToJsonResponse
     /**
      * @param mixed $error
      */
-    public function __invoke($error, ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function __invoke($error, ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         return new JsonResponse(self::buildErrorBody($error), self::getStatusCode($error));
     }
