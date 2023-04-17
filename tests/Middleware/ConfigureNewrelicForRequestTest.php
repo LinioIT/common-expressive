@@ -6,14 +6,12 @@ namespace Linio\Common\Laminas\Tests\Middleware;
 
 use Eloquent\Phony\Phpunit\Phony;
 use Laminas\Diactoros\Response;
-use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\ServerRequest;
 use Linio\Common\Laminas\Middleware\ConfigureNewrelicForRequest;
 use Mezzio\Router\RouteResult;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class ConfigureNewrelicForRequestTest extends TestCase
 {
@@ -34,9 +32,8 @@ class ConfigureNewrelicForRequestTest extends TestCase
 
         $request = new ServerRequest();
         $response = new Response();
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         Phony::stubGlobal('extension_loaded', $namespace)->returns(false);
         $setAppName = Phony::stubGlobal('newrelic_set_appname', $namespace);
@@ -44,7 +41,7 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $addRequestId = Phony::stubGlobal('newrelic_add_custom_parameter', $namespace);
 
         $middleware = new ConfigureNewrelicForRequest('appName');
-        $middleware->__invoke($request, $response, $next);
+        $middleware->process($request, $handler->reveal());
 
         $setAppName->never()->called();
         $nameTransaction->never()->called();
@@ -71,16 +68,16 @@ class ConfigureNewrelicForRequestTest extends TestCase
             ->withAttribute(RouteResult::class, $routeResult->reveal())
             ->withAttribute('requestId', $requestId);
 
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
+        $response = new Response();
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         Phony::stubGlobal('extension_loaded', $namespace)->returns(true);
 
         $setAppName = Phony::stubGlobal('newrelic_set_appname', $namespace);
 
         $middleware = new ConfigureNewrelicForRequest($appName);
-        $middleware->__invoke($request, new Response(), $next);
+        $middleware->process($request, $handler->reveal());
 
         $setAppName->calledWith($appName);
     }
@@ -92,15 +89,15 @@ class ConfigureNewrelicForRequestTest extends TestCase
         $requestId = '1000';
 
         $request = (new ServerRequest())->withAttribute('requestId', $requestId);
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
+        $response = new Response();
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         Phony::stubGlobal('extension_loaded', $namespace)->returns(true);
         $addRequestId = Phony::stubGlobal('newrelic_add_custom_parameter', $namespace);
 
         $middleware = new ConfigureNewrelicForRequest('appName');
-        $middleware->__invoke($request, new Response(), $next);
+        $middleware->process($request, $handler->reveal());
 
         $addRequestId->calledWith('requestId', $requestId);
     }
@@ -111,15 +108,14 @@ class ConfigureNewrelicForRequestTest extends TestCase
 
         $request = new ServerRequest();
         $response = new Response();
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         Phony::stubGlobal('extension_loaded', $namespace)->returns(true);
         $addRequestId = Phony::stubGlobal('newrelic_add_custom_parameter', $namespace);
 
         $middleware = new ConfigureNewrelicForRequest('appName');
-        $middleware->__invoke($request, $response, $next);
+        $middleware->process($request, $handler->reveal());
 
         $addRequestId->never()->called();
     }
@@ -139,15 +135,15 @@ class ConfigureNewrelicForRequestTest extends TestCase
             ->willReturn($routeName);
 
         $request = (new ServerRequest())->withAttribute(RouteResult::class, $routeResult->reveal());
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
+        $response = new Response();
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         Phony::stubGlobal('extension_loaded', $namespace)->returns(true);
         $nameTransaction = Phony::stubGlobal('newrelic_name_transaction', $namespace);
 
         $middleware = new ConfigureNewrelicForRequest('appName');
-        $middleware->__invoke($request, new Response(), $next);
+        $middleware->process($request, $handler->reveal());
 
         $nameTransaction->calledWith($routeName);
     }

@@ -13,10 +13,7 @@ class LogExceptions
 {
     public const EXCEPTIONS_CHANNEL = 'exceptions';
 
-    /**
-     * @param mixed $error
-     */
-    public function __invoke($error, ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function __invoke(mixed $error, ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         if ($error instanceof NonCriticalDomainException) {
             Log::error($error, [], self::EXCEPTIONS_CHANNEL);
@@ -24,6 +21,6 @@ class LogExceptions
             Log::critical($error, [], self::EXCEPTIONS_CHANNEL);
         }
 
-        return $next($request, $response, $error);
+        return $response;
     }
 }

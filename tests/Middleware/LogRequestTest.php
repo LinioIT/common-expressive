@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Linio\Common\Laminas\Tests\Middleware;
 
 use Laminas\Diactoros\Response;
-use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\ServerRequest;
 use Linio\Common\Laminas\Logging\LogRequestResponseService;
 use Linio\Common\Laminas\Middleware\LogRequest;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class LogRequestTest extends TestCase
 {
@@ -26,11 +26,10 @@ class LogRequestTest extends TestCase
             ->shouldBeCalled();
 
         $response = new Response();
-        $next = function ($request, $response) {
-            return new EmptyResponse();
-        };
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         $middleware = new LogRequest($logRequestResponseService->reveal());
-        $middleware->__invoke($request, $response, $next);
+        $middleware->process($request, $handler->reveal());
     }
 }

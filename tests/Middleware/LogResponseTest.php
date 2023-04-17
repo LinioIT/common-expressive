@@ -10,6 +10,7 @@ use Linio\Common\Laminas\Logging\LogRequestResponseService;
 use Linio\Common\Laminas\Middleware\LogResponse;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class LogResponseTest extends TestCase
 {
@@ -25,11 +26,10 @@ class LogResponseTest extends TestCase
             ->logResponse($request, $response)
             ->shouldBeCalled();
 
-        $next = function ($request, $response) {
-            return $response;
-        };
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         $middleware = new LogResponse($logRequestResponseService->reveal());
-        $middleware->__invoke($request, $response, $next);
+        $middleware->process($request, $handler->reveal());
     }
 }
