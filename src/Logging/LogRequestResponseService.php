@@ -10,6 +10,7 @@ use Linio\Common\Laminas\Filter\FilterService;
 use function Linio\Common\Laminas\Support\getCurrentRouteFromRawRoutes;
 
 use Linio\Component\Util\Json;
+use Mezzio\Router\RouteCollector;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -18,7 +19,7 @@ class LogRequestResponseService
 {
     private FilterService $filterService;
     private LoggerInterface $logger;
-    private array $routes;
+    private RouteCollector $routes;
 
     /**
      * @var callable
@@ -33,7 +34,7 @@ class LogRequestResponseService
     public function __construct(
         FilterService $filterService,
         LoggerInterface $logger,
-        array $routes,
+        RouteCollector $routes,
         callable $getRequestLogBody,
         callable $getResponseLogBody
     ) {
@@ -103,11 +104,11 @@ class LogRequestResponseService
     {
         $matchedRoute = getCurrentRouteFromRawRoutes($request, $this->routes);
 
-        if (empty($matchedRoute['filter_rules'])) {
+        if (empty($matchedRoute->getOptions()['filter_rules'])) {
             return [];
         }
 
-        $rules = $matchedRoute['filter_rules'];
+        $rules = $matchedRoute->getOptions()['filter_rules'];
 
         if (!is_array($rules)) {
             return [$rules];

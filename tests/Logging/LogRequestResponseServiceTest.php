@@ -9,10 +9,13 @@ use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Stream;
 use Linio\Common\Laminas\Filter\FilterService;
 use Linio\Common\Laminas\Logging\LogRequestResponseService;
+use Mezzio\Router\Route;
+use Mezzio\Router\RouteCollector;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Log\LoggerInterface;
 
 class LogRequestResponseServiceTest extends TestCase
@@ -21,7 +24,17 @@ class LogRequestResponseServiceTest extends TestCase
 
     public function testItLogsTheRequestWithoutFilters(): void
     {
-        $routes = require __DIR__ . '/../assets/routes.php';
+        $routes = [];
+        $routesConfig = require __DIR__ . '/../assets/routes.php';
+        $middlewareInterface = $this->prophesize(MiddlewareInterface::class);
+
+        foreach ($routesConfig as $routeConfig) {
+            $routes[] = new Route($routeConfig['path'], $middlewareInterface->reveal(), $routeConfig['allowed_methods'], $routeConfig['name']);
+        }
+
+        $routeCollector = $this->prophesize(RouteCollector::class);
+        $routeCollector->getRoutes()->willReturn($routes);
+
         $body = [
             'test' => 'value',
         ];
@@ -55,7 +68,7 @@ class LogRequestResponseServiceTest extends TestCase
         $logRequestResponseService = new LogRequestResponseService(
             $filterService->reveal(),
             $logger->reveal(),
-            $routes,
+            $routeCollector->reveal(),
             $getRequestLogBody,
             $getResponseLogBody
         );
@@ -65,7 +78,17 @@ class LogRequestResponseServiceTest extends TestCase
 
     public function testItLogsTheResponseWithoutFilters(): void
     {
-        $routes = require __DIR__ . '/../assets/routes.php';
+        $routes = [];
+        $routesConfig = require __DIR__ . '/../assets/routes.php';
+        $middlewareInterface = $this->prophesize(MiddlewareInterface::class);
+
+        foreach ($routesConfig as $routeConfig) {
+            $routes[] = new Route($routeConfig['path'], $middlewareInterface->reveal(), $routeConfig['allowed_methods'], $routeConfig['name']);
+        }
+
+        $routeCollector = $this->prophesize(RouteCollector::class);
+        $routeCollector->getRoutes()->willReturn($routes);
+
         $body = [
             'test' => 'value',
         ];
@@ -102,7 +125,7 @@ class LogRequestResponseServiceTest extends TestCase
         $logRequestResponseService = new LogRequestResponseService(
             $filterService->reveal(),
             $logger->reveal(),
-            $routes,
+            $routeCollector->reveal(),
             $getRequestLogBody,
             $getResponseLogBody
         );
