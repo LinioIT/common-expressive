@@ -13,9 +13,11 @@ use Linio\Common\Laminas\Validation\ValidationService;
 use Linio\TestAssets\TestMiddleware;
 use Linio\TestAssets\TestValidationRules;
 use Mezzio\Router\Route;
+use Mezzio\Router\RouteCollector;
 use Mezzio\Router\RouteResult;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class ValidateRequestBodyTest extends TestCase
@@ -25,6 +27,7 @@ class ValidateRequestBodyTest extends TestCase
     public function testItSkipsValidationIfTheRouterHasNotRun(): void
     {
         $validationService = $this->prophesize(ValidationService::class);
+        $routeCollector = $this->prophesize(RouteCollector::class);
 
         $request = new ServerRequest();
         $response = new Response();
@@ -33,13 +36,14 @@ class ValidateRequestBodyTest extends TestCase
 
         $this->expectException(MiddlewareOutOfOrderException::class);
 
-        $middleware = new ValidateRequestBody($validationService->reveal(), []);
+        $middleware = new ValidateRequestBody($validationService->reveal(), $routeCollector->reveal());
         $middleware->process($request, $handler->reveal());
     }
 
     public function testItSkipsValidationIfARouteIsNotFound(): void
     {
         $validationService = $this->prophesize(ValidationService::class);
+        $routeCollector = $this->prophesize(RouteCollector::class);
 
         $routeResult = RouteResult::fromRouteFailure(['GET']);
         $request = (new ServerRequest())->withAttribute(RouteResult::class, $routeResult);
@@ -50,13 +54,15 @@ class ValidateRequestBodyTest extends TestCase
 
         $this->expectException(MiddlewareOutOfOrderException::class);
 
-        $middleware = new ValidateRequestBody($validationService->reveal(), []);
+        $middleware = new ValidateRequestBody($validationService->reveal(), $routeCollector->reveal());
         $middleware->process($request, $handler->reveal());
     }
 
     public function testItFailsValidationIfTheRouteIsNotFoundInRoutes(): void
     {
         $validationService = $this->prophesize(ValidationService::class);
+        $routeCollector = $this->prophesize(RouteCollector::class);
+        $routeCollector->getRoutes()->willReturn([]);
 
         $route = new Route('invalid', new TestMiddleware(), ['GET'], 'invalid');
 
@@ -69,13 +75,30 @@ class ValidateRequestBodyTest extends TestCase
 
         $this->expectException(RouteNotFoundException::class);
 
-        $middleware = new ValidateRequestBody($validationService->reveal(), []);
+        $middleware = new ValidateRequestBody($validationService->reveal(), $routeCollector->reveal());
         $middleware->process($request, $handler->reveal());
     }
 
     public function testItCallsTheValidatorService(): void
     {
-        $routes = require __DIR__ . '/../assets/routes.php';
+        $routes = [];
+        $routesConfig = require __DIR__ . '/../assets/routes.php';
+        $middlewareInterface = $this->prophesize(MiddlewareInterface::class);
+
+        foreach ($routesConfig as $routeConfig) {
+            $route = new Route(
+                $routeConfig['path'],
+                $middlewareInterface->reveal(),
+                $routeConfig['allowed_methods'],
+                $routeConfig['name']
+            );
+
+            $route->setOptions(['validation_rules' => $routeConfig['validation_rules']]);
+            $routes[] = $route;
+        }
+
+        $routeCollector = $this->prophesize(RouteCollector::class);
+        $routeCollector->getRoutes()->willReturn($routes);
 
         $validationService = $this->prophesize(ValidationService::class);
         $validationService
@@ -90,7 +113,7 @@ class ValidateRequestBodyTest extends TestCase
         $handler = $this->prophesize(RequestHandlerInterface::class);
         $handler->handle($request)->willReturn($response);
 
-        $middleware = new ValidateRequestBody($validationService->reveal(), $routes);
+        $middleware = new ValidateRequestBody($validationService->reveal(), $routeCollector->reveal());
         $middleware->process($request, $handler->reveal());
     }
 }

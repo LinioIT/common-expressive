@@ -10,6 +10,7 @@ use Linio\Common\Laminas\Exception\Http\RouteNotFoundException;
 use function Linio\Common\Laminas\Support\getCurrentRouteFromMatchedRoute;
 
 use Linio\Common\Laminas\Validation\ValidationService;
+use Mezzio\Router\RouteCollector;
 use Mezzio\Router\RouteResult;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,12 +21,9 @@ class ValidateRequestBody implements MiddlewareInterface
 {
     private ValidationService $validationService;
 
-    /**
-     * An array of Laminas routes.
-     */
-    private array $routes;
+    private RouteCollector $routes;
 
-    public function __construct(ValidationService $validationService, array $routes)
+    public function __construct(ValidationService $validationService, RouteCollector $routes)
     {
         $this->validationService = $validationService;
         $this->routes = $routes;
@@ -55,11 +53,11 @@ class ValidateRequestBody implements MiddlewareInterface
     {
         $matchedRoute = getCurrentRouteFromMatchedRoute($routeResult, $this->routes);
 
-        if (empty($matchedRoute['validation_rules'])) {
+        if (empty($matchedRoute->getOptions()['validation_rules'])) {
             return [];
         }
 
-        $rules = $matchedRoute['validation_rules'];
+        $rules = $matchedRoute->getOptions()['validation_rules'];
 
         if (!is_array($rules)) {
             return [$rules];
