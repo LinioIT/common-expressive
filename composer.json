@@ -13,7 +13,7 @@
         "particle/filter": "^1.4",
         "particle/validator": "^2.1",
         "monolog/monolog": "^1.20",
-        "mezzio/mezzio": "3.14",
+        "mezzio/mezzio": "^3.14||^3.2",
         "mezzio/mezzio-router": "^3.15",
         "laminas/laminas-diactoros": "^2.25"
     },
