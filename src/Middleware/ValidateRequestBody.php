@@ -11,8 +11,10 @@ use Linio\Common\Mezzio\Validation\ValidationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Mezzio\Router\RouteResult;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class ValidateRequestBody
+class ValidateRequestBody implements MiddlewareInterface
 {
     private ValidationService $validationService;
 
@@ -27,7 +29,7 @@ class ValidateRequestBody
         $this->routes = $routes;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $routeResult = $request->getAttribute(RouteResult::class);
 
@@ -41,7 +43,7 @@ class ValidateRequestBody
             $this->validationService->validate($request->getParsedBody(), $validationClasses);
         }
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 
     /**

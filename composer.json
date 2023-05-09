@@ -1,12 +1,12 @@
 {
     "name": "linio/common-laminas",
-    "description": "Common library for Linio projects using Zend Expressive",
-    "keywords": ["linio", "common", "zend-expressive", "expressive"],
+    "description": "Common library for Linio projects using Laminas",
+    "keywords": ["linio", "common", "laminas"],
     "type": "library",
     "license": "BSD-3-Clause",
     "require": {
         "php": "^7.4",
-        "linio/microlog": "^3.0",
+        "linio/microlog": "^1.0",
         "linio/util": "^4.0",
         "particle/filter": "^1.5",
         "particle/validator": "^2.3",
@@ -19,6 +19,7 @@
         "ext-json": "*",
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy-phpunit": "^2.0",
+        "phpstan/phpstan": "^1.10",
         "friendsofphp/php-cs-fixer": "^3.0",
         "eloquent/phony-phpunit": "^7.1"
     },

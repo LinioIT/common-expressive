@@ -12,8 +12,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Mezzio\Container\ApplicationFactory;
 use Mezzio\Router\RouteResult;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class ValidateSupportedContentTypes
+class ValidateSupportedContentTypes implements MiddlewareInterface
 {
     public const DEFAULT_CONTENT_TYPES = ['application/json'];
 
@@ -36,20 +38,20 @@ class ValidateSupportedContentTypes
         return $this;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $contentType = $request->getHeader('Content-Type')[0] ?? null;
 
         try {
             $this->matchContentTypeFromRoute($contentType, $request);
 
-            return $next($request, $response);
+            return $handler->handle($request);
         } catch (RouteNotFoundException $exception) {
             // Fallback to non-route specific types
         }
 
         if (in_array($contentType, $this->supportedContentTypes)) {
-            return $next($request, $response);
+            return $handler->handle($request);
         }
 
         throw new ContentTypeNotSupportedException($contentType);
