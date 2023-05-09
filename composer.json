@@ -6,7 +6,7 @@
     "license": "BSD-3-Clause",
     "require": {
         "php": "^7.4",
-        "linio/microlog": "^1.0",
+        "linio/microlog": "^3.0",
         "linio/util": "^4.0",
         "particle/filter": "^1.5",
         "particle/validator": "^2.3",
