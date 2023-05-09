@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Logging;
+namespace Linio\Common\Laminas\Logging;
 
-use Interop\Container\ContainerInterface;
-use InvalidArgumentException;
 use Linio\Component\Microlog\Log;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 class LogFactory
@@ -19,13 +18,13 @@ class LogFactory
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->loggingConfig = $container->get('config')['logging'];
+        $this->loggingConfig = (array) $container->get('config')['logging'];
     }
 
     /**
      * Adds the loggers and parsers to the static log service.
      */
-    public function configureStaticLogService()
+    public function configureStaticLogService(): void
     {
         foreach ($this->loggingConfig['channels'] as $channel => $config) {
             Log::setLoggerForChannel($this->makeLogger($channel), $channel);
@@ -48,7 +47,7 @@ class LogFactory
             $handler = $this->container->get($handlerService);
 
             if (!$handler instanceof HandlerInterface) {
-                throw new InvalidArgumentException(sprintf('Handler [%s] must implement %s', get_class($handler), HandlerInterface::class));
+                throw new \InvalidArgumentException(sprintf('Handler [%s] must implement %s', get_class($handler), HandlerInterface::class));
             }
 
             $logger->pushHandler($handler);

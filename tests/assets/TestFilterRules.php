@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Linio\TestAssets;
 
-use Linio\Common\Mezzio\Filter\FilterRules;
+use Linio\Common\Laminas\Filter\FilterRules;
 use Particle\Filter\Filter;
 
 class TestFilterRules implements FilterRules
 {
-    public function buildRules(Filter $filter, array $input)
+    public function buildRules(Filter $filter, array $input): void
     {
         $filter->value('key')->append('test');
     }

@@ -2,57 +2,57 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Validation;
+namespace Linio\Common\Laminas\Tests\Validation;
 
-use Eloquent\Phony\Phpunit\Phony;
-use Interop\Container\ContainerInterface;
-use Linio\Common\Mezzio\Exception\Base\NotFoundException;
+use Linio\Common\Laminas\Exception\Base\NotFoundException;
+use Linio\Common\Laminas\Validation\ValidatorFactory;
 use Particle\Validator\Validator;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 
 class ValidatorFactoryTest extends TestCase
 {
-    public function testItGetsTheValidatorFromTheContainer()
+    use ProphecyTrait;
+
+    public function testItGetsTheValidatorFromTheContainer(): void
     {
         $class = Validator::class;
         $validator = new $class();
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(true);
-        $container->get->with($class)->returns($validator);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has($class)->willReturn(true);
+        $container->get($class)->willReturn($validator);
 
-        $factory = new ValidatorFactory($container->get(), $class);
-        $actual = $factory->make($class);
+        $factory = new ValidatorFactory($container->reveal(), $class);
+        $actual = $factory->make();
 
         $this->assertSame($validator, $actual);
-        $container->has->calledWith($class);
-        $container->get->calledWith($class);
     }
 
-    public function testItInstantiatesTheValidatorWhenItIsntInTheContainer()
+    public function testItInstantiatesTheValidatorWhenItIsNotInTheContainer(): void
     {
         $class = Validator::class;
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(false);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has($class)->willReturn(false);
 
-        $factory = new ValidatorFactory($container->get(), $class);
-        $actual = $factory->make($class);
+        $factory = new ValidatorFactory($container->reveal(), $class);
+        $actual = $factory->make();
 
         $this->assertInstanceOf($class, $actual);
-        $container->get->never()->calledWith($class);
     }
 
-    public function testItFailsIfTheValidatorDoesntExist()
+    public function testItFailsIfTheValidatorDoesntExist(): void
     {
         $class = 'InvalidClass';
 
-        $container = Phony::mock(ContainerInterface::class);
-        $container->has->with($class)->returns(false);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has($class)->willReturn(false);
 
         $this->expectException(NotFoundException::class);
 
-        $factory = new ValidatorFactory($container->get(), $class);
-        $factory->make($class);
+        $factory = new ValidatorFactory($container->reveal(), $class);
+        $factory->make();
     }
 }

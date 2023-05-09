@@ -7,7 +7,7 @@ return [
         'name' => 'test',
         'path' => '/',
         'middleware' => [
-            '\TestMiddleware',
+            new \Linio\TestAssets\TestMiddleware(),
         ],
         'allowed_methods' => ['GET'],
         'validation_rules' => [\Linio\TestAssets\TestValidationRules::class],
@@ -16,7 +16,7 @@ return [
         'name' => 'test_valid_content_type',
         'path' => '/valid-content-type',
         'middleware' => [
-            '\TestMiddleware',
+            new \Linio\TestAssets\TestMiddleware(),
         ],
         'allowed_methods' => ['GET'],
         'validation_rules' => [],
@@ -26,7 +26,7 @@ return [
         'name' => 'test_no_content_type',
         'path' => '/no-content-type',
         'middleware' => [
-            '\TestMiddleware',
+            new \Linio\TestAssets\TestMiddleware(),
         ],
         'allowed_methods' => ['GET'],
         'validation_rules' => [],

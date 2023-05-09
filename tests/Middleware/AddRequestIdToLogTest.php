@@ -2,30 +2,31 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Middleware;
+namespace Linio\Common\Laminas\Tests\Middleware;
 
-use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Mezzio\Middleware\AddRequestIdToLog;
-use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Laminas\Diactoros\Response;
-use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\ServerRequest;
+use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Laminas\Middleware\AddRequestIdToLog;
+use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class AddRequestIdToLogTest extends TestCase
 {
-    public function testItFailsAddingAGlobalContextWithoutARequestId()
+    use ProphecyTrait;
+
+    public function testItFailsAddingAGlobalContextWithoutARequestId(): void
     {
         $request = new ServerRequest();
         $response = new Response();
-        $callable = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
+
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         $this->expectException(MiddlewareOutOfOrderException::class);
 
         $middleware = new AddRequestIdToLog();
-        $middleware->__invoke($request, $response, $callable);
+        $middleware->process($request, $handler->reveal());
     }
 }

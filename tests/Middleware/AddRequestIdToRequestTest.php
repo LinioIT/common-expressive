@@ -2,43 +2,55 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Middleware;
+namespace Linio\Common\Laminas\Tests\Middleware;
 
-use Linio\Common\Mezzio\Middleware\AddRequestIdToRequest;
-use PHPUnit\Framework\TestCase;
-use Laminas\Diactoros\Response;
 use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\ServerRequest;
+use Linio\Common\Laminas\Middleware\AddRequestIdToRequest;
+use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class AddRequestIdToRequestTest extends TestCase
 {
-    public function testItAddsTheRequestIdAttributeUsingANewId()
+    use ProphecyTrait;
+
+    public function testItAddsTheRequestIdAttributeUsingANewId(): void
     {
         $request = new ServerRequest();
-        $response = new Response();
-        $callable = function ($request, $response) {
-            $this->assertNotNull($request->getAttribute('requestId'));
-
-            return new EmptyResponse();
+        $handler = new class() implements RequestHandlerInterface {
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                return new EmptyResponse();
+            }
         };
 
         $middleware = new AddRequestIdToRequest();
-        $middleware->__invoke($request, $response, $callable);
+        $response = $middleware->process($request, $handler);
+
+        $this->assertNotNull($response);
+
+        $this->assertNotNull($response->getHeaderLine('X-Request-ID'));
     }
 
-    public function testItAddsTheRequestIdAttributeUsingTheHeader()
+    public function testItAddsTheRequestIdAttributeUsingTheHeader(): void
     {
-        $requestId = 'testId';
+        $request = new ServerRequest([], [], null, null, '1.1', ['X-Request-ID' => 'existing-id']);
+        $handler = new class() implements RequestHandlerInterface {
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                $response = new EmptyResponse();
 
-        $request = (new ServerRequest())->withHeader('X-Request-Id', $requestId);
-        $response = new Response();
-        $callable = function ($request, $response) use ($requestId) {
-            $this->assertSame($requestId, $request->getAttribute('requestId'));
-
-            return new EmptyResponse();
+                return $response->withHeader('X-Request-ID', $request->getHeaderLine('X-Request-ID'));
+            }
         };
 
         $middleware = new AddRequestIdToRequest();
-        $middleware->__invoke($request, $response, $callable);
+        $response = $middleware->process($request, $handler);
+
+        $this->assertNotNull($response);
+        $this->assertSame('existing-id', $response->getHeaderLine('X-Request-ID'));
     }
 }

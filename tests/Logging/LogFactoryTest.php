@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Logging;
+namespace Linio\Common\Laminas\Tests\Logging;
 
-use Interop\Container\ContainerInterface;
-use InvalidArgumentException;
-use Linio\Common\Mezzio\Logging\LogFactory;
+use Linio\Common\Laminas\Logging\LogFactory;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 class LogFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testItMakesALogger()
+    public function testItMakesALogger(): void
     {
         $container = $this->prophesize(ContainerInterface::class);
         $container
@@ -46,7 +45,7 @@ class LogFactoryTest extends TestCase
         $this->assertInstanceOf(LoggerInterface::class, $logger);
     }
 
-    public function testItMakesALoggerViaConfiguration()
+    public function testItMakesALoggerViaConfiguration(): void
     {
         $config = [
             'logging' => [
@@ -79,14 +78,14 @@ class LogFactoryTest extends TestCase
         $this->assertSame($logger->getHandlers()[0], $handler);
     }
 
-    public function testItFailsIfAnInvalidHandlerIsGiven()
+    public function testItFailsIfAnInvalidHandlerIsGiven(): void
     {
         $config = [
             'logging' => [
                 'channels' => [
                     'default' => [
                         'handlers' => [
-                            InvalidArgumentException::class,
+                            \InvalidArgumentException::class,
                         ],
                     ],
                 ],
@@ -98,10 +97,10 @@ class LogFactoryTest extends TestCase
             ->get('config')
             ->willReturn($config);
         $container
-            ->get(InvalidArgumentException::class)
-            ->willThrow(new InvalidArgumentException());
+            ->get(\InvalidArgumentException::class)
+            ->willThrow(new \InvalidArgumentException());
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $factory = new LogFactory($container->reveal());
         $factory->makeLogger('default');

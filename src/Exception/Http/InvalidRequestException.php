@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Exception\Http;
+namespace Linio\Common\Laminas\Exception\Http;
 
-use Linio\Common\Mezzio\Exception\Base\ClientException;
-use Linio\Common\Mezzio\Exception\ExceptionTokens;
+use Linio\Common\Laminas\Exception\Base\ClientException;
+use Linio\Common\Laminas\Exception\ExceptionTokens;
 
 class InvalidRequestException extends ClientException
 {

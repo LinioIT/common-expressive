@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Logging;
+namespace Linio\Common\Laminas\Logging;
 
-use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Mezzio\Filter\FilterService;
-use function Linio\Common\Mezzio\Support\getCurrentRouteFromRawRoutes;
+use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Laminas\Filter\FilterService;
+
+use function Linio\Common\Laminas\Support\getCurrentRouteFromRawRoutes;
+
 use Linio\Component\Util\Json;
-use LogicException;
+use Mezzio\Router\RouteCollector;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -17,7 +19,7 @@ class LogRequestResponseService
 {
     private FilterService $filterService;
     private LoggerInterface $logger;
-    private array $routes;
+    private RouteCollector $routes;
 
     /**
      * @var callable
@@ -32,7 +34,7 @@ class LogRequestResponseService
     public function __construct(
         FilterService $filterService,
         LoggerInterface $logger,
-        array $routes,
+        RouteCollector $routes,
         callable $getRequestLogBody,
         callable $getResponseLogBody
     ) {
@@ -43,14 +45,14 @@ class LogRequestResponseService
         $this->getResponseLogBody = $getResponseLogBody;
     }
 
-    public function logRequest(ServerRequestInterface $request)
+    public function logRequest(ServerRequestInterface $request): void
     {
         $requestData = $this->mapRequestToLogContext($request);
 
         $this->logger->info('A request has been created.', $requestData);
     }
 
-    public function logResponse(ServerRequestInterface $request, ResponseInterface $response)
+    public function logResponse(ServerRequestInterface $request, ResponseInterface $response): void
     {
         $responseData = $this->mapResponseToLogContext($request, $response);
 
@@ -67,7 +69,7 @@ class LogRequestResponseService
             if (is_array($body)) {
                 $body = $this->filterService->filter($body, $filters);
             }
-        } catch (LogicException $exception) {
+        } catch (\LogicException $exception) {
             $body = (string) $request->getBody();
         }
 
@@ -86,7 +88,7 @@ class LogRequestResponseService
             if (is_array($body)) {
                 $body = $this->filterService->filter($body, $filters);
             }
-        } catch (LogicException $exception) {
+        } catch (\LogicException $exception) {
             $body = (string) $response->getBody();
         }
 
@@ -102,11 +104,11 @@ class LogRequestResponseService
     {
         $matchedRoute = getCurrentRouteFromRawRoutes($request, $this->routes);
 
-        if (empty($matchedRoute['filter_rules'])) {
+        if (empty($matchedRoute->getOptions()['filter_rules'])) {
             return [];
         }
 
-        $rules = $matchedRoute['filter_rules'];
+        $rules = $matchedRoute->getOptions()['filter_rules'];
 
         if (!is_array($rules)) {
             return [$rules];

@@ -2,21 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Support;
+namespace Linio\Common\Laminas\Support;
 
-use Linio\Common\Mezzio\Exception\Http\RouteNotFoundException;
-use Psr\Http\Message\ServerRequestInterface;
+use Linio\Common\Laminas\Exception\Http\RouteNotFoundException;
+use Mezzio\Router\Route;
+use Mezzio\Router\RouteCollector;
 use Mezzio\Router\RouteResult;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @throws RouteNotFoundException
  */
-function getCurrentRouteFromMatchedRoute(RouteResult $routeResult, array $routes): array
+function getCurrentRouteFromMatchedRoute(RouteResult $routeResult, RouteCollector $routes): Route
 {
     $routeName = $routeResult->getMatchedRouteName();
 
-    foreach ($routes as $route) {
-        if (isset($route['name']) && $route['name'] == $routeName) {
+    foreach ($routes->getRoutes() as $route) {
+        if ($route->getName() == $routeName) {
             return $route;
         }
     }
@@ -27,12 +29,12 @@ function getCurrentRouteFromMatchedRoute(RouteResult $routeResult, array $routes
 /**
  * @throws RouteNotFoundException
  */
-function getCurrentRouteFromRawRoutes(ServerRequestInterface $request, array $routes): array
+function getCurrentRouteFromRawRoutes(ServerRequestInterface $request, RouteCollector $routes): Route
 {
     $routePath = $request->getUri()->getPath();
 
-    foreach ($routes as $route) {
-        if (isset($route['path']) && $route['path'] == $routePath) {
+    foreach ($routes->getRoutes() as $route) {
+        if ($route->getPath() == $routePath) {
             return $route;
         }
     }

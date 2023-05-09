@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Linio\TestAssets;
 
-use Linio\Common\Mezzio\Validation\ValidationRules;
+use Linio\Common\Laminas\Validation\ValidationRules;
 use Particle\Validator\Validator;
 
 class TestValidationRules implements ValidationRules
@@ -12,7 +12,7 @@ class TestValidationRules implements ValidationRules
     /**
      * Builds the rules for particle/validator.
      */
-    public function buildRules(Validator $validator, array $input)
+    public function buildRules(Validator $validator, array $input): void
     {
         $validator->required('key');
     }

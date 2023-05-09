@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Exception;
+namespace Linio\Common\Laminas\Exception;
 
 class ExceptionTokens
 {

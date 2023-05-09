@@ -2,22 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Middleware;
+namespace Linio\Common\Laminas\Tests\Middleware;
 
-use Exception;
-use Linio\Common\Mezzio\Exception\Base\DomainException;
-use Linio\Common\Mezzio\Exception\ExceptionTokens;
-use Linio\Common\Mezzio\Middleware\ConvertErrorToJsonResponse;
-use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Laminas\Diactoros\Response;
-use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\ServerRequest;
+use Linio\Common\Laminas\Exception\Base\DomainException;
+use Linio\Common\Laminas\Exception\ExceptionTokens;
+use Linio\Common\Laminas\Middleware\ConvertErrorToJsonResponse;
+use PHPUnit\Framework\TestCase;
 
 class ConvertErrorToJsonResponseTest extends TestCase
 {
-    public function testItConvertsAGenericErrorToAResponse()
+    public function testItConvertsAGenericErrorToAResponse(): void
     {
         $error = 'some error';
 
@@ -29,21 +25,18 @@ class ConvertErrorToJsonResponseTest extends TestCase
 
         $request = new ServerRequest();
         $response = new Response();
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
 
         $middleware = new ConvertErrorToJsonResponse();
-        $actual = $middleware->__invoke($error, $request, $response, $next);
+        $actual = $middleware->__invoke($error, $request, $response);
 
         $actualBody = json_decode((string) $actual->getBody(), true);
 
         $this->assertSame($expected, $actualBody);
     }
 
-    public function testItConvertsThrowablesToAResponse()
+    public function testItConvertsThrowablesToAResponse(): void
     {
-        $error = new Exception('Some Message');
+        $error = new \Exception('Some Message');
 
         $expected = [
             'code' => ExceptionTokens::AN_ERROR_HAS_OCCURRED,
@@ -53,19 +46,16 @@ class ConvertErrorToJsonResponseTest extends TestCase
 
         $request = new ServerRequest();
         $response = new Response();
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
 
         $middleware = new ConvertErrorToJsonResponse();
-        $actual = $middleware->__invoke($error, $request, $response, $next);
+        $actual = $middleware->__invoke($error, $request, $response);
 
         $actualBody = json_decode((string) $actual->getBody(), true);
 
         $this->assertSame($expected, $actualBody);
     }
 
-    public function testItConvertsDomainExceptionsToAResponse()
+    public function testItConvertsDomainExceptionsToAResponse(): void
     {
         $error = new DomainException('TEST_TOKEN', 599, 'Test Message', [['field' => 'test', 'message' => 'issue']]);
 
@@ -82,12 +72,9 @@ class ConvertErrorToJsonResponseTest extends TestCase
 
         $request = new ServerRequest();
         $response = new Response();
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return new EmptyResponse();
-        };
 
         $middleware = new ConvertErrorToJsonResponse();
-        $actual = $middleware->__invoke($error, $request, $response, $next);
+        $actual = $middleware->__invoke($error, $request, $response);
 
         $actualBody = json_decode((string) $actual->getBody(), true);
 

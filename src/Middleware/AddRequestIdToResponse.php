@@ -17,6 +17,7 @@ class AddRequestIdToResponse implements MiddlewareInterface
     {
         $this->ensureRequestIdExists($request);
 
+        /** @var ResponseInterface $response */
         $response = $handler->handle($request);
         return $response->withHeader('X-Request-ID', $request->getAttribute('requestId'));
     }

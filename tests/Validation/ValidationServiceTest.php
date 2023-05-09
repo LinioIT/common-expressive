@@ -2,30 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Validation;
+namespace Linio\Common\Laminas\Tests\Validation;
 
-use Interop\Container\ContainerInterface;
-use Linio\Common\Mezzio\Exception\Http\InvalidRequestException;
-use Linio\Common\Mezzio\Validation\ValidationRulesFactory;
-use Linio\Common\Mezzio\Validation\ValidationService;
-use Linio\Common\Mezzio\Validation\ValidatorFactory;
+use Linio\Common\Laminas\Exception\Http\InvalidRequestException;
+use Linio\Common\Laminas\Validation\ValidationRulesFactory;
+use Linio\Common\Laminas\Validation\ValidationService;
+use Linio\Common\Laminas\Validation\ValidatorFactory;
 use Linio\TestAssets\TestValidationRules;
 use Linio\TestAssets\TestValidationRules2;
 use Linio\TestAssets\TestValidationRules3;
 use Particle\Validator\ValidationResult;
 use Particle\Validator\Validator;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 
 class ValidationServiceTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testItValidatesAndPasses()
+    public function testItValidatesAndPasses(): void
     {
         $input = ['key' => 'validValue', 'key2' => 'validValue'];
+        $validationRule = [TestValidationRules::class, TestValidationRules2::class];
 
         $container = $this->prophesize(ContainerInterface::class);
+        $container->has(Argument::any())->willReturn(true);
+        $container->get(Validator::class)->willReturn(new Validator());
+        $container->get(TestValidationRules::class)->willReturn(new TestValidationRules());
+        $container->get(TestValidationRules2::class)->willReturn(new TestValidationRules2());
 
         $validatorResult = $this->prophesize(ValidationResult::class);
         $validatorResult
@@ -52,13 +58,12 @@ class ValidationServiceTest extends TestCase
             ->willReturn($validator->reveal());
 
         $validationRulesFactory = new ValidationRulesFactory($container->reveal());
-        $validationRule = [TestValidationRules::class, TestValidationRules2::class];
 
         $service = new ValidationService($validatorFactory->reveal(), $validationRulesFactory);
         $service->validate($input, $validationRule);
     }
 
-    public function testItValidatesAndFailsWithASingleValidationRulesClass()
+    public function testItValidatesAndFailsWithASingleValidationRulesClass(): void
     {
         $input = ['invalidKey' => 'validValue'];
         $expectedErrors = [
@@ -68,12 +73,15 @@ class ValidationServiceTest extends TestCase
             ],
         ];
 
+        $validationRules = [TestValidationRules::class];
+
         $container = $this->prophesize(ContainerInterface::class);
+        $container->has(Argument::any())->willReturn(true);
+        $container->get(Validator::class)->willReturn(new Validator());
+        $container->get(TestValidationRules::class)->willReturn(new TestValidationRules());
 
         $validatorFactory = new ValidatorFactory($container->reveal(), Validator::class);
-
         $validationRulesFactory = new ValidationRulesFactory($container->reveal());
-        $validationRules = [TestValidationRules::class];
 
         $this->expectException(InvalidRequestException::class);
 
@@ -88,9 +96,10 @@ class ValidationServiceTest extends TestCase
         }
     }
 
-    public function testItValidatesAndFailsUsingAMultipleValidationRulesClass()
+    public function testItValidatesAndFailsUsingAMultipleValidationRulesClass(): void
     {
         $input = ['invalidKey' => 'validValue'];
+        $validationRules = [TestValidationRules::class, TestValidationRules2::class];
         $expectedErrors = [
             [
                 'field' => 'key',
@@ -103,11 +112,14 @@ class ValidationServiceTest extends TestCase
         ];
 
         $container = $this->prophesize(ContainerInterface::class);
+        $container->has(Argument::any())->willReturn(true);
+        $container->get(Validator::class)->willReturn(new Validator());
+        $container->get(TestValidationRules::class)->willReturn(new TestValidationRules());
+        $container->get(TestValidationRules2::class)->willReturn(new TestValidationRules2());
 
         $validatorFactory = new ValidatorFactory($container->reveal(), Validator::class);
 
         $validationRulesFactory = new ValidationRulesFactory($container->reveal());
-        $validationRules = [TestValidationRules::class, TestValidationRules2::class];
 
         $this->expectException(InvalidRequestException::class);
 
@@ -122,16 +134,18 @@ class ValidationServiceTest extends TestCase
         }
     }
 
-    public function testItValidatesUsingInputValuesInTheRules()
+    public function testItValidatesUsingInputValuesInTheRules(): void
     {
         $input = ['key3' => 'equalValue', 'key4' => 'equalValue'];
+        $validationRules = [TestValidationRules3::class];
 
         $container = $this->prophesize(ContainerInterface::class);
+        $container->has(Argument::any())->willReturn(true);
+        $container->get(Validator::class)->willReturn(new Validator());
+        $container->get(TestValidationRules3::class)->willReturn(new TestValidationRules3());
 
         $validatorFactory = new ValidatorFactory($container->reveal(), Validator::class);
-
         $validationRulesFactory = new ValidationRulesFactory($container->reveal());
-        $validationRules = [TestValidationRules3::class];
 
         $service = new ValidationService($validatorFactory, $validationRulesFactory);
 

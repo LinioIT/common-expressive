@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Tests\Middleware;
+namespace Linio\Common\Laminas\Tests\Middleware;
 
-use Linio\Common\Mezzio\Logging\LogRequestResponseService;
-use Linio\Common\Mezzio\Middleware\LogRequest;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\ServerRequest;
+use Linio\Common\Laminas\Logging\LogRequestResponseService;
+use Linio\Common\Laminas\Middleware\LogRequest;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Laminas\Diactoros\Response;
-use Laminas\Diactoros\Response\EmptyResponse;
-use Laminas\Diactoros\ServerRequest;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class LogRequestTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function testItCallsLogRequestResponseService()
+    public function testItCallsLogRequestResponseService(): void
     {
         $request = new ServerRequest();
 
@@ -26,11 +26,10 @@ class LogRequestTest extends TestCase
             ->shouldBeCalled();
 
         $response = new Response();
-        $next = function ($request, $response) {
-            return new EmptyResponse();
-        };
+        $handler = $this->prophesize(RequestHandlerInterface::class);
+        $handler->handle($request)->willReturn($response);
 
         $middleware = new LogRequest($logRequestResponseService->reveal());
-        $middleware->__invoke($request, $response, $next);
+        $middleware->process($request, $handler->reveal());
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Validation;
+namespace Linio\Common\Laminas\Validation;
 
 use Particle\Validator\Validator;
 
@@ -11,5 +11,5 @@ interface ValidationRules
     /**
      * Builds the rules for particle/validator.
      */
-    public function buildRules(Validator $validator, array $input);
+    public function buildRules(Validator $validator, array $input): void;
 }

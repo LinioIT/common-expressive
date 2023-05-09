@@ -61,3 +61,4 @@ class ConfigureNewrelicForRequest implements MiddlewareInterface
         newrelic_add_custom_parameter('requestId', $requestId);
     }
 }
+
