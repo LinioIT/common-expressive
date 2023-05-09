@@ -8,22 +8,25 @@ use Linio\Common\Mezzio\Exception\Base\NonCriticalDomainException;
 use Linio\Component\Microlog\Log;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class LogExceptions
+class LogExceptions implements MiddlewareInterface
 {
     public const EXCEPTIONS_CHANNEL = 'exceptions';
 
-    /**
-     * @param mixed $error
-     */
-    public function __invoke($error, ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($error instanceof NonCriticalDomainException) {
-            Log::error($error, [], self::EXCEPTIONS_CHANNEL);
-        } else {
-            Log::critical($error, [], self::EXCEPTIONS_CHANNEL);
+        try {
+            $response = $handler->handle($request);
+            return $response;
+        } catch (\Throwable $exception) {
+            if ($exception instanceof NonCriticalDomainException) {
+                Log::error($exception, [], self::EXCEPTIONS_CHANNEL);
+            } else {
+                Log::critical($exception, [], self::EXCEPTIONS_CHANNEL);
+            }
+            throw $exception;
         }
-
-        return $next($request, $response, $error);
     }
 }

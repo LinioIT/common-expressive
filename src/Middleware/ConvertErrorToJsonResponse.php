@@ -10,17 +10,25 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
 use Laminas\Diactoros\Response\JsonResponse;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class ConvertErrorToJsonResponse
+class ConvertErrorToJsonResponse implements MiddlewareInterface
 {
     public const DEFAULT_STATUS_CODE = 500;
 
     /**
      * @param mixed $error
      */
-    public function __invoke($error, ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return new JsonResponse(self::buildErrorBody($error), self::getStatusCode($error));
+        try {
+            $response = $handler->handle($request);
+        } catch (Throwable $error) {
+            $response = new JsonResponse(self::buildErrorBody($error), self::getStatusCode($error));
+        }
+
+        return $response;
     }
 
     public static function buildErrorBody($error): array
