@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Laminas\Middleware;
+namespace Linio\Common\Mezzio\Middleware;
 
 use Linio\Common\Laminas\Logging\LogRequestResponseService;
 use Psr\Http\Message\ResponseInterface;
@@ -23,8 +23,6 @@ class LogRequest implements MiddlewareInterface
     {
         $this->loggingService->logRequest($request);
 
-        $response = $handler->handle($request);
-
-        return $response;
+        return $handler->handle($request);
     }
 }

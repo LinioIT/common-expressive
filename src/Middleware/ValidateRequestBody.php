@@ -2,18 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Laminas\Middleware;
+namespace Linio\Common\Mezzio\Middleware;
 
-use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Laminas\Exception\Http\RouteNotFoundException;
-
-use function Linio\Common\Laminas\Support\getCurrentRouteFromMatchedRoute;
-
-use Linio\Common\Laminas\Validation\ValidationService;
-use Mezzio\Router\RouteCollector;
-use Mezzio\Router\RouteResult;
+use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Mezzio\Exception\Http\RouteNotFoundException;
+use function Linio\Common\Mezzio\Support\getCurrentRouteFromMatchedRoute;
+use Linio\Common\Mezzio\Validation\ValidationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Mezzio\Router\RouteResult;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -21,9 +18,12 @@ class ValidateRequestBody implements MiddlewareInterface
 {
     private ValidationService $validationService;
 
-    private RouteCollector $routes;
+    /**
+     * An array of mezzio/laminas routes.
+     */
+    private array $routes;
 
-    public function __construct(ValidationService $validationService, RouteCollector $routes)
+    public function __construct(ValidationService $validationService, array $routes)
     {
         $this->validationService = $validationService;
         $this->routes = $routes;
@@ -53,11 +53,11 @@ class ValidateRequestBody implements MiddlewareInterface
     {
         $matchedRoute = getCurrentRouteFromMatchedRoute($routeResult, $this->routes);
 
-        if (empty($matchedRoute->getOptions()['validation_rules'])) {
+        if (empty($matchedRoute['validation_rules'])) {
             return [];
         }
 
-        $rules = $matchedRoute->getOptions()['validation_rules'];
+        $rules = $matchedRoute['validation_rules'];
 
         if (!is_array($rules)) {
             return [$rules];

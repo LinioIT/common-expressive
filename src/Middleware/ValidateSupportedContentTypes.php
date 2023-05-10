@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Laminas\Middleware;
+namespace Linio\Common\Mezzio\Middleware;
 
-use Linio\Common\Laminas\Exception\Http\ContentTypeNotSupportedException;
-use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Laminas\Exception\Http\RouteNotFoundException;
-
-use function Linio\Common\Laminas\Support\getCurrentRouteFromMatchedRoute;
-
-use Mezzio\Router\RouteCollector;
-use Mezzio\Router\RouteResult;
+use Linio\Common\Mezzio\Exception\Http\ContentTypeNotSupportedException;
+use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Mezzio\Exception\Http\RouteNotFoundException;
+use function Linio\Common\Mezzio\Support\getCurrentRouteFromMatchedRoute;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Mezzio\Container\ApplicationFactory;
+use Mezzio\Router\RouteResult;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -22,9 +20,9 @@ class ValidateSupportedContentTypes implements MiddlewareInterface
     public const DEFAULT_CONTENT_TYPES = ['application/json'];
 
     private array $supportedContentTypes = [];
-    private RouteCollector $routes;
+    private array $routes;
 
-    public function __construct(array $supportedContentTypes, RouteCollector $routes)
+    public function __construct(array $supportedContentTypes, array $routes = [])
     {
         $this->supportedContentTypes = $supportedContentTypes;
         $this->routes = $routes;
@@ -59,18 +57,18 @@ class ValidateSupportedContentTypes implements MiddlewareInterface
         throw new ContentTypeNotSupportedException($contentType);
     }
 
-    private function matchContentTypeFromRoute(?string $contentType, ServerRequestInterface $request): void
+    private function matchContentTypeFromRoute(?string $contentType, ServerRequestInterface $request)
     {
         $routeResult = $request->getAttribute(RouteResult::class);
 
         if (!$routeResult instanceof RouteResult || !$routeResult->isSuccess()) {
-            throw new MiddlewareOutOfOrderException('routing', self::class);
+            throw new MiddlewareOutOfOrderException(ApplicationFactory::ROUTING_MIDDLEWARE, self::class);
         }
 
         $routeConfig = getCurrentRouteFromMatchedRoute($routeResult, $this->routes);
 
-        if (isset($routeConfig->getOptions()['content_types']) && is_array($routeConfig->getOptions()['content_types'])) {
-            if (!in_array($contentType, $routeConfig->getOptions()['content_types'])) {
+        if (isset($routeConfig['content_types']) && is_array($routeConfig['content_types'])) {
+            if (!in_array($contentType, $routeConfig['content_types'])) {
                 throw new ContentTypeNotSupportedException($contentType);
             }
         }

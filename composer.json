@@ -5,24 +5,22 @@
     "type": "library",
     "license": "BSD-3-Clause",
     "require": {
-        "php": "^8.1",
-        "guzzlehttp/psr7": "^2.4",
-        "laminas/laminas-httphandlerrunner": "^2.1",
-        "linio/microlog": "^1.0||^2.0||^3.0",
+        "php": "^7.4",
+        "linio/microlog": "^1.0",
         "linio/util": "^4.0",
-        "particle/filter": "^1.4",
-        "particle/validator": "^2.1",
-        "monolog/monolog": "^1.20",
-        "mezzio/mezzio": "^3.14||^3.2",
-        "mezzio/mezzio-router": "^3.15",
-        "laminas/laminas-diactoros": "^2.25"
+        "particle/filter": "^1.5",
+        "particle/validator": "^2.3",
+        "monolog/monolog": "^2.9",
+        "mezzio/mezzio": "^3.11",
+        "nyholm/psr7": "^1.5",
+        "psr/http-server-middleware": "^1.0"
     },
     "require-dev": {
         "ext-json": "*",
         "phpunit/phpunit": "^9.5",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/phpstan": "^1.10",
-        "friendsofphp/php-cs-fixer": "^3.16",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "eloquent/phony-phpunit": "^7.1"
     },
     "autoload": {
@@ -30,15 +28,16 @@
             "src/Support/functions.php"
         ],
         "psr-4": {
-            "Linio\\Common\\Laminas\\": "src/"
+            "Linio\\Common\\Mezzio\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Linio\\TestAssets\\": "tests/assets",
-            "Linio\\Common\\Laminas\\Tests\\": "tests/"
+            "Linio\\Common\\Mezzio\\Tests\\": "tests/"
         }
     },
+    "prefer-stable": false,
     "config": {
         "allow-plugins": {
             "laminas/laminas-dependency-plugin": true

@@ -2,39 +2,45 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Laminas\Middleware;
+namespace Linio\Common\Mezzio\Middleware;
 
-use Laminas\Diactoros\Response\JsonResponse;
-use Linio\Common\Laminas\Exception\Base\DomainException;
-use Linio\Common\Laminas\Exception\ExceptionTokens;
+use Linio\Common\Mezzio\Exception\Base\DomainException;
+use Linio\Common\Mezzio\Exception\ExceptionTokens;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
+use Laminas\Diactoros\Response\JsonResponse;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class ConvertErrorToJsonResponse
+class ConvertErrorToJsonResponse implements MiddlewareInterface
 {
     public const DEFAULT_STATUS_CODE = 500;
 
-    /**
-     * @param mixed $error
-     */
-    public function __invoke($error, ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return new JsonResponse(self::buildErrorBody($error), self::getStatusCode($error));
+        try {
+            $response = $handler->handle($request);
+        } catch (Throwable $error) {
+            $response = new JsonResponse(self::buildErrorBody($error), self::getStatusCode($error));
+        }
+
+        return $response;
     }
 
-    public static function buildErrorBody(mixed $error): array
+    public static function buildErrorBody($error): array
     {
         switch ($error) {
             case $error instanceof DomainException:
                 return self::buildDomainExceptionBody($error);
-            case $error instanceof \Throwable:
+            case $error instanceof Throwable:
                 return self::buildThrowableBody($error);
             default:
                 return self::buildGenericErrorBody($error);
         }
     }
 
-    public static function getStatusCode(mixed $error): int
+    public static function getStatusCode($error): int
     {
         switch ($error) {
             case $error instanceof DomainException:
@@ -49,7 +55,7 @@ class ConvertErrorToJsonResponse
         return self::buildBody();
     }
 
-    private static function buildThrowableBody(\Throwable $throwable): array
+    private static function buildThrowableBody(Throwable $throwable): array
     {
         return self::buildGenericErrorBody($throwable->getMessage());
     }

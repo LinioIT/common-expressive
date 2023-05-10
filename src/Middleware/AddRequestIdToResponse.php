@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Laminas\Middleware;
+namespace Linio\Common\Mezzio\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,7 +19,6 @@ class AddRequestIdToResponse implements MiddlewareInterface
 
         /** @var ResponseInterface $response */
         $response = $handler->handle($request);
-
         return $response->withHeader('X-Request-ID', $request->getAttribute('requestId'));
     }
 }
