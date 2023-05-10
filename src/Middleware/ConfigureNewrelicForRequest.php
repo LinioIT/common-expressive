@@ -33,9 +33,8 @@ class ConfigureNewrelicForRequest implements MiddlewareInterface
         return $handler->handle($request);
     }
 
-    private function nameRouteIfRouteFound(ServerRequestInterface $request)
+    private function nameRouteIfRouteFound(ServerRequestInterface $request): void
     {
-        /** @var RouteResult $routeResult */
         $routeResult = $request->getAttribute(RouteResult::class);
 
         if (!$routeResult instanceof RouteResult || $routeResult->isFailure()) {
@@ -50,7 +49,7 @@ class ConfigureNewrelicForRequest implements MiddlewareInterface
     /**
      * @throws MiddlewareOutOfOrderException
      */
-    private function addRequestIdToNewrelic(ServerRequestInterface $request)
+    private function addRequestIdToNewrelic(ServerRequestInterface $request): void
     {
         $requestId = $request->getAttribute('requestId', false);
 

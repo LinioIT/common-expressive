@@ -19,7 +19,7 @@ class ValidateRequestBody implements MiddlewareInterface
     private ValidationService $validationService;
 
     /**
-     * An array of zend-expressive routes.
+     * An array of mezzio/laminas routes.
      */
     private array $routes;
 

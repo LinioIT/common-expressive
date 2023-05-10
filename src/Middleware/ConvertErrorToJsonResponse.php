@@ -17,9 +17,6 @@ class ConvertErrorToJsonResponse implements MiddlewareInterface
 {
     public const DEFAULT_STATUS_CODE = 500;
 
-    /**
-     * @param mixed $error
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {
