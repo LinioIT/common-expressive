@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Linio\Common\Mezzio\Middleware;
+namespace Linio\Common\Laminas\Middleware;
 
-use Linio\Common\Mezzio\Exception\Http\MiddlewareOutOfOrderException;
-use Linio\Common\Mezzio\Exception\Http\RouteNotFoundException;
-use function Linio\Common\Mezzio\Support\getCurrentRouteFromMatchedRoute;
-use Linio\Common\Mezzio\Validation\ValidationService;
+use Linio\Common\Laminas\Exception\Http\MiddlewareOutOfOrderException;
+use Linio\Common\Laminas\Exception\Http\RouteNotFoundException;
+use function Linio\Common\Laminas\Support\getCurrentRouteFromMatchedRoute;
+use Linio\Common\Laminas\Validation\ValidationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Mezzio\Router\RouteResult;

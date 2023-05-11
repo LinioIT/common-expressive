@@ -28,13 +28,13 @@
             "src/Support/functions.php"
         ],
         "psr-4": {
-            "Linio\\Common\\Mezzio\\": "src/"
+            "Linio\\Common\\Laminas\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Linio\\TestAssets\\": "tests/assets",
-            "Linio\\Common\\Mezzio\\Tests\\": "tests/"
+            "Linio\\Common\\Laminas\\Tests\\": "tests/"
         }
     },
     "prefer-stable": false,
