@@ -12,6 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Mezzio\Container\ApplicationFactory;
 use Mezzio\Router\RouteResult;
+use Mezzio\Router\RouteCollector;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -20,12 +21,12 @@ class ValidateSupportedContentTypes implements MiddlewareInterface
     public const DEFAULT_CONTENT_TYPES = ['application/json'];
 
     private array $supportedContentTypes = [];
-    private array $routes;
+    private RouteCollector $routeCollector;
 
-    public function __construct(array $supportedContentTypes, array $routes = [])
+    public function __construct(array $supportedContentTypes, RouteCollector $routeCollector)
     {
         $this->supportedContentTypes = $supportedContentTypes;
-        $this->routes = $routes;
+        $this->routeCollector = $routeCollector;
     }
 
     /**
@@ -65,7 +66,7 @@ class ValidateSupportedContentTypes implements MiddlewareInterface
             throw new MiddlewareOutOfOrderException(ApplicationFactory::ROUTING_MIDDLEWARE, self::class);
         }
 
-        $routeConfig = getCurrentRouteFromMatchedRoute($routeResult, $this->routes);
+        $routeConfig = getCurrentRouteFromMatchedRoute($routeResult, $this->routeCollector);
 
         if (isset($routeConfig['content_types']) && is_array($routeConfig['content_types'])) {
             if (!in_array($contentType, $routeConfig['content_types'])) {
