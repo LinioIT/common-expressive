@@ -12,8 +12,9 @@
         "particle/filter": "^1.4",
         "particle/validator": "^2.1",
         "monolog/monolog": "^1.20",
-        "zendframework/zend-expressive": "^1.0",
-        "zendframework/zend-expressive-router": "^1.1"
+        "linio/zend-expressive-router": "^4.0",
+        "linio/zend-diactoros": "^3.0",
+        "linio/zend-expressive": "^2.0"
     },
     "require-dev": {
         "ext-json": "*",
@@ -35,5 +36,19 @@
             "Linio\\TestAssets\\": "tests/assets",
             "Linio\\Common\\Expressive\\Tests\\": "tests/"
         }
-    }
+    },
+    "repositories": [
+      {
+        "type": "vcs",
+        "url": "git@gitlab.com:LinioIT/zend-diactoros.git"
+      },
+      {
+        "type": "vcs",
+        "url": "git@gitlab.com:LinioIT/zend-expressive.git"
+      },
+      {
+        "type": "vcs",
+        "url": "git@gitlab.com:LinioIT/zend-expressive-router.git"
+      }
+    ]
 }
